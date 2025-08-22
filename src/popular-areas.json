@@ -1,0 +1,386 @@
+[
+  {
+    "id": 1,
+    "title": "Dubai Islands",
+    "description": "Serene Waterfront Homes on Dubai Islands by Nakheel",
+    "image": "/assets/dubai_island.jpg",
+    "property_category": "Dubai Islands",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Dubai Islands Beach Residences",
+        "property_sub_heading": "Serene Waterfront Homes on Dubai Islands by Nakheel",
+        "property_desc": "Dubai Islands Beach Residences offer a unique blend of peaceful island living and modern urban lifestyle. With panoramic sea views, premium amenities, and easy connectivity to Dubai mainland, this is a destination of comfort and prestige.",
+        "Location": "Dubai Islands, Dubai",
+        "location_search": "Dubai Islands",
+        "Property_Type": "Apartments",
+        "Completion_Date": "Q4 2026",
+        "Payment_Plan": "70/30",
+        "Starting_Price": 2.8,
+        "property_gallery": "/assets/dubai_island.jpg",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2,
+          3
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 850,
+          "max_sqft": 2200
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Palm Jumeirah",
+    "description": "Iconic Waterfront Living on Palm Jumeirah by Nakheel",
+    "image": "/assets/palm_jumeirah.webp",
+    "property_category": "Palm Jumeirah",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Palm Beach Towers",
+        "property_sub_heading": "Iconic Waterfront Living on Palm Jumeirah by Nakheel",
+        "property_desc": "Palm Beach Towers offers luxury residences with sea views, exclusive beach access, and a vibrant lifestyle. Located at the entrance of Palm Jumeirah, it blends elegance and modern city life in one iconic destination.",
+        "Location": "Palm Jumeirah, Dubai",
+        "location_search": "Palm Jumeirah",
+        "Property_Type": "Apartments",
+        "Completion_Date": "Q1 2026",
+        "Payment_Plan": "60/40",
+        "Starting_Price": 3.2,
+        "property_gallery": "/assets/palm-beach-tower.webp",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          2,
+          3,
+          4
+        ],
+        "bathroom": [
+          2,
+          3
+        ],
+        "area": {
+          "min_sqft": 1200,
+          "max_sqft": 3500
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Downtown Dubai",
+    "description": "Live Next to the Iconic Burj Khalifa by Emaar",
+    "image": "/assets/db_downtown.jpg",
+    "property_category": "Downtown Dubai",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Burj Royale",
+        "property_sub_heading": "Live Next to the Iconic Burj Khalifa by Emaar",
+        "property_desc": "Burj Royale is a premium tower in Downtown Dubai offering stunning views of the Burj Khalifa and The Dubai Fountain. With modern finishes and luxury amenities, it's the perfect blend of location and lifestyle.",
+        "Location": "Downtown Dubai",
+        "location_search": "Downtown Dubai",
+        "Property_Type": "Apartments",
+        "Completion_Date": "Q4 2025",
+        "Payment_Plan": "70/30",
+        "Starting_Price": 1.95,
+        "property_gallery": "/assets/burj-royale.jpg",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 700,
+          "max_sqft": 1500
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Dubai Marina",
+    "description": "Stylish Waterfront Residences in Dubai Marina by LIV Developers",
+    "image": "/assets/db_marina.jpg",
+    "property_category": "Dubai Marina",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "LIV Marina",
+        "property_sub_heading": "Stylish Waterfront Residences in Dubai Marina by LIV Developers",
+        "property_desc": "LIV Marina is a new landmark in Dubai Marina offering spacious, modern apartments with premium views. Residents enjoy easy access to the beach, promenade, and dining hotspots in one of Dubai's most vibrant neighborhoods.",
+        "Location": "Dubai Marina",
+        "location_search": "Dubai Marina",
+        "Property_Type": "Apartments",
+        "Completion_Date": "December 2025",
+        "Payment_Plan": "50/50",
+        "Starting_Price": 2.1,
+        "property_gallery": "/assets/LIV-MARIN.jpg",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2,
+          3
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 900,
+          "max_sqft": 2000
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Business Bay",
+    "description": "Urban Living with a Waterfront Edge by Select Group",
+    "image": "/assets/business_bay.webp",
+    "property_category": "Business Bay",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Peninsula Four – The Plaza",
+        "property_sub_heading": "Urban Living with a Waterfront Edge by Select Group",
+        "property_desc": "Located in the heart of Business Bay, Peninsula Four offers contemporary apartments with canal views. Enjoy vibrant community living, leisure decks, and direct access to Dubai's dynamic lifestyle district.",
+        "Location": "Business Bay",
+        "location_search": "Business Bay",
+        "Property_Type": "Apartments",
+        "Completion_Date": "Q2 2026",
+        "Payment_Plan": "70/30",
+        "Starting_Price": 1.7,
+        "property_gallery": "/assets/Peninsula-Four–The-Plaza.png",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 850,
+          "max_sqft": 1800
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Palm Jebel Ali",
+    "description": "Ultra-Luxury Waterfront Villas by Nakheel",
+    "image": "/assets/palm_jebel_ali.webp",
+    "property_category": "Palm Jebel Ali",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Palm Jebel Ali Villas",
+        "property_sub_heading": "Ultra-Luxury Waterfront Villas by Nakheel",
+        "property_desc": "Palm Jebel Ali brings world-class beachfront villas with private beaches, cutting-edge designs, and serene ocean surroundings. A new era of high-end living in Dubai's visionary reclaimed island.",
+        "Location": "Palm Jebel Ali, Dubai",
+        "location_search": "Palm Jebel Ali",
+        "Property_Type": "Villas",
+        "Completion_Date": "Q4 2027",
+        "Payment_Plan": "50/50",
+        "Starting_Price": 20.05,
+        "property_gallery": "/assets/palm_jebel_ali_villas.webp",
+        "property_type_search": [
+          "Villa"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          4,
+          5,
+          6
+        ],
+        "bathroom": [
+          4,
+          5
+        ],
+        "area": {
+          "min_sqft": 6000,
+          "max_sqft": 10000
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Dubai Hills Estate",
+    "description": "Scenic Living in Dubai Hills Estate by Emaar",
+    "image": "/assets/dubai_hills.webp",
+    "property_category": "Dubai Hills Estate",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Parkside Views",
+        "property_sub_heading": "Scenic Living in Dubai Hills Estate by Emaar",
+        "property_desc": "Parkside Views offers elegantly designed apartments overlooking the lush Dubai Hills Park. Experience peaceful suburban living with access to schools, malls, and hospitals in a well-connected community.",
+        "Location": "Dubai Hills Estate, Dubai",
+        "location_search": "Dubai Hills Estate",
+        "Property_Type": "Apartments",
+        "Completion_Date": "Q3 2026",
+        "Payment_Plan": "80/20",
+        "Starting_Price": 1.4,
+        "property_gallery": "/assets/Parkside-view.jpg",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2,
+          3
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 750,
+          "max_sqft": 1800
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Jumeirah Village Circle (JVC)",
+    "description": "Stylish Affordable Homes in JVC by Binghatti Developers",
+    "image": "/assets/jvc.avif",
+    "property_category": "Jumeirah Village Circle (JVC)",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Binghatti Amber",
+        "property_sub_heading": "Stylish Affordable Homes in JVC by Binghatti Developers",
+        "property_desc": "Binghatti Amber is a modern residential tower with signature design in JVC. With flexible layouts and affordable prices, it's a great choice for first-time buyers and long-term investors.",
+        "Location": "Jumeirah Village Circle (JVC), Dubai",
+        "location_search": "JVC",
+        "Property_Type": "Apartments",
+        "Completion_Date": "June 2025",
+        "Payment_Plan": "70/30",
+        "Starting_Price": 0.45,
+        "property_gallery": "/assets/Binghatti-Amber.jpg",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 500,
+          "max_sqft": 1100
+        },
+        "status": "Offplan"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Emaar Beachfront",
+    "description": "Seafront Residences by Emaar x Address Hotels",
+    "image": "/assets/Emaar_BeachFront.webp",
+    "property_category": "Emaar Beachfront",
+    "property": [
+      {
+        "id": 1,
+        "property_name": "Bayview by Address",
+        "property_sub_heading": "Seafront Residences by Emaar x Address Hotels",
+        "property_desc": "Bayview by Address offers branded beachfront apartments with stunning views of the Arabian Gulf. Located in Emaar Beachfront, this project sets a new standard for coastal luxury in Dubai Marina.",
+        "Location": "Emaar Beachfront, Dubai Marina",
+        "location_search": "Emaar Beachfront",
+        "Property_Type": "Apartments",
+        "Completion_Date": "Q1 2028",
+        "Payment_Plan": "90/10",
+        "Starting_Price": 1.5,
+        "property_gallery": "/assets/bayview-address.jpg",
+        "property_type_search": [
+          "Apartment"
+        ],
+        "user_type": [
+          "Investor",
+          "End User"
+        ],
+        "bedroom": [
+          1,
+          2,
+          3
+        ],
+        "bathroom": [
+          1,
+          2
+        ],
+        "area": {
+          "min_sqft": 800,
+          "max_sqft": 2000
+        },
+        "status": "Offplan"
+      }
+    ]
+  }
+]
