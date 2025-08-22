@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const API_URL = "http://127.0.0.1:8000/api/v1/news/";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
 export async function getServerSideProps() {
   try {

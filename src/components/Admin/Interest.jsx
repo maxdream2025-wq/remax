@@ -13,7 +13,7 @@ const Interest = () => {
   const fetchInquiries = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('http://127.0.0.1:8000/api/v1/inquiry/')
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/inquiry/`)
       setInquiries(response.data)
       setError(null)
     } catch (err) {

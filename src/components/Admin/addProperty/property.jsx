@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/api/v1/property/";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property/`;
 
 const Property = () => {
   const [properties, setProperties] = useState([]);
@@ -44,7 +44,7 @@ const Property = () => {
       setLoadingCategories(true);
       try {
         const res = await axios.get(
-          "http://127.0.0.1:8000/api/v1/property-categories/"
+          `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`
         );
         setCategories(res.data);
       } catch (err) {

@@ -15,7 +15,7 @@ const News = () => {
   const [date, setDate] = useState(getTodayYMD());
   const [image, setImage] = useState(null);
 
-  const API_URL = "http://127.0.0.1:8000/api/v1/news/";
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
   const fetchNews = async () => {
     try {

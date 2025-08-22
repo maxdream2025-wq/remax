@@ -43,7 +43,7 @@ const InterestModal = () => {
       }
       
       // API endpoint for inquiry
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/inquiry/', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/inquiry/`, {
         property_id: propertyId || '',
         full_name: formData.fullName,
         email: formData.email,
