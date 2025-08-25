@@ -1,7 +1,17 @@
 import DynamicBanner from "@/components/DynamicBanner";
-import React from "react";
+import InterestModal from "@/components/InterestModal";
+import MetaData from "@/components/MetaData";
+import React, { useState } from "react";
 
 const PropertyDetails = ({ property }) => {
+  const [selectedPropertyId, setSelectedPropertyId] = useState("");
+
+  const handleRegisterClick = (propertyId) => {
+    setSelectedPropertyId(propertyId);
+    const modal = new window.bootstrap.Modal(document.getElementById("interestModal"));
+    modal.show();
+  };
+
   if (!property || property.length === 0) {
     return (
       <>
@@ -15,6 +25,12 @@ const PropertyDetails = ({ property }) => {
 
   return (
     <>
+      <MetaData
+        title={property[0]?.property_name || "Property Details | RE/MAX UAE"}
+        description={property[0]?.property_desc || "Find property details at RE/MAX UAE."}
+        image={property[0]?.property_gallery || "https://remax.ae/assets/img/brandlogo/remax_logo.svg"}
+        url={`https://remax.ae/category/${property[0]?.slug || ""}`}
+      />
       <DynamicBanner />
       <div className="container py-5">
         {property.map((prop) => (
@@ -90,9 +106,7 @@ const PropertyDetails = ({ property }) => {
 
                 <button
                   className="btn btn-dark"
-                  data-bs-toggle="modal"
-                  data-bs-target="#interestModal"
-                  data-project={prop.property_name}
+                  onClick={() => handleRegisterClick(prop.id)}
                 >
                   REGISTER INTEREST
                 </button>
@@ -101,6 +115,8 @@ const PropertyDetails = ({ property }) => {
           </div>
         ))}
       </div>
+      {/* Render modal once, pass selected property id */}
+      <InterestModal propertyId={selectedPropertyId} />
     </>
   );
 };

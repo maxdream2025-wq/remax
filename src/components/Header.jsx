@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 const Header = () => {
@@ -14,40 +14,49 @@ const Header = () => {
     setIsAboutOpen(false);
   };
 
-  // Initialize Google Translate widget on the header
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // Define the init function expected by the Google script
-    window.googleTranslateElementInit = function googleTranslateElementInit() {
-      if (window.google && window.google.translate) {
-        /* eslint-disable no-new */
+    // Load Google Translate script
+    if (!window.googleTranslateElementInit) {
+      window.googleTranslateElementInit = function () {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "en,ar,fr,it,es,de,ru,hi,tr,fa,zh-CN",
-            layout:
-              window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+            includedLanguages: "en,fr,it,es,de,ru,hi,tr,fa,zh-CN",
             autoDisplay: false,
           },
           "google_translate_element"
         );
+      };
+      const addScript = document.createElement("script");
+      addScript.src =
+        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      addScript.async = true;
+      document.body.appendChild(addScript);
+    }
+
+    // Language selector event listener
+    const selector = document.getElementById("language-selector");
+    if (selector) {
+      selector.addEventListener("change", function () {
+        const lang = this.value;
+        const selectField = document.querySelector(".goog-te-combo");
+        if (lang && selectField) {
+          selectField.value = lang;
+          selectField.dispatchEvent(new Event("change"));
+        }
+      });
+    }
+
+    const handleRouteChange = () => {
+      if (window.googleTranslateElementInit) {
+        window.googleTranslateElementInit();
       }
     };
-
-    // Inject the Google Translate script once
-    if (!document.getElementById("google-translate-script")) {
-      const script = document.createElement("script");
-      script.id = "google-translate-script";
-      script.src =
-        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-      script.async = true;
-      document.body.appendChild(script);
-    } else if (window.google && window.google.translate) {
-      // If already loaded, initialize immediately
-      window.googleTranslateElementInit && window.googleTranslateElementInit();
-    }
-  }, []);
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   const isActivePath = (path) => router.pathname === path;
 
@@ -57,9 +66,7 @@ const Header = () => {
         style={{
           zIndex: 1000,
           backgroundColor:
-            router.pathname === "/" // Home page
-              ? "transparent"
-              : "#003366", // Other pages
+            router.pathname === "/" ? "transparent" : "#003366",
           position: router.pathname === "/" ? "absolute" : "relative",
           left: 0,
           right: 0,
@@ -153,18 +160,38 @@ const Header = () => {
                         >
                           <button
                             id="nav-about-us-dropdown"
-                            className="nav-link dropdown-toggle btn btn-link p-0"
+                            className="nav-link text-white dropdown-toggle btn btn-link p-0 d-flex align-items-center"
                             type="button"
                             aria-haspopup="true"
                             aria-expanded={isAboutOpen ? "true" : "false"}
                             onClick={() => setIsAboutOpen((prev) => !prev)}
                           >
                             About Us
+                            <span className="ms-1">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className={`bi bi-chevron-down transition ${
+                                  isAboutOpen ? "rotate-180" : ""
+                                }`}
+                                viewBox="0 0 16 16"
+                                style={{ transition: "transform 0.2s" }}
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                                />
+                              </svg>
+                            </span>
                           </button>
                           <div
                             className={`dropdown-menu dropdown-arrow ${
                               isAboutOpen ? "show" : ""
                             }`}
+                            aria-labelledby="nav-about-us-dropdown"
+                            style={{ left: "-45px", top: "36px" }}
                           >
                             <Link
                               className={`dropdown-item ${
@@ -217,12 +244,11 @@ const Header = () => {
                           </Link>
                         </li>
                         <li className="nav-item d-block d-flex align-items-center gap-2">
-                          <div id="google_translate_element"></div>
-                          <select
-                            id="customLangSwitcher"
-                            className="custom-lang notranslate"
-                            onChange={closeMenus}
-                          >
+                          <div
+                            id="google_translate_element"
+                            style={{ display: "block" }}
+                          ></div>
+                          <select id="language-selector">
                             <option value="">Select Language</option>
                             <option value="en">English</option>
                             <option value="fr">Français</option>
