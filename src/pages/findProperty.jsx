@@ -13,7 +13,7 @@ export async function getServerSideProps({ query }) {
   try {
     // Fetch categories
     const categoriesRes = await axios.get(CATEGORIES_API_URL);
-    const categories = categoriesRes.data.slice(0, 8);
+    const categories = categoriesRes.data;
 
     // Fetch properties if search parameters are provided
     let properties = [];
@@ -69,6 +69,7 @@ export async function getServerSideProps({ query }) {
 }
 
 const FindProperty = ({ categories, properties, searchError, searchParams }) => {
+	console.log(categories)
 	return (
 		<>
 			<MetaData
@@ -105,29 +106,28 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 								<p className="text-muted">No categories available.</p>
 							</div>
 						) : (
-							categories.map((category) => (
-								<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
-									<div className="flexed_gallery w-100" style={{ height: "350px" }}>
-										<Link href={`/category/${category.slug}`}>
-											<img 
-												src={category.image || "/assets/building_bg.jpg"} 
-												alt={category.title || category.property_category} 
-												style={{ width: "100%", height: "100%", objectFit: "cover" }}
-											/>
-											<div className="overlay">
-												<span>{category.title || category.property_category}</span>
-											</div>
-										</Link>
+							categories
+								.filter(category => category.developer) // <-- Only show if developer is true
+								.map((category) => (
+									<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
+										<div className="flexed_gallery w-100" style={{ height: "350px" }}>
+											<Link href={`/category/${category.slug}`}>
+												<img 
+													src={category.image || "/assets/building_bg.jpg"} 
+													alt={category.title || category.property_category} 
+													style={{ width: "100%", height: "100%", objectFit: "cover" }}
+												/>
+												<div className="overlay">
+													<span>{category.title || category.property_category}</span>
+												</div>
+											</Link>
+										</div>
 									</div>
-								</div>
-							))
+								))
 						)}
 					</div>
 				</div>
 			</section>
-
-			{/* Interest Modal */}
-			<InterestModal />
 		</>
 	);
 };

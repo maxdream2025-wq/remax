@@ -45,9 +45,9 @@ const SearchForm = ({ categories = [], properties = [], searchError = null, sear
       
       {/* Slogan */}
       <div className="inner_form_ui_data listings_main_" style={{ marginTop: "10vh" }}>
-        <h1 id="find-your-property" style={{ fontSize: "30px !important" }}>
+        <h3 id="find-your-property" style={{ fontSize: "30px !important" }}>
           Find your perfect property in UAE with RE/MAX!
-        </h1>
+        </h3>
       </div>
 
       {/* Search Form */}

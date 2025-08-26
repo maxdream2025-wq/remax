@@ -7,6 +7,7 @@ const Property = () => {
   const [description, setDescription] = useState("");
   const [propertyCategory, setPropertyCategory] = useState("");
   const [image, setImage] = useState(null);
+  const [developer, setDeveloper] = useState(false); // <-- Add developer state
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`;
 
@@ -30,6 +31,7 @@ const Property = () => {
       formData.append("description", description);
       formData.append("property_category", propertyCategory);
       if (image) formData.append("image", image);
+      formData.append("developer", developer); // <-- Add developer to formData
 
       await axios.post(API_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -39,6 +41,7 @@ const Property = () => {
       setDescription("");
       setPropertyCategory("");
       setImage(null);
+      setDeveloper(false); // <-- Reset developer
 
       fetchCategories();
     } catch (err) {
@@ -86,6 +89,18 @@ const Property = () => {
           onChange={(e) => setImage(e.target.files[0])}
           style={{ margin: "10px 0" }}
         />
+        {/* Developer Checkbox */}
+        <div style={{ margin: "10px 0" }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={developer}
+              onChange={(e) => setDeveloper(e.target.checked)}
+              style={{ marginRight: "8px" }}
+            />
+            Developer
+          </label>
+        </div>
         <button
           onClick={createCategory}
           style={{
@@ -110,6 +125,7 @@ const Property = () => {
               <th style={{ textAlign: "left", padding: "10px" }}>Name</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Description</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Category</th>
+              <th style={{ textAlign: "left", padding: "10px" }}>Developer</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Actions</th>
             </tr>
           </thead>
@@ -119,6 +135,7 @@ const Property = () => {
                 <td style={{ padding: "10px" }}>{cat.title}</td>
                 <td style={{ padding: "10px" }}>{cat.description}</td>
                 <td style={{ padding: "10px" }}>{cat.property_category}</td>
+                <td style={{ padding: "10px" }}>{cat.developer ? "Yes" : "No"}</td>
                 <td style={{ padding: "10px" }}>
                   <button
                     onClick={() => deleteCategory(cat.id)}

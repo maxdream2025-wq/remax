@@ -84,3 +84,27 @@ iframe.goog-te-banner-frame,
   display: none !important;
 }
 body { top: 0px !important; }
+
+h1{
+  font-weight: 700 !important;
+}
+
+.glass-form {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 2px solid #007bff;
+    padding: 30px;
+    max-width: 1000px;
+    margin: auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.custom-form {
+    max-width: 70%;
+    margin: 40px auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+}

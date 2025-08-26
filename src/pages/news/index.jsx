@@ -51,8 +51,29 @@ const NewsIndex = ({ news }) => {
                     background: "#fff",
                     display: "flex",
                     flexDirection: "column",
+                    position: "relative", // <-- Needed for badge positioning
                   }}
                 >
+                  {/* Feature badge */}
+                  {item.feature && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        zIndex: 2,
+                        background: "#ffc107",
+                        color: "#212529",
+                        padding: "4px 10px",
+                        borderRadius: "6px",
+                        fontWeight: 600,
+                        fontSize: "13px",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                      }}
+                    >
+                      Featured
+                    </span>
+                  )}
                   {item.image ? (
                     <img
                       src={item.image}

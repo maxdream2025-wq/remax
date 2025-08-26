@@ -14,6 +14,7 @@ const News = () => {
   };
   const [date, setDate] = useState(getTodayYMD());
   const [image, setImage] = useState(null);
+  const [feature, setFeature] = useState(false); // <-- Add feature state
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
@@ -39,6 +40,7 @@ const News = () => {
       const ensuredDate = date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : getTodayYMD();
       formData.append("date", ensuredDate);
       if (image) formData.append("image", image);
+      formData.append("feature", feature); // <-- Add feature to formData
 
       await axios.post(API_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -48,6 +50,7 @@ const News = () => {
       setDesc("");
       setDate(getTodayYMD());
       setImage(null);
+      setFeature(false); // <-- Reset feature
 
       fetchNews();
     } catch (err) {
@@ -59,9 +62,9 @@ const News = () => {
     }
   };
 
-  const deleteNews = async (id) => {
+  const deleteNews = async (slug) => {
     try {
-      await axios.delete(`${API_URL}${id}/`);
+      await axios.delete(`${API_URL}${slug}/`);
       fetchNews();
     } catch (err) {
       console.error(err);
@@ -114,6 +117,18 @@ const News = () => {
             {Array.isArray(errors.image) ? errors.image.join(", ") : String(errors.image)}
           </div>
         )}
+        {/* Feature Checkbox */}
+        <div style={{ margin: "10px 0" }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={feature}
+              onChange={(e) => setFeature(e.target.checked)}
+              style={{ marginRight: "8px" }}
+            />
+            Feature this news
+          </label>
+        </div>
         <button
           onClick={createNews}
           style={{
@@ -146,6 +161,7 @@ const News = () => {
               <th style={{ textAlign: "left", padding: "10px" }}>Description</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Date</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Image</th>
+              <th style={{ textAlign: "left", padding: "10px" }}>Featured</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Actions</th>
             </tr>
           </thead>
@@ -170,8 +186,11 @@ const News = () => {
                   )}
                 </td>
                 <td style={{ padding: "10px" }}>
+                  {item.feature ? "Yes" : "No"}
+                </td>
+                <td style={{ padding: "10px" }}>
                   <button
-                    onClick={() => deleteNews(item.id)}
+                    onClick={() => deleteNews(item.slug)}
                     style={{
                       padding: "5px 10px",
                       backgroundColor: "red",

@@ -24,13 +24,17 @@ const Contactus = () => {
         setIsSubmitting(true);
         setSubmitStatus({ ok: null, message: "" });
         try {
-            const formData = new FormData();
-            Object.entries(formValues).forEach(([key, value]) => formData.append(key, value));
-            const response = await fetch("https://formspree.io/f/xjkoawpl", {
-                method: "POST",
-                body: formData,
-                headers: { Accept: "application/json" },
-            });
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/contact/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    body: JSON.stringify(formValues),
+                }
+            );
             if (response.ok) {
                 setSubmitStatus({ ok: true, message: "Thanks! Your request has been submitted." });
                 setFormValues({
@@ -43,7 +47,8 @@ const Contactus = () => {
                     message: "",
                 });
             } else {
-                setSubmitStatus({ ok: false, message: "Submission failed. Please try again." });
+                const errorData = await response.json();
+                setSubmitStatus({ ok: false, message: errorData.detail || "Submission failed. Please try again." });
             }
         } catch (error) {
             setSubmitStatus({ ok: false, message: "Network error. Please try again." });
@@ -77,7 +82,7 @@ const Contactus = () => {
                         </div>
                     </div>
                     <div className="row g-3 mt-3 justify-content-center">
-                        <div className="col-12 col-md-10 col-lg-8 mx-auto">
+                        <div className="col-12 col-md-10 col-lg-12">
                             <form onSubmit={handleSubmit} className="custom-form" id="helpform">
                                 <h4>Need Help?</h4>
                                 <p>Please complete the form to submit your request.</p>
@@ -425,7 +430,7 @@ const Contactus = () => {
                                         />
                                     </div>
                                     <div className="col-md-12">
-                                        <button type="submit" className="btn btn-primary mt-1" disabled={isSubmitting}>
+                                        <button type="submit" className="btn btn-dark mt-1" disabled={isSubmitting}>
                                             {isSubmitting ? "Submitting..." : "SUBMIT"}
                                         </button>
                                     </div>

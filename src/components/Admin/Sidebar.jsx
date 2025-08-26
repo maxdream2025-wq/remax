@@ -41,6 +41,18 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
         >
           Property Interest
         </Nav.Link>
+        <Nav.Link
+          className={`text-white mb-2 ${activeMenu === "newsletter" ? "bg-primary rounded" : ""}`}
+          onClick={() => setActiveMenu("newsletter")}
+        >
+          Newsletter
+        </Nav.Link>
+        <Nav.Link
+          className={`text-white mb-2 ${activeMenu === "contact" ? "bg-primary rounded" : ""}`}
+          onClick={() => setActiveMenu("contact")}
+        >
+          Contact Form
+        </Nav.Link>
       </Nav>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Logo from "./Logo";
 
 const Header = () => {
   const router = useRouter();
@@ -85,11 +86,12 @@ const Header = () => {
                 {/* Logo */}
                 <div className="col-auto">
                   <Link href="/" className="navbar-brand" onClick={closeMenus}>
-                    <img
+                    {/* <img
                       src="https://remax.ae/assets/img/brandlogo/remaxbrands.png"
                       className="logo_uae"
                       alt="RE/MAX Logo"
-                    />
+                    /> */}
+                    <Logo />
                   </Link>
                 </div>
 

@@ -2,6 +2,9 @@ import React from "react";
 import Link from "next/link";
 
 const News = ({ newsList }) => {
+  // Filter only featured news
+  const featuredNews = newsList ? newsList.filter((news) => news.feature) : [];
+
   return (
     <section className="py-5 bg-light">
       <div className="container" style={{ marginTop: "-10px" }}>
@@ -15,12 +18,18 @@ const News = ({ newsList }) => {
         </div>
 
         <div className="row row-cols-1 row-cols-md-3 g-4" id="newsContainer">
-          {newsList && newsList.length > 0 ? (
-            newsList.slice(0, 3).map((news, index) => (
+          {featuredNews.length > 0 ? (
+            featuredNews.slice(0, 3).map((news, index) => (
               <div className="col" key={index}>
                 <div className="card h-100 shadow-sm position-relative">
+                  <span
+                    className="badge bg-warning text-dark position-absolute"
+                    style={{ top: "10px", right: "10px", zIndex: 2 }}
+                  >
+                    Featured
+                  </span>
                   <img
-                    src={news.image}  
+                    src={news.image}
                     className="card-img-top"
                     style={{ height: "200px", objectFit: "cover" }}
                     alt={news.title}
@@ -29,13 +38,14 @@ const News = ({ newsList }) => {
                     <h5 className="card-title" style={{ fontSize: "20px" }}>
                       {news.title}
                     </h5>
-                    <p className="card-text">
-                      {news.shortDescription || news.description}
-                    </p>
+                    <p className="card-text">{news.desc.slice(0, 100)}</p>
                     <p className="card-text text-muted small">
                       Date: {news.date}
                     </p>
-                    <Link href={`/news/${news.slug}`} className="btn btn-sm btn-secondary">
+                    <Link
+                      href={`/news/${news.slug}`}
+                      className="btn btn-sm btn-secondary"
+                    >
                       Read More
                     </Link>
                   </div>
@@ -43,12 +53,18 @@ const News = ({ newsList }) => {
               </div>
             ))
           ) : (
-            <p className="text-center text-muted">No news available.</p>
+            <p className="text-center text-muted">
+              No featured news available.
+            </p>
           )}
         </div>
 
         <div className="text-center mt-4">
-          <Link href="/news" id="viewAllBtn" className="btn btn-secondary text-white px-4 py-2">
+          <Link
+            href="/news"
+            id="viewAllBtn"
+            className="btn btn-secondary text-white px-4 py-2"
+          >
             View All News
           </Link>
         </div>

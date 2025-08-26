@@ -3,7 +3,6 @@ import Link from "next/link";
 export default function PopularAreas({ properties }) {
   return (
     <>
-      
       <section
         className="py-5 bg-white"
         style={{ background: "linear-gradient(135deg, #1E45AB, #4776e6)" }}
@@ -21,7 +20,7 @@ export default function PopularAreas({ properties }) {
 
           <div className="row">
             {properties && properties.length > 0 ? (
-              properties.map((area) => (
+              properties.slice(0, 9).map((area) => (
                 <div className="col-md-4 mb-4" key={area.id}>
                   <Link href={`/category/${area.slug}`}>
                     <div

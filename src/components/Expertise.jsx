@@ -28,7 +28,7 @@ const Expertise = () => {
               }}
             >
               <div className="mb-3">
-                <i className="bi bi-house-door-fill fs-2 display-3 text-white"></i>
+                <i className="bi bi-house-door-fill display-3 text-white"></i>
               </div>
               <h5 className="card-title text-white">Off Plan Property Sale</h5>
               <p className="card-text text-white">
@@ -51,7 +51,7 @@ const Expertise = () => {
               }}
             >
               <div className="mb-3">
-                <i className="bi bi-graph-up-arrow fs-1 display-3 text-white"></i>
+                <i className="bi bi-graph-up-arrow display-3 text-white"></i>
               </div>
               <h5 className="card-title text-white">Investment Advisory</h5>
               <p className="card-text text-white">
@@ -76,7 +76,7 @@ const Expertise = () => {
               }}
             >
               <div className="mb-3">
-                <i className="bi bi-gear-wide-connected fs-1 display-3 text-white"></i>
+                <i className="bi bi-gear-wide-connected display-3 text-white"></i>
               </div>
               <h5 className="card-title text-white">Property Management</h5>
               <p className="card-text text-white">

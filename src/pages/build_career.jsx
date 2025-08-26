@@ -24,10 +24,10 @@ const BuildCareer = () => {
                         <div className="content-container">
                             <div className="row justify-content-center justify-content-xl-start ">
                                 <div className="col-md-9 col-xl-6 hero-content">
-                                    <h1 className=" text-white">Build Your Real Estate Career With RE/MAX</h1>
-                                    <h4 className=" text-white">Your Big Goals Deserve a Big Name</h4>
+                                    <h1 className=" text-white text-left"  style={{"textAlign" : "left"}}>Build Your Real Estate Career With RE/MAX</h1>
+                                    <h4 className=" text-white" style={{"textAlign" : "left"}}>Your Big Goals Deserve a Big Name</h4>
 
-                                    <ul className="list-unstyled lisiitini">
+                                    <ul className="list-unstyled lisiitini " style={{"textAlign" : "left"}}>
                                         <p className="custom-list text-white font_20_bold">
                                             <span>
                                                 <img src="https://remax.ae/assets/img/icons/li.svg" alt="" />
@@ -77,8 +77,8 @@ const BuildCareer = () => {
                                             A culture of like-minded entrepreneurs
                                         </p>
                                     </ul>
-                                    <div className="">
-                                        <button className="mt-4 btn btn-primary font_18_med text-uppercase" data-bs-toggle="modal" data-bs-target="#joinFormModal">
+                                    <div className="d-flex">
+                                        <button style={{"textAlign" : "left"}} className="mt-4 btn btn-light font_18_med text-uppercase" data-bs-toggle="modal" data-bs-target="#joinFormModal">
                                             JOIN NOW
                                         </button>
                                     </div>

@@ -4,6 +4,8 @@ import AddProperty from "./addProperty/property";
 import News from "./addNews/News";
 import Testimonial from "./addTestimonial";
 import Interest from "./Interest";
+import Newsletter from "./Newsletter";
+import Contact from "./Contact";
 
 const Body = ({ activeMenu }) => {
   switch (activeMenu) {
@@ -19,6 +21,10 @@ const Body = ({ activeMenu }) => {
       return <Testimonial />;
     case "interest":
       return <Interest />;
+    case "newsletter":
+      return <Newsletter />;
+    case "contact":
+      return <Contact />;
     default:
       return <div className="p-4"><h2>Dashboard Content</h2></div>;
   }

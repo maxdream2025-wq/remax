@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const InterestModal = ({ propertyId }) => {
+  console.log(propertyId)
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -25,7 +26,7 @@ const InterestModal = ({ propertyId }) => {
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/inquiry/`, {
-        property_id: propertyId || '', // <-- use property_id
+        property_id: propertyId || '',
         full_name: formData.fullName,
         email: formData.email,
         phone_number: formData.phoneNumber,

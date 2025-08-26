@@ -24,7 +24,7 @@ export default function HomePage({ properties, news, testimonials }) {
       <Expertise />
       <Mission />
       <Areas properties={properties} />
-      <News newsList={news} /> 
+      <News newsList={news} />
       <Review testimonials={testimonials} />
       <InterestModal />
     </>
@@ -34,17 +34,17 @@ export default function HomePage({ properties, news, testimonials }) {
 export async function getServerSideProps() {
   try {
     const [propertiesRes, newsRes, testimonialsRes] = await Promise.all([
-              axios.get(`${process.env.NEXT_PUBLIC_API_URL}/property-categories/`),
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/news/`),
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/testimonial/`),
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/property-categories/`),
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/news/`),
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/testimonial/`),
     ]);
 
-    return { 
-      props: { 
-        properties: propertiesRes.data, 
+    return {
+      props: {
+        properties: propertiesRes.data,
         news: newsRes.data,
-        testimonials: testimonialsRes.data || []
-      } 
+        testimonials: testimonialsRes.data || [],
+      },
     };
   } catch (error) {
     console.error("Error fetching data:", error.message);
