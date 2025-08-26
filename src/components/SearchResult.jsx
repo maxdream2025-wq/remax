@@ -95,8 +95,8 @@ const SearchResult = ({
                                     {prop.payment_plan}
                                   </div>
                                   <div className="col-6">
-                                    <strong>Area:</strong> {prop.area?.min_sqft}{" "}
-                                    - {prop.area?.max_sqft} sqft
+                                    <strong>Area:</strong> {prop.area?.min}{" "}
+                                    - {prop.area?.max} sqft
                                   </div>
                                 </div>
                               </li>

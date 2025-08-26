@@ -28,6 +28,9 @@ const Property = () => {
   });
   const [errors, setErrors] = useState({});
   const [editId, setEditId] = useState(null);
+  const [imageEditId, setImageEditId] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePath, setImagePath] = useState("");
 
   const fetchProperties = async () => {
     try {
@@ -89,12 +92,20 @@ const Property = () => {
       completion_date: property.completion_date || "",
       payment_plan: property.payment_plan || "",
       starting_price: property.starting_price || "",
-      property_type_search: property.property_type_search || [],
-      user_type: property.user_type || [],
-      bedroom: Array.isArray(property.bedroom) ? property.bedroom : [],
-      bathroom: Array.isArray(property.bathroom) ? property.bathroom : [],
+      property_type_search: Array.isArray(property.property_type_search)
+        ? property.property_type_search
+        : (property.property_type_search ? String(property.property_type_search).split(',').map((v) => v.trim()).filter(Boolean) : []),
+      user_type: Array.isArray(property.user_type)
+        ? property.user_type
+        : (property.user_type ? String(property.user_type).split(',').map((v) => v.trim()).filter(Boolean) : []),
+      bedroom: Array.isArray(property.bedroom)
+        ? property.bedroom
+        : (property.bedroom ? String(property.bedroom).split(',').map((v) => v.trim()).filter(Boolean) : []),
+      bathroom: Array.isArray(property.bathroom)
+        ? property.bathroom
+        : (property.bathroom ? String(property.bathroom).split(',').map((v) => v.trim()).filter(Boolean) : []),
       area: property.area
-        ? { min: property.area.min_sqft || "", max: property.area.max_sqft || "" }
+        ? { min: property.area.min || "", max: property.area.max || "" }
         : { min: "", max: "" },
       status: property.status || "",
       property_gallery: null, // File input can't be pre-filled
@@ -111,7 +122,8 @@ const Property = () => {
         if (key === "area") {
           data.append("area", JSON.stringify(value)); // send as JSON string
         } else if (Array.isArray(value)) {
-          value.forEach((v) => data.append(key, v));
+          // Backend expects CharField CSV; join arrays
+          data.append(key, value.join(','));
         } else if (key === "property_gallery" && value) {
           data.append(key, value);
         } else {
@@ -168,9 +180,71 @@ const Property = () => {
     }
   };
 
+  const openImageEditor = (id) => {
+    setImageEditId(id);
+    setImageFile(null);
+    setImagePath("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const submitImageUpdate = async (e) => {
+    e.preventDefault();
+    if (!imageEditId) return;
+    try {
+      const data = new FormData();
+      if (imageFile) {
+        data.append("property_gallery", imageFile);
+      }
+      if (imagePath) {
+        data.append("property_gallery_path", imagePath);
+      }
+      await axios.patch(`${API_URL}${imageEditId}/`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setImageEditId(null);
+      setImageFile(null);
+      setImagePath("");
+      fetchProperties();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="container py-5">
       <h3 className="mb-4 text-primary">{editId ? "Edit Property" : "Add Property"}</h3>
+      {imageEditId && (
+        <div className="bg-white p-4 rounded shadow mb-5">
+          <h5 className="mb-3">Update Property Image (ID: {imageEditId})</h5>
+          <form onSubmit={submitImageUpdate}>
+            <div className="row g-3 mb-3">
+              <div className="col-md-6">
+                <label className="form-label">Choose Image File (optional)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={(e) => setImageFile(e.target.files[0])}
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Or Image Path/URL (optional)</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="e.g. properties/img.jpg or https://..."
+                  value={imagePath}
+                  onChange={(e) => setImagePath(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="d-flex gap-2">
+              <button type="submit" className="btn btn-dark">Save Image</button>
+              <button type="button" className="btn btn-outline-secondary" onClick={() => { setImageEditId(null); setImageFile(null); setImagePath(""); }}>Cancel</button>
+            </div>
+          </form>
+        </div>
+      )}
       {/* Show error messages */}
       {Object.keys(errors).length > 0 && (
         <div className="alert alert-danger">
@@ -405,7 +479,6 @@ const Property = () => {
               accept="image/*"
               onChange={e => setFormData({ ...formData, property_gallery: e.target.files[0] })}
               className="form-control"
-              required
             />
           </div>
         </div>
@@ -431,6 +504,12 @@ const Property = () => {
                 className="btn btn-warning btn-sm me-2"
               >
                 Edit
+              </button>
+              <button
+                onClick={() => openImageEditor(property.id)}
+                className="btn btn-info btn-sm me-2"
+              >
+                Edit Image
               </button>
               <button
                 onClick={() => handleDelete(property.id)}

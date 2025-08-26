@@ -4,7 +4,6 @@ import axios from "axios";
 import Link from "next/link";
 import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
-import InterestModal from "@/components/InterestModal";
 
 const CATEGORIES_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`;
 const FIND_PROPERTY_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/find-property/`;
