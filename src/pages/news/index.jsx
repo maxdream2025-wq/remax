@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import MetaData from "../../components/MetaData.jsx";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
@@ -21,7 +22,14 @@ const truncate = (text, max) => {
 
 const NewsIndex = ({ news }) => {
   return (
-    <section style={{ paddingTop: "3rem", paddingBottom: "3rem", backgroundColor: "#f8f9fa" }}>
+    <>
+      <MetaData
+        title="UAE Real Estate News | RE/MAX UAE"
+        description="Latest UAE real estate news, market insights, and updates from RE/MAX UAE."
+        url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://remax.ae'}/news`}
+        type="article"
+      />
+      <section style={{ paddingTop: "3rem", paddingBottom: "3rem", backgroundColor: "#f8f9fa" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 16px", marginTop: "-10px" }}>
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <h2 style={{ fontWeight: 700, color: "#003366", fontSize: "40px", margin: 0 }}>All UAE Real Estate News</h2>
@@ -113,6 +121,7 @@ const NewsIndex = ({ news }) => {
         )}
       </div>
     </section>
+    </>
   );
 };
 
