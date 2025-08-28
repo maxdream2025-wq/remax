@@ -89,7 +89,7 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 				searchParams={searchParams}
 			/>
 
-			<section id="top_areas" className="mt_115 topareas_ paddingeneral" style={{minHeight: "100vh"}}>
+			<section id="top_areas" className="bg-white pt-5 topareas_ paddingeneral" style={{minHeight: "100vh"}}>
 				<div className="container-fluid">
 					<div className="styleheadingmain">
 						<h2 className="lighttext">

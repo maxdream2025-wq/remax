@@ -32,7 +32,8 @@ const PropertyDetails = ({ property }) => {
         url={`https://remax.ae/category/${property[0]?.slug || ""}`}
       />
       <DynamicBanner />
-      <div className="container py-5">
+     <div className="bg-white">
+     <div className="container py-5">
         {property.map((prop) => (
           <div className="card mb-4 shadow-sm" key={prop.id}>
             <div className="row g-0">
@@ -115,6 +116,7 @@ const PropertyDetails = ({ property }) => {
           </div>
         ))}
       </div>
+     </div>
       {/* Render modal once, pass selected property id */}
       <InterestModal propertyId={selectedPropertyId} />
     </>

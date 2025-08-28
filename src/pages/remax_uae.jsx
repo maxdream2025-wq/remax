@@ -142,7 +142,7 @@ const RemaxUae = () => {
                             <div className="col-sm-12 col-md-12 col-lg-5 col-xl-4 align_center d-flex">
                                 <div className="location_content">
                                     <div>
-                                        <img src="https://remax.ae/assets/img/icons/egypt_br_logo.svg" alt="RE/MAX UAE" />
+                                        <img src="/assets/logo-new.png" alt="RE/MAX UAE" />
                                     </div>
                                     <h1 className="mb_41 text-white">Happily Serving Our Clients Across UAE</h1>
                                 </div>

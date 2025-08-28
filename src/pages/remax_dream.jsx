@@ -16,25 +16,25 @@ const RemaxDream = () => {
 				<div className="row align-items-center">
 					{/* Company Image */}
 					<div className="col-lg-6 mb-4 mb-lg-0 col-sm-12" style={{ marginTop: 10 }}>
-						<img src="/assets/remax_parasute.webp" alt="RE/MAX Dream Office" className="img-fluid" />
+						<img src="/assets/remax.png" alt="RE/MAX Dream Office" className="img-fluid" />
 					</div>
 
 					{/* Company Info */}
-					<div className="col-lg-6 col-sm-12">
-						<h2 className="text-uppercase mb-3" style={{ color: "#003366", fontSize: "40px" }}>
-							About RE/MAX Dream
+					<div className="col-lg-6 col-sm-12 ">
+						<h2 className="text-uppercase mb-3" style={{ color: "white", fontSize: "40px" }}>
+							About RE/MAX Dream UAE
 						</h2>
-						<p className="text-muted mb-3">
-							We are <strong>RE/MAX Dream</strong>, a newly established real estate brokerage committed to
+						<p className="text-white mb-3">
+							We are <strong>RE/MAX Dream UAE</strong>, a newly established real estate brokerage committed to
 							connecting buyers and sellers in the luxury property market. As part of the globally trusted RE/MAX
 							network, we combine fresh local insight with proven international standards to deliver exceptional
 							service and value.
 						</p>
-						<p className="text-muted">
+						<p className="text-white">
 							Whether you're looking for a luxury villa, commercial space, or investment opportunity, our team is
 							committed to providing transparent, efficient, and tailored real estate solutions.
 						</p>
-						<ul className="list-unstyled mt-4 text-muted">
+						<ul className="list-unstyled mt-4 text-white">
 							<li>
 								<strong>📍 Address:</strong> Armadha hotel - Al Barsha, Office No - 101, Dubai, UAE
 							</li>

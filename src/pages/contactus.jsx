@@ -64,7 +64,7 @@ const Contactus = () => {
                 description="Get in touch with RE/MAX for inquiries, franchise opportunities, or real estate assistance. Our team is ready to help you with all your real estate needs." 
                 url="https://remax.ae/contactus"
             />
-            <section className="contact_page contactmain" id="our_remax">
+            <section className="contact_page contactmain bg-white" id="our_remax">
                 <div className="full-bg-section rm_banner contactbgmain" id="">
                     <div className="egypt_branding desktop">
                         <img
@@ -74,7 +74,7 @@ const Contactus = () => {
                     </div>
                 </div>
             </section>
-            <div className="mt_100">
+            <div className="pt-5 bg-white">
                 <div className="container-fluid" style={{ paddingBottom: "50px" }}>
                     <div className="row">
                         <div className="col-12">
@@ -89,7 +89,7 @@ const Contactus = () => {
 
                                 <div className="row g-3">
                                     <div className="col-md-12">
-                                        <label htmlFor="help_category">Help Category</label>
+                                        <label htmlFor="help_category" className="font-bold " style={{ fontWeight: "bold" }}>Help Category</label>
                                         <select
                                             id="help_category"
                                             name="help_category"
@@ -108,7 +108,7 @@ const Contactus = () => {
                                         </select>
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="first_name">First Name</label>
+                                        <label htmlFor="first_name" style={{ fontWeight: "bold" }}>First Name</label>
                                         <input
                                             id="first_name"
                                             type="text"
@@ -121,7 +121,7 @@ const Contactus = () => {
                                         />
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="last_name">Last Name</label>
+                                        <label htmlFor="last_name" style={{ fontWeight: "bold" }}>Last Name</label>
                                         <input
                                             id="last_name"
                                             type="text"
@@ -134,7 +134,7 @@ const Contactus = () => {
                                         />
                                     </div>
                                     <div className="col-md-12">
-                                        <label htmlFor="email">Email</label>
+                                        <label htmlFor="email" style={{ fontWeight: "bold" }}>Email</label>
                                         <input
                                             id="email"
                                             type="email"
@@ -147,7 +147,7 @@ const Contactus = () => {
                                         />
                                     </div>
                                     <div className="col-md-12">
-                                        <label htmlFor="country_code">Country Code</label>
+                                        <label htmlFor="country_code" style={{ fontWeight: "bold" }}>Country Code</label>
                                         <select
                                             className="form-control select2-field"
                                             id="country_code"
@@ -405,7 +405,7 @@ const Contactus = () => {
                                         </select>
                                     </div>
                                     <div className="col-md-12">
-                                        <label htmlFor="phone">Phone Number</label>
+                                        <label htmlFor="phone" style={{ fontWeight: "bold" }}>Phone Number</label>
                                         <input
                                             id="phone"
                                             type="tel"
@@ -417,7 +417,7 @@ const Contactus = () => {
                                         />
                                     </div>
                                     <div className="col-md-12">
-                                        <label htmlFor="message">Your Message</label>
+                                        <label htmlFor="message" style={{ fontWeight: "bold" }}>Your Message</label>
                                         <textarea
                                             id="message"
                                             name="message"

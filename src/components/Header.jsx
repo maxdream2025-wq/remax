@@ -75,7 +75,7 @@ const Header = () => {
           transition: "background-color 0.3s ease",
         }}
       >
-        <div className="subheader" style={{ marginTop: "5px" }}>
+        <div className="subheader" style={{ marginTop: "22px" }}>
           <nav
             className={`navbar navbar-expand-lg ${
               isBuildCareer ? "navbar-dark" : "navbar-light"
@@ -132,7 +132,7 @@ const Header = () => {
                         <li className="nav-item doted_link">
                           <Link
                             id="nav-home"
-                            className={`nav-link ${
+                            className={`nav-link font-bold ${
                               isActivePath("/") ? "active" : ""
                             }`}
                             href="/"
@@ -147,13 +147,24 @@ const Header = () => {
                         >
                           <Link
                             id="nav-find-properties"
-                            className={`nav-link ${
+                            className={`nav-link font-bold ${
                               isActivePath("/findProperty") ? "active" : ""
                             }`}
                             href="/findProperty"
                             onClick={closeMenus}
                           >
                             Find properties
+                          </Link>
+                        </li>
+                        <li className="nav-item doted_link">
+                          <Link
+                            className={`nav-link font-bold ${
+                              isActivePath("/build_career") ? "active" : ""
+                            }`}
+                            href="/build_career"
+                            onClick={closeMenus}
+                          >
+                            Build Career
                           </Link>
                         </li>
                         <li
@@ -222,15 +233,7 @@ const Header = () => {
                             >
                               RE/MAX Dream
                             </Link>
-                            <Link
-                              className={`dropdown-item ${
-                                isActivePath("/build_career") ? "active" : ""
-                              }`}
-                              href="/build_career"
-                              onClick={closeMenus}
-                            >
-                              Build Career
-                            </Link>
+                            
                           </div>
                         </li>
                         <li className="nav-item doted_link">

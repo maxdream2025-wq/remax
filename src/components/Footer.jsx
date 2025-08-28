@@ -34,21 +34,13 @@ const Footer = () => {
   return (
     <>
       <footer className="footer-padd paddingeneral">
-        {/* <div className="logo_footer">
-          <img
-            src="https://remax.ae/assets/img/brandlogo/remax_logo.svg"
-            alt="Remax Logo"
-          />
-        </div> */}
+        <div className="logo_footer">
+        <img src="/assets/logo-new.png" alt="Remax Logo" width={120} />
+        </div>
         <div className="container-fluid pt-5">
           <div className="footer-content">
             <div className="footer-box">
               <div className="property_content_footer">
-                {/* <img
-                  src="https://remax.ae/assets/img/brandlogo/footer-logo.png"
-                  className="footer_logo_uae"
-                  alt="Footer Logo UAE"
-                /> */}
                 <Logo />
               </div>
             </div>

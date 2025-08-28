@@ -89,7 +89,7 @@ const BuildCareer = () => {
                     </div>
                 </section>
 
-                <div id="exp_speaks" className="specificownremax testimonialsmain">
+                <div id="exp_speaks" className="specificownremax testimonialsmain bg-white">
                     <div className="container-fluid">
                         <div className="styleheadingmain">
                             <h2 className="lighttext">TESTIMONIALS</h2>
@@ -106,7 +106,7 @@ const BuildCareer = () => {
                         <div className="row ">
                             <div className="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div className="media_imgs imgspecial">
-                                    <img src="https://remax.ae/public/uploads/pages/4f9167d3-3e59-4988-b848-a0798c989eec.webp" alt="" />
+                                    <img src="/assets/remax.png" alt="" />
                                 </div>
                             </div>
                             <div className="col-sm-12 col-md-12 col-lg-6 col-xl-6 align-self-center">
@@ -135,7 +135,7 @@ const BuildCareer = () => {
                 </div>
 
                 {/* Benefits */}
-                <div className="styleheading">
+                <div className="styleheading bg-white">
                     <div className="container-xl">
                         <div className="row">
                             <div className="col-12">

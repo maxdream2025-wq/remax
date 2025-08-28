@@ -159,7 +159,7 @@ const RemaxGlobal = () => {
                         </div>
                     </div>
                 </section>
-                <section id="dave_liniger" className="dave_liniger headingabout">
+                <section id="dave_liniger" className="dave_liniger headingabout ">
                     <div className="container-fluid">
                         <div className="row align_center">
                             <div className="col-sm-12 col-lg-7 col-xl-7 text-left">
@@ -198,7 +198,7 @@ const RemaxGlobal = () => {
                 </section>
                 <section
                     id="legacy_of_innovation"
-                    className="legacy_of_innovation headingabout"
+                    className="legacy_of_innovation headingabout bg-white"
                 >
                     <div className="container-fluid">
                         <div className="row">
