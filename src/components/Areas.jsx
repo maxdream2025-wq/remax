@@ -3,6 +3,7 @@ import Link from "next/link";
 export default function PopularAreas({ properties }) {
   return (
     <>
+    {/* ss */}
       <section
         className="py-5 bg-white"
         style={{ background: "linear-gradient(135deg, #1E45AB, #4776e6)" }}
