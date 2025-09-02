@@ -140,6 +140,9 @@ const Property = () => {
   };
 
   const editCategory = (cat) => {
+    console.log("Editing category:", cat);
+    console.log("Category image:", cat.image);
+    
     setEditMode(true);
     setEditId(cat.id);
     setTitle(cat.title);
@@ -148,6 +151,8 @@ const Property = () => {
     setDeveloper(cat.developer);
     setImage(null);
     setCurrentImage(cat.image);
+    
+    console.log("Set currentImage to:", cat.image);
   };
 
   const deleteCategory = async (id) => {
@@ -204,6 +209,14 @@ const Property = () => {
           <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
             Image:
           </label>
+          
+          {/* Debug Info */}
+          <div style={{ margin: "5px 0", fontSize: "12px", color: "#666" }}>
+            Debug: currentImage = {currentImage ? currentImage : "null"}, 
+            image = {image ? image.name : "null"}, 
+            editMode = {editMode ? "true" : "false"}
+          </div>
+          
           <input
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
@@ -212,9 +225,11 @@ const Property = () => {
           />
           
           {/* Current Image Display */}
-          {currentImage && !image && (
+          {currentImage && (
             <div style={{ margin: "10px 0" }}>
-              <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>Current Image:</p>
+              <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>
+                Current Image: {currentImage}
+              </p>
               <img 
                 src={`https://res.cloudinary.com/dkjpnznbf/${currentImage}`}
                 alt="Current category" 

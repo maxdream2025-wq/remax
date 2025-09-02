@@ -34,7 +34,7 @@ const News = ({ item }) => {
       <MetaData
         title={`${item?.title || "News"} | RE/MAX UAE`}
         description={metaDescription}
-        image={item?.image || undefined}
+        image={item?.image ? `https://res.cloudinary.com/dkjpnznbf/${item.image}` : undefined}
         url={canonicalUrl}
         type="article"
       />
@@ -54,13 +54,18 @@ const News = ({ item }) => {
 
           {item.image && (
             <img
-              src={item.image}
+              src={`https://res.cloudinary.com/dkjpnznbf/${item.image}`}
               alt={item.title || "News Image"}
               style={{
                 width: "100%",
+                height: "400px",
                 objectFit: "cover",
                 borderRadius: "8px",
                 marginBottom: "16px",
+              }}
+              onError={(e) => {
+                console.error("Failed to load image:", item.image);
+                e.target.style.display = "none";
               }}
             />
           )}

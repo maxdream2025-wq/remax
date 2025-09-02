@@ -20,8 +20,8 @@ const News = ({ newsList }) => {
         <div className="row row-cols-1 row-cols-md-3 g-4" id="newsContainer">
           {featuredNews.length > 0 ? (
             featuredNews.slice(0, 3).map((news, index) => (
-              <div className="col" key={index}>
-                <div className="card h-100 shadow-sm position-relative">
+              <div className="col d-flex" key={index}>
+                <div className="card shadow-sm position-relative w-100">
                   <span
                     className="badge bg-warning text-dark position-absolute"
                     style={{ top: "10px", right: "10px", zIndex: 2 }}
@@ -29,25 +29,26 @@ const News = ({ newsList }) => {
                     Featured
                   </span>
                   <img
-                    src={news.image ? `https://res.cloudinary.com/dkjpnznbf/${news.image}` : "/assets/building_bg.jpg"}
+                    src={news.image ? `https://res.cloudinary.com/dkjpnznbf/${news.image}` : "#"}
                     alt={news.title}
-                    className="w-100 h-100 object-fit-cover"
+                    className="card-img-top"
+                    style={{ height: "200px", objectFit: "cover" }}
                     onError={(e) => {
                       console.error("Failed to load image:", news.image);
                       e.target.src = "/assets/building_bg.jpg";
                     }}
                   />
-                  <div className="card-body">
+                  <div className="card-body d-flex flex-column">
                     <h5 className="card-title" style={{ fontSize: "20px" }}>
                       {news.title}
                     </h5>
-                    <p className="card-text">{news.desc.slice(0, 100)}</p>
+                    <p className="card-text flex-grow-1">{news.desc.slice(0, 100)}</p>
                     <p className="card-text text-muted small">
                       Date: {news.date}
                     </p>
                     <Link
                       href={`/news/${news.slug}`}
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary mt-auto"
                     >
                       Read More
                     </Link>
