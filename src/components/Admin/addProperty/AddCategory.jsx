@@ -11,21 +11,74 @@ const Property = () => {
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`;
 
   const fetchCategories = async () => {
     try {
       const res = await axios.get(API_URL);
-      setCategories(res.data);
+      const sortedCategories = sortCategories(res.data);
+      setCategories(sortedCategories);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // Sort categories: selected ones first, then by creation date
+  const sortCategories = (categoriesData) => {
+    return categoriesData.sort((a, b) => {
+      // First, sort by selection status (selected categories first)
+      const aSelected = selectedCategories.includes(a.id);
+      const bSelected = selectedCategories.includes(b.id);
+      
+      if (aSelected && !bSelected) return -1;
+      if (!aSelected && bSelected) return 1;
+      
+      // If both have same selection status, sort by creation date (newest first)
+      return new Date(b.created_at || b.id) - new Date(a.created_at || a.id);
+    });
+  };
+
+  // Toggle category selection
+  const toggleCategorySelection = (categoryId) => {
+    setSelectedCategories(prev => {
+      const newSelected = prev.includes(categoryId) 
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId];
+      
+      // Limit to 8 selected categories
+      if (newSelected.length > 8) {
+        newSelected.pop(); // Remove the last one
+      }
+      
+      return newSelected;
+    });
+  };
+
+  // Update selected categories in backend (you'll need to implement this endpoint)
+  const updateSelectedCategories = async () => {
+    try {
+      // Assuming you have an endpoint to update selected categories
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/update-selected-categories/`, {
+        selected_ids: selectedCategories
+      });
+    } catch (err) {
+      console.error("Error updating selected categories:", err);
     }
   };
 
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  // Re-sort categories when selectedCategories changes
+  useEffect(() => {
+    if (categories.length > 0) {
+      const sortedCategories = sortCategories([...categories]);
+      setCategories(sortedCategories);
+    }
+  }, [selectedCategories]);
 
   const resetForm = () => {
     setTitle("");
@@ -47,11 +100,17 @@ const Property = () => {
       if (image) formData.append("image", image);
       formData.append("developer", developer);
 
-      await axios.post(API_URL, formData, {
+      const response = await axios.post(API_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       resetForm();
+      
+      // Add new category to selected if we have less than 8
+      if (selectedCategories.length < 8) {
+        setSelectedCategories(prev => [...prev, response.data.id]);
+      }
+      
       fetchCategories();
     } catch (err) {
       console.error(err);
@@ -72,7 +131,9 @@ const Property = () => {
       });
 
       resetForm();
-      fetchCategories();
+      
+      // Maintain the order by re-fetching and re-sorting
+      await fetchCategories();
     } catch (err) {
       console.error(err);
     }
@@ -92,6 +153,10 @@ const Property = () => {
   const deleteCategory = async (id) => {
     try {
       await axios.delete(`${API_URL}${id}/`);
+      
+      // Remove from selected categories if it was selected
+      setSelectedCategories(prev => prev.filter(catId => catId !== id));
+      
       fetchCategories();
     } catch (err) {
       console.error(err);
@@ -225,6 +290,14 @@ const Property = () => {
             </button>
           )}
         </div>
+
+        {/* Selected Categories Info */}
+        <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "#f8f9fa", borderRadius: "4px" }}>
+          <h4 style={{ margin: "0 0 10px 0", color: "#495057" }}>Selected Categories ({selectedCategories.length}/8)</h4>
+          <p style={{ margin: "0", fontSize: "14px", color: "#6c757d" }}>
+            Selected categories will appear at the top of the list. Click on categories to select/deselect them.
+          </p>
+        </div>
       </div>
 
       {/* Categories Table */}
@@ -233,6 +306,7 @@ const Property = () => {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "2px solid #ccc" }}>
+              <th style={{ textAlign: "left", padding: "10px" }}>Select</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Image</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Name</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Description</th>
@@ -243,7 +317,21 @@ const Property = () => {
           </thead>
           <tbody>
             {categories.map((cat) => (
-              <tr key={cat.id} style={{ borderBottom: "1px solid #eee" }}>
+              <tr 
+                key={cat.id} 
+                style={{ 
+                  borderBottom: "1px solid #eee",
+                  backgroundColor: selectedCategories.includes(cat.id) ? "#e8f5e8" : "transparent"
+                }}
+              >
+                <td style={{ padding: "10px" }}>
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(cat.id)}
+                    onChange={() => toggleCategorySelection(cat.id)}
+                    style={{ transform: "scale(1.2)" }}
+                  />
+                </td>
                 <td style={{ padding: "10px" }}>
                   {cat.image && (
                     <img 
