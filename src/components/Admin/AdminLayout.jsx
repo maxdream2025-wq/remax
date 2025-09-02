@@ -11,7 +11,7 @@ const AdminLayout = () => {
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
       <div className="flex-grow-1 d-flex flex-column">
         <Topbar />
-        <div className="flex-grow-1 overflow-auto">
+        <div className="flex-grow-1 overflow-auto bg-white">
           <Body activeMenu={activeMenu} />
         </div>
       </div>
