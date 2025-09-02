@@ -69,7 +69,19 @@ export async function getServerSideProps({ query }) {
 }
 
 const FindProperty = ({ categories, properties, searchError, searchParams }) => {
-	console.log(categories)
+	// Sort categories by order field (lower numbers appear first)
+	const sortedCategories = categories ? categories.sort((a, b) => {
+		// If order is not set (0), put them at the end
+		if (a.order === 0 && b.order === 0) return 0;
+		if (a.order === 0) return 1;
+		if (b.order === 0) return -1;
+		
+		// Sort by order (1, 2, 3, 4...)
+		return a.order - b.order;
+	}) : [];
+	
+	console.log('Categories sorted by order:', sortedCategories.map(cat => ({ title: cat.title, order: cat.order })));
+	
 	return (
 		<>
 			<MetaData
@@ -101,12 +113,12 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 				</div>
 				<div className="text-center topareas_items">
 					<div className="row flex-wrap m-0" id="categoryGrid">
-						{categories.length === 0 ? (
+						{sortedCategories.length === 0 ? (
 							<div className="col-12">
 								<p className="text-muted">No categories available.</p>
 							</div>
 						) : (
-							categories
+							sortedCategories
 								.filter(category => category.developer) // <-- Only show if developer is true
 								.map((category) => (
 									<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
@@ -122,7 +134,7 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 													}}
 												/>
 												<div className="overlay">
-													<span>{category.title || category.property_category}</span>
+													<span>{category.title || category.property_category} (Order: {category.order})</span>
 												</div>
 											</Link>
 										</div>

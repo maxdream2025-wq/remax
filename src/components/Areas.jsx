@@ -1,10 +1,22 @@
 import Link from "next/link";
 
 export default function PopularAreas({ properties }) {
-console.log(properties, 'properties')
-
   // Filter out developer categories, show only non-developer ones
   const nonDeveloperProperties = properties ? properties.filter(area => !area.developer) : [];
+  
+  // Sort by order field (lower numbers appear first)
+  const sortedProperties = nonDeveloperProperties.sort((a, b) => {
+    // If order is not set (0), put them at the end
+    if (a.order === 0 && b.order === 0) return 0;
+    if (a.order === 0) return 1;
+    if (b.order === 0) return -1;
+    
+    // Sort by order (1, 2, 3, 4...)
+    return a.order - b.order;
+  });
+  
+  console.log('Sorted properties by order:', sortedProperties.map(p => ({ title: p.title, order: p.order })));
+  
   return (
     <>
     {/* ss */}
@@ -24,8 +36,8 @@ console.log(properties, 'properties')
           </div>
 
           <div className="row">
-            {nonDeveloperProperties && nonDeveloperProperties.length > 0 ? (
-              nonDeveloperProperties.slice(0, 9).map((area) => (
+            {sortedProperties && sortedProperties.length > 0 ? (
+              sortedProperties.slice(0, 9).map((area) => (
                 <div className="col-md-4 mb-4" key={area.id}>
                   <Link href={`/category/${area.slug}`}>
                     <div
@@ -50,14 +62,9 @@ console.log(properties, 'properties')
                 </div>
               ))
             ) : (
-              <div className="col-12">
-                <p className="text-white text-center mt-4">
-                  {properties && properties.length > 0 
-                    ? `No non-developer areas available. Total properties: ${properties.length}`
-                    : "No areas available at the moment."
-                  }
-                </p>
-              </div>
+              <p className="text-white text-center mt-4">
+                No areas available at the moment.
+              </p>
             )}
           </div>
         </div>

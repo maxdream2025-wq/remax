@@ -8,6 +8,7 @@ const Property = () => {
   const [propertyCategory, setPropertyCategory] = useState("");
   const [image, setImage] = useState(null);
   const [developer, setDeveloper] = useState(false);
+  const [order, setOrder] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
@@ -86,6 +87,7 @@ const Property = () => {
     setPropertyCategory("");
     setImage(null);
     setDeveloper(false);
+    setOrder(0);
     setEditMode(false);
     setEditId(null);
     setCurrentImage(null);
@@ -97,6 +99,7 @@ const Property = () => {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("property_category", propertyCategory);
+      formData.append("order", order);
       if (image) formData.append("image", image);
       formData.append("developer", developer);
 
@@ -123,6 +126,7 @@ const Property = () => {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("property_category", propertyCategory);
+      formData.append("order", order);
       if (image) formData.append("image", image);
       formData.append("developer", developer);
 
@@ -140,8 +144,7 @@ const Property = () => {
   };
 
   const editCategory = (cat) => {
-    console.log("Editing category:", cat);
-    console.log("Category image:", cat.image);
+
     
     setEditMode(true);
     setEditId(cat.id);
@@ -149,6 +152,7 @@ const Property = () => {
     setDescription(cat.description);
     setPropertyCategory(cat.property_category);
     setDeveloper(cat.developer);
+    setOrder(cat.order || 0);
     setImage(null);
     setCurrentImage(cat.image);
     
@@ -194,6 +198,13 @@ const Property = () => {
           placeholder="Category"
           value={propertyCategory}
           onChange={(e) => setPropertyCategory(e.target.value)}
+          style={{ width: "100%", padding: "8px", margin: "10px 0" }}
+        />
+        <input
+          type="number"
+          placeholder="Order (lower numbers appear first)"
+          value={order}
+          onChange={(e) => setOrder(parseInt(e.target.value) || 0)}
           style={{ width: "100%", padding: "8px", margin: "10px 0" }}
         />
         <textarea
@@ -328,6 +339,7 @@ const Property = () => {
             <tr style={{ borderBottom: "2px solid #ccc" }}>
               <th style={{ textAlign: "left", padding: "10px" }}>Select</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Image</th>
+              <th style={{ textAlign: "left", padding: "10px" }}>Order</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Name</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Description</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Category</th>
@@ -369,8 +381,9 @@ const Property = () => {
                       }}
                     />
                   )}
-                </td>
-                <td style={{ padding: "10px" }}>{cat.title}</td>
+                                  </td>
+                  <td style={{ padding: "10px" }}>{cat.order}</td>
+                  <td style={{ padding: "10px" }}>{cat.title}</td>
                 <td style={{ padding: "10px" }}>{cat.description}</td>
                 <td style={{ padding: "10px" }}>{cat.property_category}</td>
                 <td style={{ padding: "10px" }}>{cat.developer ? "Yes" : "No"}</td>
