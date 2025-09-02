@@ -29,10 +29,13 @@ const News = ({ newsList }) => {
                     Featured
                   </span>
                   <img
-                    src={news.image}
-                    className="card-img-top"
-                    style={{ height: "200px", objectFit: "cover" }}
+                    src={news.image ? `https://res.cloudinary.com/dkjpnznbf/${news.image}` : "/assets/building_bg.jpg"}
                     alt={news.title}
+                    className="w-100 h-100 object-fit-cover"
+                    onError={(e) => {
+                      console.error("Failed to load image:", news.image);
+                      e.target.src = "/assets/building_bg.jpg";
+                    }}
                   />
                   <div className="card-body">
                     <h5 className="card-title" style={{ fontSize: "20px" }}>

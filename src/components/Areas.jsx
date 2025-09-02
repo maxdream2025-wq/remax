@@ -1,9 +1,10 @@
 import Link from "next/link";
 
 export default function PopularAreas({ properties }) {
+console.log(properties, 'properties')
+
   // Filter out developer categories, show only non-developer ones
   const nonDeveloperProperties = properties ? properties.filter(area => !area.developer) : [];
-
   return (
     <>
     {/* ss */}
@@ -32,20 +33,16 @@ export default function PopularAreas({ properties }) {
                       style={{ cursor: "pointer" }}
                     >
                       <img
-                        src={area.image}
-                        alt={area.property_category}
+                        src={`https://res.cloudinary.com/dkjpnznbf/${area.image}`}
+                        alt={area.property_category || area.title}
                         className="w-100 h-100 object-fit-cover"
-                        onError={(e) => {
-                          console.error("Failed to load image:", area.image);
-                          e.target.style.display = "none";
-                        }}
                       />
                       <div
                         className="area-info position-absolute bottom-0 w-100 text-white p-3"
                         style={{ background: "rgba(0,0,0,0.5)" }}
                       >
                         <h5 className="mb-1" style={{ fontSize: "20px" }}>
-                          {area.title}
+                          {area.title || area.property_category}
                         </h5>
                       </div>
                     </div>
@@ -53,9 +50,14 @@ export default function PopularAreas({ properties }) {
                 </div>
               ))
             ) : (
-              <p className="text-white text-center mt-4">
-                No areas available at the moment.
-              </p>
+              <div className="col-12">
+                <p className="text-white text-center mt-4">
+                  {properties && properties.length > 0 
+                    ? `No non-developer areas available. Total properties: ${properties.length}`
+                    : "No areas available at the moment."
+                  }
+                </p>
+              </div>
             )}
           </div>
         </div>

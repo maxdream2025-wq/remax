@@ -82,15 +82,15 @@ const NewsIndex = ({ news }) => {
                       Featured
                     </span>
                   )}
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      style={{ height: "200px", width: "100%", objectFit: "cover" }}
+                  <img 
+                      src={item.image ? `https://res.cloudinary.com/dkjpnznbf/${item.image}` : "/assets/building_bg.jpg"}
+                      alt={item.title} 
+                      className="w-100 h-100 object-fit-cover"
+                      onError={(e) => {
+                        console.error("Failed to load image:", item.image);
+                        e.target.src = "/assets/building_bg.jpg";
+                      }}
                     />
-                  ) : (
-                    <div style={{ height: "200px", background: "#f3f4f6" }} />
-                  )}
                   <div style={{ padding: "12px", display: "flex", flexDirection: "column", flexGrow: 1 }}>
                     <h5 style={{ fontSize: "20px", margin: 0 }}>{item.title}</h5>
                     <p style={{ marginTop: "8px", marginBottom: "8px", color: "#374151", flexGrow: 1 }}>

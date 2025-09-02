@@ -216,7 +216,7 @@ const Property = () => {
             <div style={{ margin: "10px 0" }}>
               <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>Current Image:</p>
               <img 
-                src={currentImage} 
+                src={`https://res.cloudinary.com/dkjpnznbf/${currentImage}`}
                 alt="Current category" 
                 style={{ 
                   maxWidth: "200px", 
@@ -340,7 +340,7 @@ const Property = () => {
                 <td style={{ padding: "10px" }}>
                   {cat.image && (
                     <img 
-                      src={cat.image} 
+                      src={`https://res.cloudinary.com/dkjpnznbf/${cat.image}`}
                       alt={cat.title} 
                       style={{ 
                         width: "60px", 
@@ -349,7 +349,7 @@ const Property = () => {
                         borderRadius: "4px"
                       }} 
                       onError={(e) => {
-                        // Hide broken images
+                        console.error("Failed to load image:", cat.image);
                         e.target.style.display = "none";
                       }}
                     />

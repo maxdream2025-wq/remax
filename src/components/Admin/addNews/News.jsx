@@ -182,8 +182,8 @@ const News = () => {
             <div style={{ margin: "10px 0" }}>
               <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>Current Image:</p>
               <img 
-                src={currentImage} 
-                alt="Current news" 
+                src={currentImage ? `https://res.cloudinary.com/dkjpnznbf/${currentImage}` : "/assets/building_bg.jpg"}
+                alt="Current news image" 
                 style={{ 
                   maxWidth: "200px", 
                   maxHeight: "150px", 
@@ -192,7 +192,7 @@ const News = () => {
                 }} 
                 onError={(e) => {
                   console.error("Failed to load image:", currentImage);
-                  e.target.style.display = "none";
+                  e.target.src = "/assets/building_bg.jpg";
                 }}
               />
             </div>
@@ -297,7 +297,7 @@ const News = () => {
                 <td style={{ padding: "10px" }}>
                   {item.image ? (
                     <img 
-                      src={item.image} 
+                      src={`https://res.cloudinary.com/dkjpnznbf/${item.image}`}
                       alt={item.title} 
                       style={{ 
                         width: "60px", 

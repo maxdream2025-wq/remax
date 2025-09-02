@@ -113,9 +113,13 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 										<div className="flexed_gallery w-100" style={{ height: "350px" }}>
 											<Link href={`/category/${category.slug}`}>
 												<img 
-													src={category.image || "/assets/building_bg.jpg"} 
+													src={category.image ? `https://res.cloudinary.com/dkjpnznbf/${category.image}` : ""} 
 													alt={category.title || category.property_category} 
 													style={{ width: "100%", height: "100%", objectFit: "cover" }}
+													onError={(e) => {
+														console.error("Failed to load image:", category.image);
+														e.target.src = "/assets/building_bg.jpg";
+													}}
 												/>
 												<div className="overlay">
 													<span>{category.title || category.property_category}</span>
