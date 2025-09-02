@@ -13,6 +13,7 @@ export async function getServerSideProps({ query }) {
     // Fetch categories
     const categoriesRes = await axios.get(CATEGORIES_API_URL);
     const categories = categoriesRes.data;
+	console.log(categories, 'categories')
 
     // Fetch properties if search parameters are provided
     let properties = [];

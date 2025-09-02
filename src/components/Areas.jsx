@@ -36,7 +36,7 @@ export default function PopularAreas({ properties }) {
                         alt={area.property_category}
                         className="w-100 h-100 object-fit-cover"
                         onError={(e) => {
-                          // Hide broken images
+                          console.error("Failed to load image:", area.image);
                           e.target.style.display = "none";
                         }}
                       />
