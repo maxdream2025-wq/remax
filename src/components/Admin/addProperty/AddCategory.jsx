@@ -171,6 +171,7 @@ const Property = () => {
     }
   };
 
+
   return (
     <div style={{ display: "flex", padding: "20px", fontFamily: "Arial, sans-serif", gap: "40px" }}>
       {/* Form Section */}
@@ -215,7 +216,7 @@ const Property = () => {
             <div style={{ margin: "10px 0" }}>
               <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>Current Image:</p>
               <img 
-                src={`${process.env.NEXT_PUBLIC_API_URL}${currentImage}`} 
+                src={currentImage} 
                 alt="Current category" 
                 style={{ 
                   maxWidth: "200px", 
@@ -223,6 +224,10 @@ const Property = () => {
                   border: "1px solid #ddd",
                   borderRadius: "4px"
                 }} 
+                onError={(e) => {
+                  console.error("Failed to load image:", currentImage);
+                  e.target.style.display = "none";
+                }}
               />
             </div>
           )}
@@ -335,7 +340,7 @@ const Property = () => {
                 <td style={{ padding: "10px" }}>
                   {cat.image && (
                     <img 
-                      src={`${process.env.NEXT_PUBLIC_API_URL}${cat.image}`} 
+                      src={cat.image} 
                       alt={cat.title} 
                       style={{ 
                         width: "60px", 
@@ -343,6 +348,10 @@ const Property = () => {
                         objectFit: "cover",
                         borderRadius: "4px"
                       }} 
+                      onError={(e) => {
+                        // Hide broken images
+                        e.target.style.display = "none";
+                      }}
                     />
                   )}
                 </td>

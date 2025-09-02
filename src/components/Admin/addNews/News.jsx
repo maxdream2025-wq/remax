@@ -6,6 +6,10 @@ const News = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [errors, setErrors] = useState({});
+  const [editMode, setEditMode] = useState(false);
+  const [editSlug, setEditSlug] = useState(null);
+  const [currentImage, setCurrentImage] = useState(null);
+  
   const getTodayYMD = () => {
     const now = new Date();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -14,7 +18,7 @@ const News = () => {
   };
   const [date, setDate] = useState(getTodayYMD());
   const [image, setImage] = useState(null);
-  const [feature, setFeature] = useState(false); // <-- Add feature state
+  const [feature, setFeature] = useState(false);
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
@@ -31,6 +35,18 @@ const News = () => {
     fetchNews();
   }, []);
 
+  const resetForm = () => {
+    setTitle("");
+    setDesc("");
+    setDate(getTodayYMD());
+    setImage(null);
+    setFeature(false);
+    setEditMode(false);
+    setEditSlug(null);
+    setCurrentImage(null);
+    setErrors({});
+  };
+
   const createNews = async () => {
     try {
       setErrors({});
@@ -40,18 +56,13 @@ const News = () => {
       const ensuredDate = date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : getTodayYMD();
       formData.append("date", ensuredDate);
       if (image) formData.append("image", image);
-      formData.append("feature", feature); // <-- Add feature to formData
+      formData.append("feature", feature);
 
       await axios.post(API_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setTitle("");
-      setDesc("");
-      setDate(getTodayYMD());
-      setImage(null);
-      setFeature(false); // <-- Reset feature
-
+      resetForm();
       fetchNews();
     } catch (err) {
       if (err?.response?.data) {
@@ -60,6 +71,44 @@ const News = () => {
         console.error(err);
       }
     }
+  };
+
+  const updateNews = async () => {
+    try {
+      setErrors({});
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("desc", desc);
+      const ensuredDate = date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : getTodayYMD();
+      formData.append("date", ensuredDate);
+      if (image) formData.append("image", image);
+      formData.append("feature", feature);
+
+      await axios.put(`${API_URL}${editSlug}/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      resetForm();
+      fetchNews();
+    } catch (err) {
+      if (err?.response?.data) {
+        setErrors(err.response.data);
+      } else {
+        console.error(err);
+      }
+    }
+  };
+
+  const editNews = (news) => {
+    setEditMode(true);
+    setEditSlug(news.slug);
+    setTitle(news.title);
+    setDesc(news.desc);
+    setDate(news.date);
+    setFeature(news.feature);
+    setImage(null);
+    setCurrentImage(news.image);
+    setErrors({});
   };
 
   const deleteNews = async (slug) => {
@@ -71,11 +120,19 @@ const News = () => {
     }
   };
 
+  const handleSubmit = () => {
+    if (editMode) {
+      updateNews();
+    } else {
+      createNews();
+    }
+  };
+
   return (
     <div style={{ display: "flex", padding: "20px", fontFamily: "Arial, sans-serif", gap: "40px" }}>
       {/* Form Section */}
       <div style={{ flex: "1", border: "1px solid #ccc", padding: "20px", borderRadius: "5px" }}>
-        <h2>Add News</h2>
+        <h2>{editMode ? "Edit News" : "Add News"}</h2>
         <input
           type="text"
           placeholder="Title"
@@ -104,19 +161,67 @@ const News = () => {
           type="date"
           placeholder="Date"
           value={date}
-          readOnly
+          onChange={(e) => setDate(e.target.value)}
           style={{ width: "100%", padding: "8px", margin: "10px 0" }}
         />
-        <input
-          type="file"
-          onChange={(e) => setImage(e.target.files[0])}
-          style={{ margin: "10px 0" }}
-        />
+        
+        {/* Image Section */}
+        <div style={{ margin: "10px 0" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+            Image:
+          </label>
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            accept="image/*"
+            style={{ margin: "10px 0" }}
+          />
+          
+          {/* Current Image Display */}
+          {currentImage && !image && (
+            <div style={{ margin: "10px 0" }}>
+              <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>Current Image:</p>
+              <img 
+                src={currentImage} 
+                alt="Current news" 
+                style={{ 
+                  maxWidth: "200px", 
+                  maxHeight: "150px", 
+                  border: "1px solid #ddd",
+                  borderRadius: "4px"
+                }} 
+                onError={(e) => {
+                  console.error("Failed to load image:", currentImage);
+                  e.target.style.display = "none";
+                }}
+              />
+            </div>
+          )}
+          
+          {/* New Image Preview */}
+          {image && (
+            <div style={{ margin: "10px 0" }}>
+              <p style={{ margin: "5px 0", fontSize: "14px", color: "#666" }}>New Image Preview:</p>
+              <img 
+                src={URL.createObjectURL(image)} 
+                alt="New image preview" 
+                style={{ 
+                  maxWidth: "200px", 
+                  maxHeight: "150px", 
+                  border: "1px solid #ddd",
+                  borderRadius: "4px"
+                }} 
+              />
+            </div>
+          )}
+        </div>
+        
         {errors?.image && (
           <div style={{ color: "#b00020", fontSize: "12px", marginTop: "-6px" }}>
             {Array.isArray(errors.image) ? errors.image.join(", ") : String(errors.image)}
           </div>
         )}
+        
         {/* Feature Checkbox */}
         <div style={{ margin: "10px 0" }}>
           <label>
@@ -129,19 +234,40 @@ const News = () => {
             Feature this news
           </label>
         </div>
-        <button
-          onClick={createNews}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#0073aa",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            marginTop: "10px",
-          }}
-        >
-          Add News
-        </button>
+
+        {/* Action Buttons */}
+        <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+          <button
+            onClick={handleSubmit}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: editMode ? "#28a745" : "#0073aa",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+              borderRadius: "4px",
+            }}
+          >
+            {editMode ? "Update News" : "Add News"}
+          </button>
+          
+          {editMode && (
+            <button
+              onClick={resetForm}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#6c757d",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+                borderRadius: "4px",
+              }}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+
         {errors?.non_field_errors && (
           <div style={{ color: "#b00020", fontSize: "12px", marginTop: "10px" }}>
             {Array.isArray(errors.non_field_errors)
@@ -157,10 +283,10 @@ const News = () => {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "2px solid #ccc" }}>
+              <th style={{ textAlign: "left", padding: "10px" }}>Image</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Title</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Description</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Date</th>
-              <th style={{ textAlign: "left", padding: "10px" }}>Image</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Featured</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Actions</th>
             </tr>
@@ -168,6 +294,26 @@ const News = () => {
           <tbody>
             {newsList.map((item) => (
               <tr key={item.id} style={{ borderBottom: "1px solid #eee" }}>
+                <td style={{ padding: "10px" }}>
+                  {item.image ? (
+                    <img 
+                      src={item.image} 
+                      alt={item.title} 
+                      style={{ 
+                        width: "60px", 
+                        height: "40px", 
+                        objectFit: "cover",
+                        borderRadius: "4px"
+                      }} 
+                      onError={(e) => {
+                        // Hide broken images
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    "—"
+                  )}
+                </td>
                 <td style={{ padding: "10px" }}>{item.title}</td>
                 <td style={{ padding: "10px" }}>
                   <div
@@ -179,28 +325,37 @@ const News = () => {
                 </td>
                 <td style={{ padding: "10px" }}>{item.date}</td>
                 <td style={{ padding: "10px" }}>
-                  {item.image ? (
-                    <img src={item.image} alt={item.title} style={{ width: "60px", height: "40px", objectFit: "cover" }} />
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td style={{ padding: "10px" }}>
                   {item.feature ? "Yes" : "No"}
                 </td>
                 <td style={{ padding: "10px" }}>
-                  <button
-                    onClick={() => deleteNews(item.slug)}
-                    style={{
-                      padding: "5px 10px",
-                      backgroundColor: "red",
-                      color: "#fff",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Delete
-                  </button>
+                  <div style={{ display: "flex", gap: "5px" }}>
+                    <button
+                      onClick={() => editNews(item)}
+                      style={{
+                        padding: "5px 10px",
+                        backgroundColor: "#ffc107",
+                        color: "#000",
+                        border: "none",
+                        cursor: "pointer",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteNews(item.slug)}
+                      style={{
+                        padding: "5px 10px",
+                        backgroundColor: "#dc3545",
+                        color: "#fff",
+                        border: "none",
+                        cursor: "pointer",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

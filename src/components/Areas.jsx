@@ -1,6 +1,9 @@
 import Link from "next/link";
 
 export default function PopularAreas({ properties }) {
+  // Filter out developer categories, show only non-developer ones
+  const nonDeveloperProperties = properties ? properties.filter(area => !area.developer) : [];
+
   return (
     <>
     {/* ss */}
@@ -14,14 +17,14 @@ export default function PopularAreas({ properties }) {
               Popular Areas in Dubai
             </h1>
             <p className="text-white">
-              Explore Dubai’s top residential communities, from beachfront
+              Explore Dubai's top residential communities, from beachfront
               luxury to vibrant urban hubs. Discover your ideal location today
             </p>
           </div>
 
           <div className="row">
-            {properties && properties.length > 0 ? (
-              properties.slice(0, 9).map((area) => (
+            {nonDeveloperProperties && nonDeveloperProperties.length > 0 ? (
+              nonDeveloperProperties.slice(0, 9).map((area) => (
                 <div className="col-md-4 mb-4" key={area.id}>
                   <Link href={`/category/${area.slug}`}>
                     <div
@@ -32,6 +35,10 @@ export default function PopularAreas({ properties }) {
                         src={area.image}
                         alt={area.property_category}
                         className="w-100 h-100 object-fit-cover"
+                        onError={(e) => {
+                          // Hide broken images
+                          e.target.style.display = "none";
+                        }}
                       />
                       <div
                         className="area-info position-absolute bottom-0 w-100 text-white p-3"
