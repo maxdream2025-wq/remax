@@ -134,7 +134,7 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 													}}
 												/>
 												<div className="overlay">
-													<span>{category.title || category.property_category} (Order: {category.order})</span>
+													<span>{category.title || category.property_category}</span>
 												</div>
 											</Link>
 										</div>

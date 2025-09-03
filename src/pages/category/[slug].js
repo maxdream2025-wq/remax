@@ -5,6 +5,13 @@ import React, { useState } from "react";
 
 const PropertyDetails = ({ property }) => {
   const [selectedPropertyId, setSelectedPropertyId] = useState("");
+  
+  // Debug: Log property data to see image paths
+  console.log("Property data received:", property);
+  if (property && property.length > 0) {
+    console.log("First property image path:", property[0]?.property_gallery);
+    console.log("Constructed Cloudinary URL:", property[0]?.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${property[0]?.property_gallery}` : "No image");
+  }
 
   const handleRegisterClick = (propertyId) => {
     setSelectedPropertyId(propertyId);
@@ -28,7 +35,7 @@ const PropertyDetails = ({ property }) => {
       <MetaData
         title={property[0]?.property_name || "Property Details | RE/MAX UAE"}
         description={property[0]?.property_desc || "Find property details at RE/MAX UAE."}
-        image={property[0]?.property_gallery || "https://remax.ae/assets/img/brandlogo/remax_logo.svg"}
+        image={property[0]?.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${property[0]?.property_gallery}` : "https://remax.ae/assets/img/brandlogo/remax_logo.svg"}
         url={`https://remax.ae/category/${property[0]?.slug || ""}`}
       />
       <DynamicBanner />
@@ -39,9 +46,13 @@ const PropertyDetails = ({ property }) => {
             <div className="row g-0">
               <div className="col-md-4">
                 <img
-                  src={prop.property_gallery}
+                  src={prop.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${prop.property_gallery}` : "/assets/building_bg.jpg"}
                   className="img-fluid h-100 w-100 object-fit-cover"
                   alt={prop.property_name}
+                  onError={(e) => {
+                    console.error("Failed to load image:", prop.property_gallery);
+                    e.target.src = "/assets/building_bg.jpg";
+                  }}
                 />
               </div>
               <div className="col-md-8 p-4">

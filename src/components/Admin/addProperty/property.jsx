@@ -189,58 +189,163 @@ const Property = () => {
 
   const submitImageUpdate = async (e) => {
     e.preventDefault();
-    if (!imageEditId) return;
+    if (!imageEditId || !imageFile) return;
+    
     try {
       const data = new FormData();
-      if (imageFile) {
-        data.append("property_gallery", imageFile);
-      }
-      if (imagePath) {
-        data.append("property_gallery_path", imagePath);
-      }
+      data.append("property_gallery", imageFile);
+      
       await axios.patch(`${API_URL}${imageEditId}/`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      
+      // Show success message
+      alert("Property image updated successfully!");
+      
+      // Reset form and refresh
       setImageEditId(null);
       setImageFile(null);
       setImagePath("");
       fetchProperties();
     } catch (err) {
-      console.error(err);
+      console.error("Error updating image:", err);
+      if (err.response?.data) {
+        alert(`Error updating image: ${JSON.stringify(err.response.data)}`);
+      } else {
+        alert("Error updating image. Please try again.");
+      }
     }
   };
 
   return (
-    <div className="container py-5">
+    <div className="container py-5" style={{ fontFamily: 'Arial, sans-serif' }}>
+      <style jsx>{`
+        .table th {
+          font-weight: 600;
+          text-transform: uppercase;
+          font-size: 0.85rem;
+          letter-spacing: 0.5px;
+        }
+        .table td {
+          vertical-align: middle;
+        }
+        .btn-group .btn {
+          margin-right: 5px;
+        }
+        .btn-group .btn:last-child {
+          margin-right: 0;
+        }
+        .badge {
+          font-size: 0.75rem;
+          padding: 0.35em 0.65em;
+        }
+        .property-image {
+          transition: transform 0.2s ease;
+        }
+        .property-image:hover {
+          transform: scale(1.05);
+        }
+      `}</style>
       <h3 className="mb-4 text-primary">{editId ? "Edit Property" : "Add Property"}</h3>
       {imageEditId && (
         <div className="bg-white p-4 rounded shadow mb-5">
           <h5 className="mb-3">Update Property Image (ID: {imageEditId})</h5>
+          
+          {/* Current Image Display */}
+          {(() => {
+            const currentProperty = properties.find(p => p.id === imageEditId);
+            return currentProperty?.property_gallery ? (
+              <div className="mb-3">
+                <label className="form-label">Current Image:</label>
+                <div className="text-center">
+                  <img 
+                    src={`https://res.cloudinary.com/dkjpnznbf/${currentProperty.property_gallery}`}
+                    alt="Current property image"
+                    style={{ 
+                      maxWidth: "300px", 
+                      maxHeight: "200px", 
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                      border: "2px solid #ddd"
+                    }}
+                    onError={(e) => {
+                      console.error("Failed to load current image:", currentProperty.property_gallery);
+                      e.target.src = "/assets/building_bg.jpg";
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="mb-3">
+                <label className="form-label">Current Image:</label>
+                <div className="text-center">
+                  <div 
+                    style={{ 
+                      width: "300px", 
+                      height: "200px", 
+                      backgroundColor: "#f8f9fa",
+                      border: "2px dashed #ddd",
+                      borderRadius: "8px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#6c757d"
+                    }}
+                  >
+                    No Image Currently Set
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+          
           <form onSubmit={submitImageUpdate}>
             <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <label className="form-label">Choose Image File (optional)</label>
+                <label className="form-label">Choose New Image File</label>
                 <input
                   type="file"
                   accept="image/*"
                   className="form-control"
                   onChange={(e) => setImageFile(e.target.files[0])}
+                  required
                 />
+                <small className="text-muted">Select a new image file to upload</small>
               </div>
               <div className="col-md-6">
-                <label className="form-label">Or Image Path/URL (optional)</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="e.g. properties/img.jpg or https://..."
-                  value={imagePath}
-                  onChange={(e) => setImagePath(e.target.value)}
-                />
+                <label className="form-label">Image Preview</label>
+                {imageFile && (
+                  <div className="text-center">
+                    <img 
+                      src={URL.createObjectURL(imageFile)}
+                      alt="New image preview"
+                      style={{ 
+                        maxWidth: "100%", 
+                        maxHeight: "150px", 
+                        objectFit: "cover",
+                        borderRadius: "4px",
+                        border: "1px solid #ddd"
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="d-flex gap-2">
-              <button type="submit" className="btn btn-dark">Save Image</button>
-              <button type="button" className="btn btn-outline-secondary" onClick={() => { setImageEditId(null); setImageFile(null); setImagePath(""); }}>Cancel</button>
+              <button type="submit" className="btn btn-dark">
+                <i className="fas fa-save me-2"></i>Update Image
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-outline-secondary" 
+                onClick={() => { 
+                  setImageEditId(null); 
+                  setImageFile(null); 
+                  setImagePath(""); 
+                }}
+              >
+                <i className="fas fa-times me-2"></i>Cancel
+              </button>
             </div>
           </form>
         </div>
@@ -488,39 +593,109 @@ const Property = () => {
       </form>
 
       <h2 className="mb-3 text-primary">Property List</h2>
-      <ul className="list-group mb-5">
-        {properties.map((property) => (
-          <li
-            key={property.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-          >
-            <span>
-              <strong>{property.property_name}</strong> -{" "}
-              <span className="text-muted">{property.status}</span>
-            </span>
-            <div>
-              <button
-                onClick={() => handleEdit(property)}
-                className="btn btn-warning btn-sm me-2"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => openImageEditor(property.id)}
-                className="btn btn-info btn-sm me-2"
-              >
-                Edit Image
-              </button>
-              <button
-                onClick={() => handleDelete(property.id)}
-                className="btn btn-danger btn-sm"
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead className="table-dark">
+            <tr>
+              <th>Image</th>
+              <th>Property Name</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Starting Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {properties.map((property) => (
+              <tr key={property.id}>
+                <td>
+                  {property.property_gallery ? (
+                    <img 
+                      src={`https://res.cloudinary.com/dkjpnznbf/${property.property_gallery}`}
+                      alt={property.property_name}
+                      className="property-image"
+                      style={{ 
+                        width: "80px", 
+                        height: "60px", 
+                        objectFit: "cover",
+                        borderRadius: "4px",
+                        border: "1px solid #ddd"
+                      }}
+                      onError={(e) => {
+                        console.error("Failed to load image:", property.property_gallery);
+                        e.target.src = "/assets/building_bg.jpg";
+                      }}
+                    />
+                  ) : (
+                    <div 
+                      style={{ 
+                        width: "80px", 
+                        height: "60px", 
+                        backgroundColor: "#f8f9fa",
+                        border: "1px solid #ddd",
+                        borderRadius: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#6c757d",
+                        fontSize: "12px"
+                      }}
+                    >
+                      No Image
+                    </div>
+                  )}
+                </td>
+                <td>
+                  <strong>{property.property_name}</strong>
+                  {property.property_sub_heading && (
+                    <div className="text-muted small">{property.property_sub_heading}</div>
+                  )}
+                </td>
+                <td>{property.category?.property_category || property.category?.title || "N/A"}</td>
+                <td>{property.location}</td>
+                <td>
+                  <span className={`badge ${property.status === 'Available' ? 'bg-success' : 'bg-warning'}`}>
+                    {property.status}
+                  </span>
+                </td>
+                <td>
+                  {property.starting_price && (
+                    <span className="text-primary fw-bold">
+                      AED {parseInt(property.starting_price).toLocaleString()}
+                    </span>
+                  )}
+                </td>
+                <td>
+                  <div className="btn-group" role="group">
+                    <button
+                      onClick={() => handleEdit(property)}
+                      className="btn btn-warning btn-sm"
+                      title="Edit Property"
+                    >
+                      <i className="fas fa-edit"></i> Edit
+                    </button>
+                    <button
+                      onClick={() => openImageEditor(property.id)}
+                      className="btn btn-info btn-sm"
+                      title="Edit Image"
+                    >
+                      <i className="fas fa-image"></i> Image
+                    </button>
+                    <button
+                      onClick={() => handleDelete(property.id)}
+                      className="btn btn-danger btn-sm"
+                      title="Delete Property"
+                    >
+                      <i className="fas fa-trash"></i> Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

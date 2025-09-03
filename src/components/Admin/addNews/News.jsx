@@ -19,6 +19,7 @@ const News = () => {
   const [date, setDate] = useState(getTodayYMD());
   const [image, setImage] = useState(null);
   const [feature, setFeature] = useState(false);
+  const [order, setOrder] = useState(0);
 
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
@@ -41,6 +42,7 @@ const News = () => {
     setDate(getTodayYMD());
     setImage(null);
     setFeature(false);
+    setOrder(0);
     setEditMode(false);
     setEditSlug(null);
     setCurrentImage(null);
@@ -57,6 +59,7 @@ const News = () => {
       formData.append("date", ensuredDate);
       if (image) formData.append("image", image);
       formData.append("feature", feature);
+      formData.append("order", order);
 
       await axios.post(API_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -83,6 +86,7 @@ const News = () => {
       formData.append("date", ensuredDate);
       if (image) formData.append("image", image);
       formData.append("feature", feature);
+      formData.append("order", order);
 
       await axios.put(`${API_URL}${editSlug}/`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -106,6 +110,7 @@ const News = () => {
     setDesc(news.desc);
     setDate(news.date);
     setFeature(news.feature);
+    setOrder(news.order);
     setImage(null);
     setCurrentImage(news.image);
     setErrors({});
@@ -235,6 +240,23 @@ const News = () => {
           </label>
         </div>
 
+        {/* Order Field */}
+        <div style={{ margin: "10px 0" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+            Order:
+          </label>
+          <input
+            type="number"
+            placeholder="Order (lower numbers appear first)"
+            value={order}
+            onChange={(e) => setOrder(parseInt(e.target.value) || 0)}
+            style={{ width: "100%", padding: "8px", margin: "10px 0" }}
+          />
+          <small style={{ color: "#666", fontSize: "12px" }}>
+            Lower numbers appear first. Set to 1 for highest priority, 2 for second, etc.
+          </small>
+        </div>
+
         {/* Action Buttons */}
         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
           <button
@@ -288,6 +310,7 @@ const News = () => {
               <th style={{ textAlign: "left", padding: "10px" }}>Description</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Date</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Featured</th>
+              <th style={{ textAlign: "left", padding: "10px" }}>Order</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Actions</th>
             </tr>
           </thead>
@@ -327,6 +350,7 @@ const News = () => {
                 <td style={{ padding: "10px" }}>
                   {item.feature ? "Yes" : "No"}
                 </td>
+                <td style={{ padding: "10px" }}>{item.order}</td>
                 <td style={{ padding: "10px" }}>
                   <div style={{ display: "flex", gap: "5px" }}>
                     <button

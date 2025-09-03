@@ -2,8 +2,18 @@ import React from "react";
 import Link from "next/link";
 
 const News = ({ newsList }) => {
-  // Filter only featured news
-  const featuredNews = newsList ? newsList.filter((news) => news.feature) : [];
+  // Filter only featured news and sort by order
+  const featuredNews = newsList ? newsList
+    .filter((news) => news.feature)
+    .sort((a, b) => {
+      // If order is not set (0), put them at the end
+      if (a.order === 0 && b.order === 0) return 0;
+      if (a.order === 0) return 1;
+      if (b.order === 0) return -1;
+      
+      // Sort by order (1, 2, 3, 4...)
+      return a.order - b.order;
+    }) : [];
 
   return (
     <section className="py-5 bg-light">

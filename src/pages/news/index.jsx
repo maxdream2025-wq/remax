@@ -20,7 +20,18 @@ const truncate = (text, max) => {
   return text.length > max ? `${text.slice(0, max)}...` : text;
 };
 
-const NewsIndex = ({ news }) => {
+export default function NewsPage({ news }) {
+  // Sort news by order field (lower numbers appear first)
+  const sortedNews = news ? news.sort((a, b) => {
+    // If order is not set (0), put them at the end
+    if (a.order === 0 && b.order === 0) return 0;
+    if (a.order === 0) return 1;
+    if (b.order === 0) return -1;
+    
+    // Sort by order (1, 2, 3, 4...)
+    return a.order - b.order;
+  }) : [];
+
   return (
     <>
       <MetaData
@@ -36,7 +47,7 @@ const NewsIndex = ({ news }) => {
           <p style={{ color: "#6c757d", marginTop: "8px" }}>Explore all the latest news and updates</p>
         </div>
 
-        {news.length === 0 ? (
+        {sortedNews.length === 0 ? (
           <div style={{ textAlign: "center", color: "#6b7280" }}>No news available.</div>
         ) : (
           <div
@@ -47,7 +58,7 @@ const NewsIndex = ({ news }) => {
               gap: "16px",
             }}
           >
-            {news.map((item, index) => (
+            {sortedNews.map((item, index) => (
               <div key={item.id || index} style={{ marginBottom: "12px" }}>
                 <div
                   style={{
@@ -124,7 +135,5 @@ const NewsIndex = ({ news }) => {
     </>
   );
 };
-
-export default NewsIndex;
 
 

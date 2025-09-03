@@ -48,9 +48,20 @@ const News = ({ item }) => {
             background: "#fff",
           }}
         >
-          <h1 style={{ marginBottom: "1rem", fontWeight: 700, color: "#003366" }}>
-            {item.title || "Untitled"}
-          </h1>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <h1 style={{ margin: 0, fontWeight: 700, color: "#003366" }}>
+              {item.title || "Untitled"}
+            </h1>
+            <span style={{ 
+              background: "#007bff", 
+              color: "white", 
+              padding: "4px 8px", 
+              borderRadius: "4px", 
+              fontSize: "14px" 
+            }}>
+              Order: {item.order || 0}
+            </span>
+          </div>
 
           {item.image && (
             <img
