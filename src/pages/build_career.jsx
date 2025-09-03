@@ -1,7 +1,81 @@
 import MetaData from "@/components/MetaData";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 const BuildCareer = () => {
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    country_code: '+971',
+    phone: '',
+    description: ''
+  });
+  const [cvFile, setCvFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(''); // 'success', 'error', ''
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setCvFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('');
+
+    try {
+      const data = new FormData();
+      data.append('first_name', formData.first_name);
+      data.append('last_name', formData.last_name);
+      data.append('email', formData.email);
+      data.append('country_code', formData.country_code);
+      data.append('phone', formData.phone);
+      data.append('description', formData.description);
+      if (cvFile) {
+        data.append('cv_resume', cvFile);
+      }
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/career/`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      setSubmitStatus('success');
+      // Reset form
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email: '',
+        country_code: '+971',
+        phone: '',
+        description: ''
+      });
+      setCvFile(null);
+      
+             // Don't auto-close modal - let user close it themselves
+
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
         <>
             <MetaData
@@ -315,53 +389,154 @@ const BuildCareer = () => {
                 <div className="modal fade" id="joinFormModal" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content">
-                            <div className="modal-header d-block">
+                            <div className="modal-header d-block position-relative">
                                 <h5 className="modal-title text-secondary" style={{ textAlign: "center" }}>Join Us</h5>
+                                <button 
+                                    type="button" 
+                                    className="btn-close position-absolute" 
+                                    style={{ top: "10px", right: "10px" }}
+                                    data-bs-dismiss="modal" 
+                                    aria-label="Close"
+                                ></button>
                             </div>
-                            <form action="#" method="POST" encType="multipart/form-data">
+                            <form onSubmit={handleSubmit} encType="multipart/form-data">
                                 <div className="modal-body">
                                     <div className="container-fluid">
                                         <div className="row mb-3">
                                             <div className="col-md-6">
                                                 <label className="form-label">First Name</label>
-                                                <input type="text" className="form-control w-100" required />
+                                                <input 
+                                                    type="text" 
+                                                    name="first_name"
+                                                    value={formData.first_name}
+                                                    onChange={handleInputChange}
+                                                    className="form-control w-100" 
+                                                    required 
+                                                />
                                             </div>
                                             <div className="col-md-6">
                                                 <label className="form-label">Last Name</label>
-                                                <input type="text" className="form-control w-100" required />
+                                                <input 
+                                                    type="text" 
+                                                    name="last_name"
+                                                    value={formData.last_name}
+                                                    onChange={handleInputChange}
+                                                    className="form-control w-100" 
+                                                    required 
+                                                />
                                             </div>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Email</label>
-                                            <input type="email" className="form-control w-100" required />
+                                            <input 
+                                                type="email" 
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleInputChange}
+                                                className="form-control w-100" 
+                                                required 
+                                            />
                                         </div>
                                         <div className="row mb-3">
                                             <div className="col-md-6">
                                                 <label className="form-label">Country Code</label>
-                                                <select className="form-select w-100" required>
-                                                    <option value="+971" defaultValue>
+                                                <select 
+                                                    name="country_code"
+                                                    value={formData.country_code}
+                                                    onChange={handleInputChange}
+                                                    className="form-select w-100" 
+                                                    required
+                                                >
+                                                    <option value="+971">
                                                         United Arab Emirates (+971)
                                                     </option>
+                                                    <option value="+1">United States (+1)</option>
+                                                    <option value="+44">United Kingdom (+44)</option>
+                                                    <option value="+91">India (+91)</option>
+                                                    <option value="+86">China (+86)</option>
                                                 </select>
                                             </div>
                                             <div className="col-md-6">
                                                 <label className="form-label">Phone Number</label>
-                                                <input type="tel" className="form-control w-100" required />
+                                                <input 
+                                                    type="tel" 
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleInputChange}
+                                                    className="form-control w-100" 
+                                                    required 
+                                                />
                                             </div>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Upload CV/Resume</label>
-                                            <input type="file" className="form-control w-100 h-100" required />
+                                            <input 
+                                                type="file" 
+                                                onChange={handleFileChange}
+                                                accept=".pdf,.doc,.docx,.txt"
+                                                className="form-control w-100 h-100" 
+                                                required 
+                                            />
+                                            <small className="text-muted">Accepted formats: PDF, DOC, DOCX, TXT (Max 5MB)</small>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Description</label>
-                                            <textarea className="form-control w-100" rows={4} placeholder="Say something..."></textarea>
+                                            <textarea 
+                                                name="description"
+                                                value={formData.description}
+                                                onChange={handleInputChange}
+                                                className="form-control w-100" 
+                                                rows={4} 
+                                                placeholder="Tell us about your experience, why you want to join RE/MAX, and any additional information..."
+                                            ></textarea>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                {/* Status Messages */}
+                                {submitStatus === 'success' && (
+                                    <div className="alert alert-success mx-3 mb-0">
+                                        <i className="fas fa-check-circle me-2"></i>
+                                        Application submitted successfully! We'll contact you soon.
+                                        {cvFile && (
+                                            <div className="mt-2">
+                                                <i className="fas fa-file-upload me-1"></i>
+                                                CV/Resume uploaded: {cvFile.name}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                                
+                                {submitStatus === 'error' && (
+                                    <div className="alert alert-danger mx-3 mb-0">
+                                        <i className="fas fa-exclamation-circle me-2"></i>
+                                        Error submitting application. Please try again.
+                                    </div>
+                                )}
+                                
                                 <div className="modal-footer">
-                                    <button type="submit" className="btn btn-secondary text-white">Submit</button>
-                                    <button type="button" className="btn btn-secondary text-white" data-bs-dismiss="modal">Cancel</button>
+                                    <button 
+                                        type="submit" 
+                                        className="btn btn-secondary text-white"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                Submitting...
+                                            </>
+                                        ) : (
+                                            'Submit Application'
+                                        )}
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-outline-secondary" 
+                                        data-bs-dismiss="modal"
+                                        disabled={isSubmitting}
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
                             </form>
                         </div>
