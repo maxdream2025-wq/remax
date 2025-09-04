@@ -195,7 +195,9 @@ const ReviewSlider = ({ testimonials }) => {
                   </div>
 
                   {status === "success" && (
-                    <div className="text-success mb-2">✅ Review submitted!</div>
+                    <div className="text-success mb-2">
+                      ✅ Review submitted successfully! Your review will be reviewed by our team and published once approved.
+                    </div>
                   )}
                   {status === "error" && (
                     <div className="text-danger mb-2">

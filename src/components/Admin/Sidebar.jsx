@@ -33,7 +33,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
           className={`text-white mb-2 ${activeMenu === "testimonial" ? "bg-primary rounded" : ""}`}
           onClick={() => setActiveMenu("testimonial")}
         >
-          Add Testimonial
+          Manage Reviews
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "interest" ? "bg-primary rounded" : ""}`}
