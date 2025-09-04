@@ -42,7 +42,7 @@ const News = ({ newsList }) => {
                     src={news.image ? `https://res.cloudinary.com/dkjpnznbf/${news.image}` : "#"}
                     alt={news.title}
                     className="card-img-top"
-                    style={{ height: "200px", objectFit: "cover" }}
+                    style={{ height: "250px", objectFit: "cover", objectPosition: "top" }}
                     onError={(e) => {
                       console.error("Failed to load image:", news.image);
                       e.target.src = "/assets/building_bg.jpg";
