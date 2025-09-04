@@ -164,18 +164,6 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <div style={{ 
-          marginTop: '20px', 
-          padding: '15px', 
-          backgroundColor: '#e9ecef', 
-          borderRadius: '4px',
-          fontSize: '14px',
-          color: '#6c757d'
-        }}>
-          <strong>Demo Credentials:</strong><br />
-          Username: admin<br />
-          Password: admin123
-        </div>
       </div>
     </div>
   );
