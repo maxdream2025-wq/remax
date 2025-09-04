@@ -15,7 +15,14 @@ const useBadgeCounts = () => {
   useEffect(() => {
     const fetchBadgeCounts = async () => {
       try {
-        const [testimonialsRes, newsletterRes, contactRes, interestRes] = await Promise.all([
+        // Only fetch if API_URL is available
+        if (!API_URL) {
+          console.warn('API_URL not available');
+          setLoading(false);
+          return;
+        }
+
+        const [testimonialsRes, newsletterRes, contactRes, interestRes] = await Promise.allSettled([
           axios.get(`${API_URL}/admin/testimonials/`),
           axios.get(`${API_URL}/newsletter/`),
           axios.get(`${API_URL}/contact/`),
@@ -23,23 +30,38 @@ const useBadgeCounts = () => {
         ]);
 
         // Count pending testimonials
-        const pendingTestimonials = testimonialsRes.data.filter(t => t.approval_status === 'pending').length;
+        let pendingTestimonials = 0;
+        if (testimonialsRes.status === 'fulfilled' && testimonialsRes.value.data) {
+          pendingTestimonials = testimonialsRes.value.data.filter(t => t.approval_status === 'pending').length;
+        }
         
         // Count new entries (assuming they have created_at field and we want recent ones)
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        const newNewsletter = newsletterRes.data.filter(item => 
-          new Date(item.created_at || item.date) > oneWeekAgo
-        ).length;
+        let newNewsletter = 0;
+        if (newsletterRes.status === 'fulfilled' && newsletterRes.value.data) {
+          newNewsletter = newsletterRes.value.data.filter(item => {
+            const itemDate = new Date(item.created_at || item.date || item.submitted_at);
+            return itemDate > oneWeekAgo;
+          }).length;
+        }
 
-        const newContact = contactRes.data.filter(item => 
-          new Date(item.created_at || item.date) > oneWeekAgo
-        ).length;
+        let newContact = 0;
+        if (contactRes.status === 'fulfilled' && contactRes.value.data) {
+          newContact = contactRes.value.data.filter(item => {
+            const itemDate = new Date(item.created_at || item.date || item.submitted_at);
+            return itemDate > oneWeekAgo;
+          }).length;
+        }
 
-        const newInterest = interestRes.data.filter(item => 
-          new Date(item.created_at || item.date) > oneWeekAgo
-        ).length;
+        let newInterest = 0;
+        if (interestRes.status === 'fulfilled' && interestRes.value.data) {
+          newInterest = interestRes.value.data.filter(item => {
+            const itemDate = new Date(item.created_at || item.date || item.submitted_at);
+            return itemDate > oneWeekAgo;
+          }).length;
+        }
 
         setBadgeCounts({
           testimonials: pendingTestimonials,
@@ -49,6 +71,13 @@ const useBadgeCounts = () => {
         });
       } catch (error) {
         console.error('Error fetching badge counts:', error);
+        // Set default values on error
+        setBadgeCounts({
+          testimonials: 0,
+          newsletter: 0,
+          contact: 0,
+          interest: 0
+        });
       } finally {
         setLoading(false);
       }

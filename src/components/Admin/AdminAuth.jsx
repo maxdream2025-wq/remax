@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const AdminAuth = ({ children }) => {
@@ -8,28 +8,44 @@ const AdminAuth = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem('adminToken');
-      const user = localStorage.getItem('adminUser');
-      
-      if (token && user) {
-        // Check if token is not expired (24 hours)
-        const tokenTime = parseInt(token.split('_')[2]);
-        const currentTime = Date.now();
-        const tokenAge = currentTime - tokenTime;
-        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+      try {
+        const token = localStorage.getItem('adminToken');
+        const user = localStorage.getItem('adminUser');
         
-        if (tokenAge < maxAge) {
-          setIsAuthenticated(true);
+        if (token && user) {
+          // Check if token is not expired (24 hours)
+          const tokenParts = token.split('_');
+          if (tokenParts.length >= 3) {
+            const tokenTime = parseInt(tokenParts[2]);
+            const currentTime = Date.now();
+            const tokenAge = currentTime - tokenTime;
+            const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+            
+            if (tokenAge < maxAge) {
+              setIsAuthenticated(true);
+            } else {
+              // Token expired
+              localStorage.removeItem('adminToken');
+              localStorage.removeItem('adminUser');
+              router.push('/admin/login');
+            }
+          } else {
+            // Invalid token format
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            router.push('/admin/login');
+          }
         } else {
-          // Token expired
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('adminUser');
           router.push('/admin/login');
         }
-      } else {
+      } catch (error) {
+        console.error('Auth check error:', error);
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
         router.push('/admin/login');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkAuth();

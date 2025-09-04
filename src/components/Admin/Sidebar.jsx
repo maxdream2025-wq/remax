@@ -4,6 +4,14 @@ import useBadgeCounts from "../../hooks/useBadgeCounts";
 
 const Sidebar = ({ activeMenu, setActiveMenu }) => {
   const { badgeCounts } = useBadgeCounts();
+  
+  // Fallback badge counts in case of error
+  const safeBadgeCounts = badgeCounts || {
+    testimonials: 0,
+    newsletter: 0,
+    contact: 0,
+    interest: 0
+  };
 
   const Badge = ({ count }) => {
     if (count === 0) return null;
@@ -57,7 +65,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <span>Manage Reviews</span>
-          <Badge count={badgeCounts.testimonials} />
+          <Badge count={safeBadgeCounts.testimonials} />
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "interest" ? "bg-primary rounded" : ""}`}
@@ -65,7 +73,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <span>Property Interest</span>
-          <Badge count={badgeCounts.interest} />
+          <Badge count={safeBadgeCounts.interest} />
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "newsletter" ? "bg-primary rounded" : ""}`}
@@ -73,7 +81,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <span>Newsletter</span>
-          <Badge count={badgeCounts.newsletter} />
+          <Badge count={safeBadgeCounts.newsletter} />
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "contact" ? "bg-primary rounded" : ""}`}
@@ -81,7 +89,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <span>Contact Form</span>
-          <Badge count={badgeCounts.contact} />
+          <Badge count={safeBadgeCounts.contact} />
         </Nav.Link>
       </Nav>
     </div>
