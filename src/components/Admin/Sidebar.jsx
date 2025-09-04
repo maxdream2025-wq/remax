@@ -1,7 +1,29 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
+import useBadgeCounts from "../../hooks/useBadgeCounts";
 
 const Sidebar = ({ activeMenu, setActiveMenu }) => {
+  const { badgeCounts } = useBadgeCounts();
+
+  const Badge = ({ count }) => {
+    if (count === 0) return null;
+    return (
+      <span style={{
+        backgroundColor: '#dc3545',
+        color: 'white',
+        borderRadius: '50%',
+        padding: '2px 6px',
+        fontSize: '10px',
+        fontWeight: 'bold',
+        marginLeft: '8px',
+        minWidth: '18px',
+        textAlign: 'center'
+      }}>
+        {count}
+      </span>
+    );
+  };
+
   return (
     <div className="bg-dark text-white vh-100 p-3" style={{ width: "250px" }}>
       <Nav className="flex-column">
@@ -32,26 +54,34 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "testimonial" ? "bg-primary rounded" : ""}`}
           onClick={() => setActiveMenu("testimonial")}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
-          Manage Reviews
+          <span>Manage Reviews</span>
+          <Badge count={badgeCounts.testimonials} />
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "interest" ? "bg-primary rounded" : ""}`}
           onClick={() => setActiveMenu("interest")}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
-          Property Interest
+          <span>Property Interest</span>
+          <Badge count={badgeCounts.interest} />
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "newsletter" ? "bg-primary rounded" : ""}`}
           onClick={() => setActiveMenu("newsletter")}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
-          Newsletter
+          <span>Newsletter</span>
+          <Badge count={badgeCounts.newsletter} />
         </Nav.Link>
         <Nav.Link
           className={`text-white mb-2 ${activeMenu === "contact" ? "bg-primary rounded" : ""}`}
           onClick={() => setActiveMenu("contact")}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
-          Contact Form
+          <span>Contact Form</span>
+          <Badge count={badgeCounts.contact} />
         </Nav.Link>
       </Nav>
     </div>

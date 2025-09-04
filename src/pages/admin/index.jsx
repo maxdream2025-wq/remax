@@ -1,8 +1,17 @@
 import AdminLayout from "@/components/Admin/AdminLayout";
+import AdminAuth from "@/components/Admin/AdminAuth";
 import React from "react";
 
-const Admin = () => {
-  return <AdminLayout />;
+const Admin = ({ logout }) => {
+  return <AdminLayout logout={logout} />;
 };
 
-export default Admin;
+const ProtectedAdmin = () => {
+  return (
+    <AdminAuth>
+      <Admin />
+    </AdminAuth>
+  );
+};
+
+export default ProtectedAdmin;
