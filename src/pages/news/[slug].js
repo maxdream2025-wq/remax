@@ -52,15 +52,7 @@ const News = ({ item }) => {
             <h1 style={{ margin: 0, fontWeight: 700, color: "#003366" }}>
               {item.title || "Untitled"}
             </h1>
-            <span style={{ 
-              background: "#007bff", 
-              color: "white", 
-              padding: "4px 8px", 
-              borderRadius: "4px", 
-              fontSize: "14px" 
-            }}>
-              Order: {item.order || 0}
-            </span>
+           
           </div>
 
           {item.image && (

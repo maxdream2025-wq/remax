@@ -1,6 +1,7 @@
 import React from "react";
 import RemaxMap from "../assets/Remax_Real_Estate_Map.jpg";
 import RemaxMap_2 from "../assets/slogan_img.jpg";
+import MobileBanner from "../assets/img.jpg"; // Mobile background image
 
 const Banner = () => {
   return (
@@ -9,30 +10,25 @@ const Banner = () => {
         className="full-bg-section rm_banner"
         id="height_gal_z"
         style={{
-          backgroundImage:
-            "url(https://remax.ae/public/uploads/pages/page_top_banner_image8853982.3747261.webp)",
+          backgroundImage: "url(https://remax.ae/public/uploads/pages/page_top_banner_image8853982.3747261.webp)",
         }}
       >
-        {/* <svg
-          className="outlined_borders"
-          width="1920"
-          height="1026"
-          viewBox="0 0 1920 1026"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect opacity="0.1" x="100" width="1" height="1026" fill="white" />
-          <rect opacity="0.1" x="529.75" width="1" height="1026" fill="white" />
-          <rect opacity="0.1" x="959.5" width="1" height="1026" fill="white" />
-          <rect
-            opacity="0.1"
-            x="1389.25"
-            width="1"
-            height="1026"
-            fill="white"
-          />
-          <rect opacity="0.1" x="1819" width="1" height="1026" fill="white" />
-        </svg> */}
+        {/* Mobile Background Image */}
+        <div 
+          className="d-block d-md-none mobile-banner-bg"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(${MobileBanner.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            zIndex: -1,
+          }}
+        ></div>
 
         <div id="header-placeholder"></div>
 
@@ -41,13 +37,28 @@ const Banner = () => {
           className="agent-img-section"
           style={{ minHeight: "100vh", width: "100%" }}
         >
+          {/* Desktop Banner */}
           <div
-            className="agent-banner"
+            className="agent-banner d-none d-md-block"
             style={{
               marginTop: "80px",
               height: "90vh",
               backgroundImage: `url(${RemaxMap.src})`,
               backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundColor: "white",
+            }}
+          ></div>
+          
+          {/* Mobile Banner */}
+          <div
+            className="agent-banner d-block d-md-none"
+            style={{
+              marginTop: "80px",
+              height: "90vh",
+              backgroundImage: `url(${MobileBanner.src})`,
+              backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
               backgroundColor: "white",
