@@ -127,6 +127,9 @@ const Header = () => {
                         isMobileOpen ? "show" : ""
                       }`}
                       id="navbarNav"
+                      style={{
+                        display: isMobileOpen ? "block" : "none"
+                      }}
                     >
                       <ul className="navbar-nav ml-auto">
                         <li className="nav-item doted_link">

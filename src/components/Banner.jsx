@@ -76,7 +76,7 @@ const Banner = () => {
               {/* Left Column: Content */}
               <div className="col-md-6">
                 <div className="content-text">
-                  <h3 className="fw-bold text-white text-start">
+                  <h3 className="fw-bold text-white text-start custom-heading">
                     We Bring Your Dreams to Reality
                     <br />
                     Because Nobody Sells More Than RE/MAX.
@@ -91,7 +91,7 @@ const Banner = () => {
                   </p>
                   <p style={{ color: "#fff" }} className="text-start">
                     What started as a simple idea on paper in{" "}
-                    <span style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                    <span style={{ fontSize: "32px", fontWeight: "bolder" }}>
                       1973
                     </span>{" "}
                     quickly grew into a global real estate success. Founders

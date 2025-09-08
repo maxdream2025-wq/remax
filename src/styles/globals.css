@@ -66,6 +66,7 @@ a {
 .gloabllocationpage {
   position: relative;
 }
+
 /* p{
   font-size: 20px;
   font-weight: 600;
@@ -84,30 +85,34 @@ iframe.goog-te-banner-frame,
 .goog-te-gadget {
   display: none !important;
 }
-body { top: 0px !important; }
 
-h1{
+body {
+  top: 0px !important;
+}
+
+h1 {
   font-weight: 700 !important;
 }
 
 .glass-form {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 15px;
-    border: 2px solid #007bff;
-    padding: 30px;
-    max-width: 1000px;
-    margin: auto;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 2px solid #007bff;
+  padding: 30px;
+  max-width: 1000px;
+  margin: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
+
 .custom-form {
-    max-width: 70%;
-    margin: 40px auto;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 40px;
+  max-width: 70%;
+  margin: 40px auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
 }
 
 .navbar-brand img {
@@ -120,19 +125,153 @@ h1{
 #navbarNav .doted_link {
   font-weight: 600 !important;
 }
+
+/* Mobile Menu Styles */
+.navbar-toggler {
+  border: none;
+  padding: 4px 8px;
+  background: transparent;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.mobile_nav_toggleBtn_line {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 3px 0;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+/* Mobile menu collapse styles */
+.navbar-collapse {
+  border-radius: 8px;
+  margin-top: 10px;
+  padding: 15px;
+}
+
+.navbar-collapse.show {
+  display: block !important;
+}
+
+/* Mobile menu items */
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .nav-item {
+    margin: 5px 0;
+  }
+  
+  .nav-link {
+    color: #fff !important;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .dropdown-menu {
+    position: static !important;
+    float: none;
+    width: 100%;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .dropdown-item {
+    color: #fff !important;
+    padding: 8px 15px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
 .logo_footer {
   padding-bottom: 0px !important;
 }
-.logo_footer a{
+
+.logo_footer a {
   z-index: 999;
 }
 
 @media screen and (max-width: 768px) {
-  .subheader{
+  .subheader {
     margin-top: -10px !important;
   }
-  .navbar-brand img{
+  .navbar-collapse::after {
+    top: 6px;
+    right: 27px !important;
+}
+
+  .navbar-brand img {
     max-width: 180px !important;
+  }
+
+  .custom-heading {
+    font-size: 20px !important;
+
+  }
+
+  .own_remax #our_remax_bg {
+    padding-top: 0;
+  }
+
+  .specificownremax.testimonialsmain {
+    padding: 10px;
+  }
+
+  .testimonialsmain .styleheadingmain {
+    padding-bottom: 50px;
+  }
+
+  #about_global_bg {
+    height: 176px;
+  }
+
+  .locations_era .location_content div img {
+    width: 100%;
+    height: auto;
+  }
+  .custom-form {
+    max-width: 100% !important;
+}
+
+  .full-bg-section.rm_banner {
+    padding-bottom: 0;
+  }
+
+  .buildcareerimg::before {
+    background-color: #0a1e4c30;
+  }
+
+  .own_remax #our_remax_bg:before {
+    background: #0a1e4c12;
+  }
+
+  .inner_form_ui_data {
+    margin-top: 0px !important;
+
+  }
+
+  .full-bg-section .inner_form_ui_data {
+    padding: 50px 10px !important;
+  }
+
+  .flexed_gallery {
+    height: 250px !important;
   }
 }
 
