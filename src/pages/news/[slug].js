@@ -25,7 +25,7 @@ export async function getServerSideProps({ params }) {
 }
 
 const News = ({ item }) => {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://remax.ae";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const canonicalUrl = item?.slug ? `${siteUrl}/news/${item.slug}` : `${siteUrl}/news`;
   const metaDescription = item?.desc ? (item.desc.length > 160 ? `${item.desc.slice(0, 160)}...` : item.desc) : "";
 
@@ -61,7 +61,7 @@ const News = ({ item }) => {
               alt={item.title || "News Image"}
               style={{
                 width: "100%",
-                height: "400px",
+                height: "auto",
                 objectFit: "cover",
                 borderRadius: "8px",
                 marginBottom: "16px",
