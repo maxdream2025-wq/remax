@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Editor } from '@tinymce/tinymce-react';
 
 const News = () => {
   const [newsList, setNewsList] = useState([]);
@@ -150,13 +151,30 @@ const News = () => {
             {Array.isArray(errors.title) ? errors.title.join(", ") : String(errors.title)}
           </div>
         )}
-        <textarea
-          placeholder="Description"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-          rows="4"
-          style={{ width: "100%", padding: "8px", margin: "10px 0" }}
-        />
+        <div style={{ margin: "10px 0" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+            Description:
+          </label>
+          <Editor
+            apiKey="no-api-key"
+            value={desc}
+            onEditorChange={(content) => setDesc(content)}
+            init={{
+              height: 300,
+              menubar: false,
+              plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+              ],
+              toolbar: 'undo redo | blocks | ' +
+                'bold italic forecolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+            }}
+          />
+        </div>
         {errors?.desc && (
           <div style={{ color: "#b00020", fontSize: "12px", marginTop: "-6px" }}>
             {Array.isArray(errors.desc) ? errors.desc.join(", ") : String(errors.desc)}
