@@ -19,14 +19,20 @@ const Header = () => {
     // Load Google Translate script
     if (!window.googleTranslateElementInit) {
       window.googleTranslateElementInit = function () {
-        new window.google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages: "en,fr,it,es,de,ru,hi,tr,fa,zh-CN",
-            autoDisplay: false,
-          },
-          "google_translate_element"
-        );
+        try {
+          if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+            new window.google.translate.TranslateElement(
+              {
+                pageLanguage: "en",
+                includedLanguages: "en,fr,it,es,de,ru,hi,tr,fa,zh-CN",
+                autoDisplay: false,
+              },
+              "google_translate_element"
+            );
+          }
+        } catch (error) {
+          console.warn("Google Translate not available:", error);
+        }
       };
       const addScript = document.createElement("script");
       addScript.src =
@@ -49,8 +55,12 @@ const Header = () => {
     }
 
     const handleRouteChange = () => {
-      if (window.googleTranslateElementInit) {
-        window.googleTranslateElementInit();
+      try {
+        if (window.googleTranslateElementInit && window.google && window.google.translate) {
+          window.googleTranslateElementInit();
+        }
+      } catch (error) {
+        console.warn("Google Translate initialization failed:", error);
       }
     };
     router.events.on("routeChangeComplete", handleRouteChange);

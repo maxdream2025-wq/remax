@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Editor } from '@tinymce/tinymce-react';
+import MDEditor from '@uiw/react-md-editor';
 
 const News = () => {
   const [newsList, setNewsList] = useState([]);
@@ -155,25 +155,17 @@ const News = () => {
           <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
             Description:
           </label>
-          <Editor
-            apiKey="no-api-key"
-            value={desc}
-            onEditorChange={(content) => setDesc(content)}
-            init={{
-              height: 300,
-              menubar: false,
-              plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'help', 'wordcount'
-              ],
-              toolbar: 'undo redo | blocks | ' +
-                'bold italic forecolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat | help',
-              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-            }}
-          />
+          <div data-color-mode="light">
+            <MDEditor
+              value={desc}
+              onChange={(val) => setDesc(val || '')}
+              height={300}
+              preview="edit"
+              hideToolbar={false}
+              visibleDragBar={false}
+              data-color-mode="light"
+            />
+          </div>
         </div>
         {errors?.desc && (
           <div style={{ color: "#b00020", fontSize: "12px", marginTop: "-6px" }}>
