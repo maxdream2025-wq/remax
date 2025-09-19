@@ -85,7 +85,7 @@ const Header = () => {
           transition: "background-color 0.3s ease",
         }}
       >
-        <div className="subheader" style={{ marginTop: "22px" }}>
+        <div className="subheader" style={{ marginTop: "14px" }}>
           <nav
             className={`navbar navbar-expand-lg ${
               isBuildCareer ? "navbar-dark" : "navbar-light"
