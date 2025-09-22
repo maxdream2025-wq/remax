@@ -47,7 +47,8 @@ const PropertyDetails = ({ property }) => {
               <div className="col-md-4">
                 <img
                   src={prop.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${prop.property_gallery}` : "/assets/building_bg.jpg"}
-                  className="img-fluid h-100 w-100 object-fit-cover"
+                  className="img-fluid w-100 object-fit-cover"
+                  style={{ height: "260px" }}
                   alt={prop.property_name}
                   onError={(e) => {
                     console.error("Failed to load image:", prop.property_gallery);
