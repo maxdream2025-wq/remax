@@ -19,20 +19,16 @@ const Property = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get(API_URL);
-      const data = res.data;
-      const list = Array.isArray(data) ? data : (data?.results || []);
-      const sortedCategories = sortCategories(list);
+      const sortedCategories = sortCategories(res.data);
       setCategories(sortedCategories);
     } catch (err) {
       console.error(err);
-      setCategories([]);
     }
   };
 
   // Sort categories: selected ones first, then by creation date
   const sortCategories = (categoriesData) => {
-    const arr = Array.isArray(categoriesData) ? [...categoriesData] : [];
-    return arr.sort((a, b) => {
+    return categoriesData.sort((a, b) => {
       // First, sort by selection status (selected categories first)
       const aSelected = selectedCategories.includes(a.id);
       const bSelected = selectedCategories.includes(b.id);
@@ -107,12 +103,8 @@ const Property = () => {
       if (image) formData.append("image", image);
       formData.append("developer", developer);
 
-      const response = await axios.post(API_URL, {
-        title,
-        description,
-        property_category: propertyCategory,
-        order,
-        developer,
+      const response = await axios.post(API_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       resetForm();
@@ -130,15 +122,17 @@ const Property = () => {
 
   const updateCategory = async () => {
     try {
-      const payload = {
-        title,
-        description,
-        property_category: propertyCategory,
-        order,
-        developer,
-      };
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("property_category", propertyCategory);
+      formData.append("order", order);
+      if (image) formData.append("image", image);
+      formData.append("developer", developer);
 
-      await axios.put(`${API_URL}${editId}/`, payload);
+      await axios.put(`${API_URL}${editId}/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       resetForm();
       
@@ -150,7 +144,8 @@ const Property = () => {
   };
 
   const editCategory = (cat) => {
- 
+
+    
     setEditMode(true);
     setEditId(cat.id);
     setTitle(cat.title);
@@ -353,85 +348,77 @@ const Property = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(categories) && categories.length > 0 ? (
-              categories.map((cat) => (
-                <tr 
-                  key={cat.id} 
-                  style={{ 
-                    borderBottom: "1px solid #eee",
-                    backgroundColor: selectedCategories.includes(cat.id) ? "#e8f5e8" : "transparent"
-                  }}
-                >
-                  <td style={{ padding: "10px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes(cat.id)}
-                      onChange={() => toggleCategorySelection(cat.id)}
-                      style={{ transform: "scale(1.2)" }}
+            {categories.map((cat) => (
+              <tr 
+                key={cat.id} 
+                style={{ 
+                  borderBottom: "1px solid #eee",
+                  backgroundColor: selectedCategories.includes(cat.id) ? "#e8f5e8" : "transparent"
+                }}
+              >
+                <td style={{ padding: "10px" }}>
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(cat.id)}
+                    onChange={() => toggleCategorySelection(cat.id)}
+                    style={{ transform: "scale(1.2)" }}
+                  />
+                </td>
+                <td style={{ padding: "10px" }}>
+                  {cat.image && (
+                    <img 
+                      src={`https://res.cloudinary.com/dkjpnznbf/${cat.image}`}
+                      alt={cat.title} 
+                      style={{ 
+                        width: "60px", 
+                        height: "40px", 
+                        objectFit: "cover",
+                        borderRadius: "4px"
+                      }} 
+                      onError={(e) => {
+                        console.error("Failed to load image:", cat.image);
+                        e.target.style.display = "none";
+                      }}
                     />
-                  </td>
-                  <td style={{ padding: "10px" }}>
-                    {cat.image && (
-                      <img 
-                        src={`https://res.cloudinary.com/dkjpnznbf/${cat.image}`}
-                        alt={cat.title} 
-                        style={{ 
-                          width: "60px", 
-                          height: "40px", 
-                          objectFit: "cover",
-                          borderRadius: "4px"
-                        }} 
-                        onError={(e) => {
-                          console.error("Failed to load image:", cat.image);
-                          e.target.style.display = "none";
-                        }}
-                      />
-                    )}
-                  </td>
+                  )}
+                                  </td>
                   <td style={{ padding: "10px" }}>{cat.order}</td>
                   <td style={{ padding: "10px" }}>{cat.title}</td>
-                  <td style={{ padding: "10px" }}>{cat.description}</td>
-                  <td style={{ padding: "10px" }}>{cat.property_category}</td>
-                  <td style={{ padding: "10px" }}>{cat.developer ? "Yes" : "No"}</td>
-                  <td style={{ padding: "10px" }}>
-                    <div style={{ display: "flex", gap: "5px" }}>
-                      <button
-                        onClick={() => editCategory(cat)}
-                        style={{
-                          padding: "5px 10px",
-                          backgroundColor: "#ffc107",
-                          color: "#000",
-                          border: "none",
-                          cursor: "pointer",
-                          borderRadius: "3px",
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => deleteCategory(cat.id)}
-                        style={{
-                          padding: "5px 10px",
-                          backgroundColor: "#dc3545",
-                          color: "#fff",
-                          border: "none",
-                          cursor: "pointer",
-                          borderRadius: "3px",
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8" style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}>
-                  No categories found.
+                <td style={{ padding: "10px" }}>{cat.description}</td>
+                <td style={{ padding: "10px" }}>{cat.property_category}</td>
+                <td style={{ padding: "10px" }}>{cat.developer ? "Yes" : "No"}</td>
+                <td style={{ padding: "10px" }}>
+                  <div style={{ display: "flex", gap: "5px" }}>
+                    <button
+                      onClick={() => editCategory(cat)}
+                      style={{
+                        padding: "5px 10px",
+                        backgroundColor: "#ffc107",
+                        color: "#000",
+                        border: "none",
+                        cursor: "pointer",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteCategory(cat.id)}
+                      style={{
+                        padding: "5px 10px",
+                        backgroundColor: "#dc3545",
+                        color: "#fff",
+                        border: "none",
+                        cursor: "pointer",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
