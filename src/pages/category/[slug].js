@@ -3,7 +3,7 @@ import InterestModal from "@/components/InterestModal";
 import MetaData from "@/components/MetaData";
 import React, { useState } from "react";
 
-const PropertyDetails = ({ property }) => {
+const PropertyDetails = ({ property, pagination, slug }) => {
   const [selectedPropertyId, setSelectedPropertyId] = useState("");
   
   // Debug: Log property data to see image paths
@@ -127,6 +127,31 @@ const PropertyDetails = ({ property }) => {
             </div>
           </div>
         ))}
+
+        {/* Pagination Controls */}
+        <div className="d-flex justify-content-between align-items-center mt-4">
+          <div>
+            <span className="text-muted">Total: {pagination?.count ?? property.length}</span>
+          </div>
+          <div className="btn-group">
+            {pagination?.previous && (
+              <a
+                className="btn btn-outline-secondary"
+                href={`/category/${slug}?page=${Math.max((pagination?.page || 1) - 1, 1)}`}
+              >
+                Previous
+              </a>
+            )}
+            {pagination?.next && (
+              <a
+                className="btn btn-outline-secondary"
+                href={`/category/${slug}?page=${(pagination?.page || 1) + 1}`}
+              >
+                Next
+              </a>
+            )}
+          </div>
+        </div>
       </div>
      </div>
       {/* Render modal once, pass selected property id */}
@@ -137,22 +162,31 @@ const PropertyDetails = ({ property }) => {
 
 export async function getServerSideProps(context) {
   const { slug } = context.params;
+  const { page = 1 } = context.query || {};
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/category/${slug}/properties`
+      `${process.env.NEXT_PUBLIC_API_URL}/category/${slug}/properties?page=${page}`
     );
     const data = await res.json();
 
+    const results = Array.isArray(data) ? data : (data?.results || []);
+
     return {
       props: {
-        property: data || [],
+        property: results,
+        pagination: Array.isArray(data)
+          ? { count: results.length, next: null, previous: null, page: Number(page) }
+          : { count: data?.count ?? results.length, next: data?.next || null, previous: data?.previous || null, page: Number(page) },
+        slug,
       },
     };
   } catch (error) {
     return {
       props: {
         property: [],
+        pagination: { count: 0, next: null, previous: null, page: 1 },
+        slug,
       },
     };
   }

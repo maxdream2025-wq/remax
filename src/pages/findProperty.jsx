@@ -17,6 +17,7 @@ export async function getServerSideProps({ query }) {
 
     // Fetch properties if search parameters are provided
     let properties = [];
+    let pagination = { count: 0, next: null, previous: null, page: 1 };
     let searchError = null;
 
     if (query.location) {
@@ -35,8 +36,16 @@ export async function getServerSideProps({ query }) {
         if (query.areaMin) searchParams.append('areaMin', query.areaMin);
         if (query.areaMax) searchParams.append('areaMax', query.areaMax);
 
+        // Pagination
+        const page = query.page || 1;
+        searchParams.append('page', page);
+
         const propertiesRes = await axios.get(`${FIND_PROPERTY_API_URL}?${searchParams.toString()}`);
-        properties = propertiesRes.data;
+        const data = propertiesRes.data;
+        properties = Array.isArray(data) ? data : (data.results || []);
+        pagination = Array.isArray(data)
+          ? { count: properties.length, next: null, previous: null, page: Number(page) }
+          : { count: data.count ?? properties.length, next: data.next || null, previous: data.previous || null, page: Number(page) };
       } catch (error) {
         if (error.response?.data?.error) {
           searchError = error.response.data.error;
@@ -51,6 +60,7 @@ export async function getServerSideProps({ query }) {
       props: { 
         categories,
         properties,
+        pagination,
         searchError,
         searchParams: query
       } 
@@ -61,6 +71,7 @@ export async function getServerSideProps({ query }) {
       props: { 
         categories: [],
         properties: [],
+        pagination: { count: 0, next: null, previous: null, page: 1 },
         searchError: "Failed to load categories. Please try again.",
         searchParams: query
       } 
@@ -68,7 +79,7 @@ export async function getServerSideProps({ query }) {
   }
 }
 
-const FindProperty = ({ categories, properties, searchError, searchParams }) => {
+const FindProperty = ({ categories, properties, pagination, searchError, searchParams }) => {
 	// Sort categories by order field (lower numbers appear first)
 	const sortedCategories = categories ? categories.sort((a, b) => {
 		// If order is not set (0), put them at the end
@@ -94,13 +105,42 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 				categories={categories}
 				properties={properties}
 				searchError={searchError}
-				searchParams={searchParams}
+				s earchParams={searchParams}
 			/>
 			<SearchResult 
 				properties={properties}
 				searchError={searchError}
 				searchParams={searchParams}
 			/>
+
+			{/* Pagination controls for search results */}
+			{searchParams.location && (
+				<div className="container" style={{ marginTop: "-20px" }}>
+					<div className="d-flex justify-content-between align-items-center py-3">
+						<div>
+							<span className="text-muted">Total: {pagination?.count ?? properties.length}</span>
+						</div>
+						<div className="btn-group">
+							{pagination?.previous && (
+								<Link
+									href={{ pathname: "/findProperty", query: { ...searchParams, page: Math.max((pagination?.page || 1) - 1, 1) } }}
+									className="btn btn-outline-secondary"
+								>
+									Previous
+								</Link>
+							)}
+							{pagination?.next && (
+								<Link
+									href={{ pathname: "/findProperty", query: { ...searchParams, page: (pagination?.page || 1) + 1 } }}
+									className="btn btn-outline-secondary"
+								>
+									Next
+								</Link>
+							)}
+						</div>
+					</div>
+				</div>
+			)}
 
 			<section id="top_areas" className="bg-white pt-5 topareas_ paddingeneral" style={{minHeight: "100vh"}}>
 				<div className="container-fluid">

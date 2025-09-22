@@ -4,14 +4,19 @@ import MetaData from "../../components/MetaData.jsx";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   try {
-    const res = await fetch(API_URL);
+    const page = query?.page || 1;
+    const res = await fetch(`${API_URL}?page=${page}`);
     if (!res.ok) throw new Error("Failed to fetch news");
-    const news = await res.json();
-    return { props: { news } };
+    const data = await res.json();
+    const news = Array.isArray(data) ? data : (data.results || []);
+    const pagination = Array.isArray(data)
+      ? { count: news.length, next: null, previous: null, page: Number(page) }
+      : { count: data.count ?? news.length, next: data.next || null, previous: data.previous || null, page: Number(page) };
+    return { props: { news, pagination } };
   } catch (e) {
-    return { props: { news: [] } };
+    return { props: { news: [], pagination: { count: 0, next: null, previous: null, page: 1 } } };
   }
 }
 
@@ -20,7 +25,7 @@ const truncate = (text, max) => {
   return text.length > max ? `${text.slice(0, max)}...` : text;
 };
 
-export default function NewsPage({ news }) {
+export default function NewsPage({ news, pagination }) {
   // Sort news by order field (lower numbers appear first)
   const sortedNews = news ? news.sort((a, b) => {
     // If order is not set (0), put them at the end
@@ -130,10 +135,28 @@ export default function NewsPage({ news }) {
             ))}
           </div>
         )}
+        {/* Pagination */}
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
+          <div>
+            <span style={{ color: "#6c757d" }}>Total: {pagination?.count ?? sortedNews.length}</span>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {pagination?.previous && (
+              <Link href={`/news?page=${Math.max((pagination?.page || 1) - 1, 1)}`} className="btn btn-outline-secondary">
+                Previous
+              </Link>
+            )}
+            {pagination?.next && (
+              <Link href={`/news?page=${(pagination?.page || 1) + 1}`} className="btn btn-outline-secondary">
+                Next
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </section>
     </>
   );
-};
+}
 
 
