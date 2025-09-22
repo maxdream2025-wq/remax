@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MDEditor from '@uiw/react-md-editor';
 
 const News = () => {
   const [newsList, setNewsList] = useState([]);
@@ -155,17 +154,13 @@ const News = () => {
           <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
             Description:
           </label>
-          <div data-color-mode="light">
-            <MDEditor
-              value={desc}
-              onChange={(val) => setDesc(val || '')}
-              height={300}
-              preview="edit"
-              hideToolbar={false}
-              visibleDragBar={false}
-              data-color-mode="light"
-            />
-          </div>
+          <textarea
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            rows={10}
+            placeholder="Write description..."
+            style={{ width: "100%", padding: "8px", fontFamily: "inherit", resize: "vertical" }}
+          />
         </div>
         {errors?.desc && (
           <div style={{ color: "#b00020", fontSize: "12px", marginTop: "-6px" }}>
