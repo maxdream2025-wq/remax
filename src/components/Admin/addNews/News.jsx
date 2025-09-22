@@ -26,9 +26,12 @@ const News = () => {
   const fetchNews = async () => {
     try {
       const res = await axios.get(API_URL);
-      setNewsList(res.data);
+      const data = res.data;
+      const list = Array.isArray(data) ? data : (data?.results || []);
+      setNewsList(list);
     } catch (err) {
       console.error(err);
+      setNewsList([]);
     }
   };
 
@@ -320,74 +323,82 @@ const News = () => {
             </tr>
           </thead>
           <tbody>
-            {newsList.map((item) => (
-              <tr key={item.id} style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "10px" }}>
-                  {item.image ? (
-                    <img 
-                      src={`https://res.cloudinary.com/dkjpnznbf/${item.image}`}
-                      alt={item.title} 
-                      style={{ 
-                        width: "60px", 
-                        height: "40px", 
-                        objectFit: "cover",
-                        borderRadius: "4px"
-                      }} 
-                      onError={(e) => {
-                        // Hide broken images
-                        e.target.style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td style={{ padding: "10px" }}>{item.title}</td>
-                <td style={{ padding: "10px" }}>
-                  <div
-                    style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "300px" }}
-                    title={item.desc}
-                  >
-                    {item.desc}
-                  </div>
-                </td>
-                <td style={{ padding: "10px" }}>{item.date}</td>
-                <td style={{ padding: "10px" }}>
-                  {item.feature ? "Yes" : "No"}
-                </td>
-                <td style={{ padding: "10px" }}>{item.order}</td>
-                <td style={{ padding: "10px" }}>
-                  <div style={{ display: "flex", gap: "5px" }}>
-                    <button
-                      onClick={() => editNews(item)}
-                      style={{
-                        padding: "5px 10px",
-                        backgroundColor: "#ffc107",
-                        color: "#000",
-                        border: "none",
-                        cursor: "pointer",
-                        borderRadius: "3px",
-                      }}
+            {Array.isArray(newsList) && newsList.length > 0 ? (
+              newsList.map((item) => (
+                <tr key={item.id} style={{ borderBottom: "1px solid #eee" }}>
+                  <td style={{ padding: "10px" }}>
+                    {item.image ? (
+                      <img 
+                        src={`https://res.cloudinary.com/dkjpnznbf/${item.image}`}
+                        alt={item.title} 
+                        style={{ 
+                          width: "60px", 
+                          height: "40px", 
+                          objectFit: "cover",
+                          borderRadius: "4px"
+                        }} 
+                        onError={(e) => {
+                          // Hide broken images
+                          e.target.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td style={{ padding: "10px" }}>{item.title}</td>
+                  <td style={{ padding: "10px" }}>
+                    <div
+                      style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "300px" }}
+                      title={item.desc}
                     >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => deleteNews(item.slug)}
-                      style={{
-                        padding: "5px 10px",
-                        backgroundColor: "#dc3545",
-                        color: "#fff",
-                        border: "none",
-                        cursor: "pointer",
-                        borderRadius: "3px",
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                      {item.desc}
+                    </div>
+                  </td>
+                  <td style={{ padding: "10px" }}>{item.date}</td>
+                  <td style={{ padding: "10px" }}>
+                    {item.feature ? "Yes" : "No"}
+                  </td>
+                  <td style={{ padding: "10px" }}>{item.order}</td>
+                  <td style={{ padding: "10px" }}>
+                    <div style={{ display: "flex", gap: "5px" }}>
+                      <button
+                        onClick={() => editNews(item)}
+                        style={{
+                          padding: "5px 10px",
+                          backgroundColor: "#ffc107",
+                          color: "#000",
+                          border: "none",
+                          cursor: "pointer",
+                          borderRadius: "3px",
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteNews(item.slug)}
+                        style={{
+                          padding: "5px 10px",
+                          backgroundColor: "#dc3545",
+                          color: "#fff",
+                          border: "none",
+                          cursor: "pointer",
+                          borderRadius: "3px",
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}>
+                  No news found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
