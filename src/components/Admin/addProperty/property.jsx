@@ -35,9 +35,12 @@ const Property = () => {
   const fetchProperties = async () => {
     try {
       const res = await axios.get(API_URL);
-      setProperties(res.data);
+      const data = res.data;
+      const list = Array.isArray(data) ? data : (data?.results || []);
+      setProperties(list);
     } catch (err) {
       console.error(err);
+      setProperties([]);
     }
   };
 
@@ -49,7 +52,9 @@ const Property = () => {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`
         );
-        setCategories(res.data);
+        const data = res.data;
+        const list = Array.isArray(data) ? data : (data?.results || []);
+        setCategories(list);
       } catch (err) {
         setCategories([]);
       } finally {
@@ -355,7 +360,7 @@ const Property = () => {
         <div className="alert alert-danger">
           <ul className="mb-0">
             {Object.entries(errors).map(([field, msgs]) =>
-              msgs.map((msg, idx) => (
+              (Array.isArray(msgs) ? msgs : [msgs]).map((msg, idx) => (
                 <li key={field + idx}>
                   <strong>{field.replace("_", " ")}:</strong> {msg}
                 </li>
@@ -607,92 +612,98 @@ const Property = () => {
             </tr>
           </thead>
           <tbody>
-            {properties.map((property) => (
-              <tr key={property.id}>
-                <td>
-                  {property.property_gallery ? (
-                    <img 
-                      src={`https://res.cloudinary.com/dkjpnznbf/${property.property_gallery}`}
-                      alt={property.property_name}
-                      className="property-image"
-                      style={{ 
-                        width: "80px", 
-                        height: "60px", 
-                        objectFit: "cover",
-                        borderRadius: "4px",
-                        border: "1px solid #ddd"
-                      }}
-                      onError={(e) => {
-                        console.error("Failed to load image:", property.property_gallery);
-                        e.target.src = "/assets/building_bg.jpg";
-                      }}
-                    />
-                  ) : (
-                    <div 
-                      style={{ 
-                        width: "80px", 
-                        height: "60px", 
-                        backgroundColor: "#f8f9fa",
-                        border: "1px solid #ddd",
-                        borderRadius: "4px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "#6c757d",
-                        fontSize: "12px"
-                      }}
-                    >
-                      No Image
-                    </div>
-                  )}
-                </td>
-                <td>
-                  <strong>{property.property_name}</strong>
-                  {property.property_sub_heading && (
-                    <div className="text-muted small">{property.property_sub_heading}</div>
-                  )}
-                </td>
-                <td>{property.category?.property_category || property.category?.title || "N/A"}</td>
-                <td>{property.location}</td>
-                <td>
-                  <span className={`badge ${property.status === 'Available' ? 'bg-success' : 'bg-warning'}`}>
-                    {property.status}
-                  </span>
-                </td>
-                <td>
-                  {property.starting_price && (
-                    <span className="text-primary fw-bold">
-                      AED {parseInt(property.starting_price).toLocaleString()}
+            {Array.isArray(properties) && properties.length > 0 ? (
+              properties.map((property) => (
+                <tr key={property.id}>
+                  <td>
+                    {property.property_gallery ? (
+                      <img 
+                        src={`https://res.cloudinary.com/dkjpnznbf/${property.property_gallery}`}
+                        alt={property.property_name}
+                        className="property-image"
+                        style={{ 
+                          width: "80px", 
+                          height: "60px", 
+                          objectFit: "cover",
+                          borderRadius: "4px",
+                          border: "1px solid #ddd"
+                        }}
+                        onError={(e) => {
+                          console.error("Failed to load image:", property.property_gallery);
+                          e.target.src = "/assets/building_bg.jpg";
+                        }}
+                      />
+                    ) : (
+                      <div 
+                        style={{ 
+                          width: "80px", 
+                          height: "60px", 
+                          backgroundColor: "#f8f9fa",
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#6c757d",
+                          fontSize: "12px"
+                        }}
+                      >
+                        No Image
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    <strong>{property.property_name}</strong>
+                    {property.property_sub_heading && (
+                      <div className="text-muted small">{property.property_sub_heading}</div>
+                    )}
+                  </td>
+                  <td>{property.category?.property_category || property.category?.title || "N/A"}</td>
+                  <td>{property.location}</td>
+                  <td>
+                    <span className={`badge ${property.status === 'Available' ? 'bg-success' : 'bg-warning'}`}>
+                      {property.status}
                     </span>
-                  )}
-                </td>
-                <td>
-                  <div className="btn-group" role="group">
-                    <button
-                      onClick={() => handleEdit(property)}
-                      className="btn btn-warning btn-sm"
-                      title="Edit Property"
-                    >
-                      <i className="fas fa-edit"></i> Edit
-                    </button>
-                    <button
-                      onClick={() => openImageEditor(property.id)}
-                      className="btn btn-info btn-sm"
-                      title="Edit Image"
-                    >
-                      <i className="fas fa-image"></i> Image
-                    </button>
-                    <button
-                      onClick={() => handleDelete(property.id)}
-                      className="btn btn-danger btn-sm"
-                      title="Delete Property"
-                    >
-                      <i className="fas fa-trash"></i> Delete
-                    </button>
-                  </div>
-                </td>
+                  </td>
+                  <td>
+                    {property.starting_price && (
+                      <span className="text-primary fw-bold">
+                        AED {parseInt(property.starting_price).toLocaleString()}
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    <div className="btn-group" role="group">
+                      <button
+                        onClick={() => handleEdit(property)}
+                        className="btn btn-warning btn-sm"
+                        title="Edit Property"
+                      >
+                        <i className="fas fa-edit"></i> Edit
+                      </button>
+                      <button
+                        onClick={() => openImageEditor(property.id)}
+                        className="btn btn-info btn-sm"
+                        title="Edit Image"
+                      >
+                        <i className="fas fa-image"></i> Image
+                      </button>
+                      <button
+                        onClick={() => handleDelete(property.id)}
+                        className="btn btn-danger btn-sm"
+                        title="Delete Property"
+                      >
+                        <i className="fas fa-trash"></i> Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="text-center text-muted py-4">No properties found.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

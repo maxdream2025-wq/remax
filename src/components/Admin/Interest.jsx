@@ -10,15 +10,18 @@ const Interest = () => {
     fetchInquiries()
   }, [])
 
+  const toArray = (data) => (Array.isArray(data) ? data : (data?.results || []))
+
   const fetchInquiries = async () => {
     try {
       setLoading(true)
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/inquiry/`)
-      setInquiries(response.data)
+      setInquiries(toArray(response.data))
       setError(null)
     } catch (err) {
       console.error('Error fetching inquiries:', err)
       setError('Failed to load inquiries')
+      setInquiries([])
     } finally {
       setLoading(false)
     }
@@ -70,7 +73,7 @@ const Interest = () => {
         </button>
       </div>
 
-      {inquiries.length === 0 ? (
+      {(!Array.isArray(inquiries) || inquiries.length === 0) ? (
         <div className="alert alert-info" role="alert">
           <i className="fas fa-info-circle me-2"></i>
           No inquiries found.
@@ -97,12 +100,12 @@ const Interest = () => {
                   <tr key={inquiry.id} className="text-dark">
                     <td className="text-dark">{inquiry.id}</td>
                     <td className="text-dark">
-                      <strong>{inquiry.property.property_name || 'N/A'}</strong>
+                      <strong>{inquiry.property?.property_name || 'N/A'}</strong>
                     </td>
 
 
                     <td className="text-dark">
-                      <span className="badge bg-primary">{inquiry.property.category?.title || 'N/A'}</span>
+                      <span className="badge bg-primary">{inquiry.property?.category?.title || 'N/A'}</span>
                     </td>
                     <td className="text-dark">
                       <strong>{inquiry.full_name}</strong>
@@ -137,7 +140,7 @@ const Interest = () => {
 
       <div className="mt-3">
         <small className="text-muted">
-          Total Inquiries: {inquiries.length}
+          Total Inquiries: {Array.isArray(inquiries) ? inquiries.length : 0}
         </small>
       </div>
     </div>

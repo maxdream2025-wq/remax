@@ -12,12 +12,11 @@ export async function getServerSideProps({ query }) {
   try {
     // Fetch categories
     const categoriesRes = await axios.get(CATEGORIES_API_URL);
-    const categories = categoriesRes.data;
+    const categories = Array.isArray(categoriesRes.data) ? categoriesRes.data : (categoriesRes.data?.results || []);
 	console.log(categories, 'categories')
 
     // Fetch properties if search parameters are provided
     let properties = [];
-    let pagination = { count: 0, next: null, previous: null, page: 1 };
     let searchError = null;
 
     if (query.location) {
@@ -36,16 +35,9 @@ export async function getServerSideProps({ query }) {
         if (query.areaMin) searchParams.append('areaMin', query.areaMin);
         if (query.areaMax) searchParams.append('areaMax', query.areaMax);
 
-        // Pagination
-        const page = query.page || 1;
-        searchParams.append('page', page);
-
         const propertiesRes = await axios.get(`${FIND_PROPERTY_API_URL}?${searchParams.toString()}`);
         const data = propertiesRes.data;
         properties = Array.isArray(data) ? data : (data.results || []);
-        pagination = Array.isArray(data)
-          ? { count: properties.length, next: null, previous: null, page: Number(page) }
-          : { count: data.count ?? properties.length, next: data.next || null, previous: data.previous || null, page: Number(page) };
       } catch (error) {
         if (error.response?.data?.error) {
           searchError = error.response.data.error;
@@ -60,7 +52,6 @@ export async function getServerSideProps({ query }) {
       props: { 
         categories,
         properties,
-        pagination,
         searchError,
         searchParams: query
       } 
@@ -71,7 +62,6 @@ export async function getServerSideProps({ query }) {
       props: { 
         categories: [],
         properties: [],
-        pagination: { count: 0, next: null, previous: null, page: 1 },
         searchError: "Failed to load categories. Please try again.",
         searchParams: query
       } 
@@ -79,9 +69,12 @@ export async function getServerSideProps({ query }) {
   }
 }
 
-const FindProperty = ({ categories, properties, pagination, searchError, searchParams }) => {
+const FindProperty = ({ categories, properties, searchError, searchParams }) => {
+	// Normalize to array in case API returned a paginated object
+	const categoriesArray = Array.isArray(categories) ? categories : (categories?.results || []);
+
 	// Sort categories by order field (lower numbers appear first)
-	const sortedCategories = categories ? categories.sort((a, b) => {
+	const sortedCategories = categoriesArray ? categoriesArray.sort((a, b) => {
 		// If order is not set (0), put them at the end
 		if (a.order === 0 && b.order === 0) return 0;
 		if (a.order === 0) return 1;
@@ -102,45 +95,16 @@ const FindProperty = ({ categories, properties, pagination, searchError, searchP
 				url="https://remax.ae/findProperty"
 			/>
 			<SearchForm 
-				categories={categories}
+				categories={sortedCategories}
 				properties={properties}
 				searchError={searchError}
-				s earchParams={searchParams}
+				searchParams={searchParams}
 			/>
 			<SearchResult 
 				properties={properties}
 				searchError={searchError}
 				searchParams={searchParams}
 			/>
-
-			{/* Pagination controls for search results */}
-			{searchParams.location && (
-				<div className="container" style={{ marginTop: "-20px" }}>
-					<div className="d-flex justify-content-between align-items-center py-3">
-						<div>
-							<span className="text-muted">Total: {pagination?.count ?? properties.length}</span>
-						</div>
-						<div className="btn-group">
-							{pagination?.previous && (
-								<Link
-									href={{ pathname: "/findProperty", query: { ...searchParams, page: Math.max((pagination?.page || 1) - 1, 1) } }}
-									className="btn btn-outline-secondary"
-								>
-									Previous
-								</Link>
-							)}
-							{pagination?.next && (
-								<Link
-									href={{ pathname: "/findProperty", query: { ...searchParams, page: (pagination?.page || 1) + 1 } }}
-									className="btn btn-outline-secondary"
-								>
-									Next
-								</Link>
-							)}
-						</div>
-					</div>
-				</div>
-			)}
 
 			<section id="top_areas" className="bg-white pt-5 topareas_ paddingeneral" style={{minHeight: "100vh"}}>
 				<div className="container-fluid">
@@ -158,28 +122,26 @@ const FindProperty = ({ categories, properties, pagination, searchError, searchP
 								<p className="text-muted">No categories available.</p>
 							</div>
 						) : (
-							sortedCategories
-								.filter(category => category.developer) // <-- Only show if developer is true
-								.map((category) => (
-									<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
-										<div className="flexed_gallery w-100" style={{ height: "350px" }}>
-											<Link href={`/category/${category.slug}`}>
-												<img 
-													src={category.image ? `https://res.cloudinary.com/dkjpnznbf/${category.image}` : ""} 
-													alt={category.title || category.property_category} 
-													style={{ width: "100%", height: "100%", objectFit: "cover" }}
-													onError={(e) => {
-														console.error("Failed to load image:", category.image);
-														e.target.src = "/assets/building_bg.jpg";
-													}}
-												/>
-												<div className="overlay">
-													<span>{category.title || category.property_category}</span>
-												</div>
-											</Link>
-										</div>
+							sortedCategories.slice(0,8).map((category) => (
+								<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
+									<div className="flexed_gallery w-100" style={{ height: "350px" }}>
+										<Link href={`/category/${category.slug}`}>
+											<img 
+												src={category.image ? `https://res.cloudinary.com/dkjpnznbf/${category.image}` : ""} 
+												alt={category.title || category.property_category} 
+												style={{ width: "100%", height: "100%", objectFit: "cover" }}
+												onError={(e) => {
+													console.error("Failed to load image:", category.image);
+													e.target.src = "/assets/building_bg.jpg";
+												}}
+											/>
+											<div className="overlay">
+												<span>{category.title || category.property_category}</span>
+											</div>
+										</Link>
 									</div>
-								))
+								</div>
+							))
 						)}
 					</div>
 				</div>

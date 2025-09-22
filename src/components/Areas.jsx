@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 export default function PopularAreas({ properties }) {
+  const propsArray = Array.isArray(properties) ? properties : (properties?.results || []);
   // Filter out developer categories, show only non-developer ones
-  const nonDeveloperProperties = properties ? properties.filter(area => !area.developer) : [];
+  const nonDeveloperProperties = propsArray.filter(area => !area.developer);
   
   // Sort by order field (lower numbers appear first)
   const sortedProperties = nonDeveloperProperties.sort((a, b) => {

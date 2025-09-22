@@ -15,12 +15,15 @@ const Testimonial = () => {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/testimonial/`;
   const ADMIN_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/testimonials/`;
 
+  const toArray = (data) => (Array.isArray(data) ? data : (data?.results || []));
+
   const fetchTestimonials = async () => {
     try {
       const res = await axios.get(ADMIN_API_URL);
-      setTestimonials(res.data);
+      setTestimonials(toArray(res.data));
     } catch (err) {
       console.error(err);
+      setTestimonials([]);
     }
   };
 
@@ -199,7 +202,7 @@ const Testimonial = () => {
         <h2>Testimonials Management</h2>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr style={{ borderBottom: "2px solid #ccc" }}>
+            <tr style={{ borderBottom: "2px solid " + '#ccc' }}>
               <th style={{ textAlign: "left", padding: "10px" }}>Name</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Email</th>
               <th style={{ textAlign: "left", padding: "10px" }}>Rating</th>
@@ -210,80 +213,88 @@ const Testimonial = () => {
             </tr>
           </thead>
           <tbody>
-            {testimonials.map((t) => (
-              <tr key={t.id} style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "10px" }}>{t.name}</td>
-                <td style={{ padding: "10px" }}>{t.email || 'N/A'}</td>
-                <td style={{ padding: "10px" }}>
-                  <span style={{ color: "#FFD700" }}>
-                    {"★".repeat(t.rating)}
-                  </span>
-                  <span style={{ marginLeft: "5px" }}>({t.rating})</span>
-                </td>
-                <td style={{ padding: "10px" }}>{getStatusBadge(t.approval_status)}</td>
-                <td style={{ padding: "10px" }}>
-                  <div
-                    style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "200px" }}
-                    title={t.text}
-                  >
-                    {t.text}
-                  </div>
-                </td>
-                <td style={{ padding: "10px", fontSize: "12px" }}>
-                  {new Date(t.created_at).toLocaleDateString()}
-                </td>
-                <td style={{ padding: "10px" }}>
-                  <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
-                    {t.approval_status === 'pending' && (
-                      <>
-                        <button
-                          onClick={() => handleApprovalAction(t, 'approve')}
-                          style={{
-                            padding: "4px 8px",
-                            backgroundColor: "#28a745",
-                            color: "#fff",
-                            border: "none",
-                            cursor: "pointer",
-                            fontSize: "12px",
-                            borderRadius: "3px"
-                          }}
-                        >
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => handleApprovalAction(t, 'reject')}
-                          style={{
-                            padding: "4px 8px",
-                            backgroundColor: "#dc3545",
-                            color: "#fff",
-                            border: "none",
-                            cursor: "pointer",
-                            fontSize: "12px",
-                            borderRadius: "3px"
-                          }}
-                        >
-                          Reject
-                        </button>
-                      </>
-                    )}
-                    <button
-                      onClick={() => deleteTestimonial(t.id)}
-                      style={{
-                        padding: "4px 8px",
-                        backgroundColor: "#6c757d",
-                        color: "#fff",
-                        border: "none",
-                        cursor: "pointer",
-                        fontSize: "12px",
-                        borderRadius: "3px"
-                      }}
+            {Array.isArray(testimonials) && testimonials.length > 0 ? (
+              testimonials.map((t) => (
+                <tr key={t.id} style={{ borderBottom: "1px solid #eee" }}>
+                  <td style={{ padding: "10px" }}>{t.name}</td>
+                  <td style={{ padding: "10px" }}>{t.email || 'N/A'}</td>
+                  <td style={{ padding: "10px" }}>
+                    <span style={{ color: "#FFD700" }}>
+                      {"★".repeat(t.rating)}
+                    </span>
+                    <span style={{ marginLeft: "5px" }}>({t.rating})</span>
+                  </td>
+                  <td style={{ padding: "10px" }}>{getStatusBadge(t.approval_status)}</td>
+                  <td style={{ padding: "10px" }}>
+                    <div
+                      style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "200px" }}
+                      title={t.text}
                     >
-                      Delete
-                    </button>
-                  </div>
+                      {t.text}
+                    </div>
+                  </td>
+                  <td style={{ padding: "10px", fontSize: "12px" }}>
+                    {new Date(t.created_at).toLocaleDateString()}
+                  </td>
+                  <td style={{ padding: "10px" }}>
+                    <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+                      {t.approval_status === 'pending' && (
+                        <>
+                          <button
+                            onClick={() => handleApprovalAction(t, 'approve')}
+                            style={{
+                              padding: "4px 8px",
+                              backgroundColor: "#28a745",
+                              color: "#fff",
+                              border: "none",
+                              cursor: "pointer",
+                              fontSize: "12px",
+                              borderRadius: "3px"
+                            }}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => handleApprovalAction(t, 'reject')}
+                            style={{
+                              padding: "4px 8px",
+                              backgroundColor: "#dc3545",
+                              color: "#fff",
+                              border: "none",
+                              cursor: "pointer",
+                              fontSize: "12px",
+                              borderRadius: "3px"
+                            }}
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
+                      <button
+                        onClick={() => deleteTestimonial(t.id)}
+                        style={{
+                          padding: "4px 8px",
+                          backgroundColor: "#6c757d",
+                          color: "#fff",
+                          border: "none",
+                          cursor: "pointer",
+                          fontSize: "12px",
+                          borderRadius: "3px"
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}>
+                  No testimonials found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

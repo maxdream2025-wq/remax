@@ -2,8 +2,9 @@ import React from "react";
 import Link from "next/link";
 
 const News = ({ newsList }) => {
+  const list = Array.isArray(newsList) ? newsList : (newsList?.results || []);
   // Filter only featured news and sort by order
-  const featuredNews = newsList ? newsList
+  const featuredNews = list
     .filter((news) => news.feature)
     .sort((a, b) => {
       // If order is not set (0), put them at the end
@@ -13,7 +14,7 @@ const News = ({ newsList }) => {
       
       // Sort by order (1, 2, 3, 4...)
       return a.order - b.order;
-    }) : [];
+    });
 
   return (
     <section className="py-5 bg-light">
@@ -52,7 +53,7 @@ const News = ({ newsList }) => {
                     <h5 className="card-title" style={{ fontSize: "20px" }}>
                       {news.title}
                     </h5>
-                    <p className="card-text flex-grow-1">{news.desc.slice(0, 100)}</p>
+                    <p className="card-text flex-grow-1">{(news.desc || '').slice(0, 100)}</p>
                     <p className="card-text text-muted small">
                       Date: {news.date}
                     </p>
