@@ -13,8 +13,6 @@ export async function getServerSideProps({ query }) {
     // Fetch categories
     const categoriesRes = await axios.get(CATEGORIES_API_URL);
     const categories = Array.isArray(categoriesRes.data) ? categoriesRes.data : (categoriesRes.data?.results || []);
-	console.log(categories, 'categories')
-
     // Fetch properties if search parameters are provided
     let properties = [];
     let searchError = null;
@@ -70,21 +68,7 @@ export async function getServerSideProps({ query }) {
 }
 
 const FindProperty = ({ categories, properties, searchError, searchParams }) => {
-	// Normalize to array in case API returned a paginated object
-	const categoriesArray = Array.isArray(categories) ? categories : (categories?.results || []);
-
-	// Sort categories by order field (lower numbers appear first)
-	const sortedCategories = categoriesArray ? categoriesArray.sort((a, b) => {
-		// If order is not set (0), put them at the end
-		if (a.order === 0 && b.order === 0) return 0;
-		if (a.order === 0) return 1;
-		if (b.order === 0) return -1;
-		
-		// Sort by order (1, 2, 3, 4...)
-		return a.order - b.order;
-	}) : [];
 	
-	console.log('Categories sorted by order:', sortedCategories.map(cat => ({ title: cat.title, order: cat.order })));
 	
 	return (
 		<>
@@ -95,7 +79,7 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 				url="https://remax.ae/findProperty"
 			/>
 			<SearchForm 
-				categories={sortedCategories}
+				categories={categories}
 				properties={properties}
 				searchError={searchError}
 				searchParams={searchParams}
@@ -117,12 +101,12 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 				</div>
 				<div className="text-center topareas_items">
 					<div className="row flex-wrap m-0" id="categoryGrid">
-						{sortedCategories.length === 0 ? (
+						{categories.length === 0 ? (
 							<div className="col-12">
 								<p className="text-muted">No categories available.</p>
 							</div>
 						) : (
-							sortedCategories.slice(0,8).map((category) => (
+							categories.filter(category => category.developer === true).slice(0,8).map((category) => (
 								<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
 									<div className="flexed_gallery w-100" style={{ height: "350px" }}>
 										<Link href={`/category/${category.slug}`}>
