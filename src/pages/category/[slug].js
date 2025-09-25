@@ -69,17 +69,15 @@ const PropertyDetails = ({ property }) => {
                       </div>
                     </div>
                   </li>
-                  {
-                    prop.developer && (
-                      <li className="list-group-item">
-                        <div className="row">
-                          <div className="col-12">
-                            <strong>Developer:</strong> {prop.developer}
-                          </div>
+                  {prop.developer && String(prop.developer).trim() !== "" && (
+                    <li className="list-group-item">
+                      <div className="row">
+                        <div className="col-12">
+                          <strong>Developer:</strong> {prop.developer}
                         </div>
-                      </li>
-                    )
-                  }
+                      </div>
+                    </li>
+                  )}
                   <li className="list-group-item">
                     <div className="row">
                       <div className="col-6">

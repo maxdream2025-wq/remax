@@ -7,23 +7,23 @@ const Property = () => {
   const [properties, setProperties] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
+  const [developerCategories, setDeveloperCategories] = useState([]);
+  const [loadingDeveloperCategories, setLoadingDeveloperCategories] = useState(false);
   const [formData, setFormData] = useState({
     category_id: "",
     property_name: "",
     property_sub_heading: "",
     property_desc: "",
     location: "",
-    location_search: "",
     property_type: "",
     completion_date: "",
     payment_plan: "",
     starting_price: "",
-    property_type_search: [],
-    user_type: [],
     bedroom: [],
     bathroom: [],
     area: { min: "", max: "" },
     status: "",
+    developer: "",
     property_gallery: null,
   });
   const [errors, setErrors] = useState({});
@@ -31,6 +31,7 @@ const Property = () => {
   const [imageEditId, setImageEditId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imagePath, setImagePath] = useState("");
+  const [mainFormPreviewUrl, setMainFormPreviewUrl] = useState("");
 
   const fetchProperties = async () => {
     try {
@@ -63,6 +64,25 @@ const Property = () => {
     }
   };
 
+  // Fetch developer categories when dropdown is clicked
+  const handleDeveloperDropdownClick = async () => {
+    if (developerCategories.length === 0 && !loadingDeveloperCategories) {
+      setLoadingDeveloperCategories(true);
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/property-categories/?developer=true`
+        );
+        const data = res.data;
+        const list = Array.isArray(data) ? data : (data?.results || []);
+        setDeveloperCategories(list);
+      } catch (err) {
+        setDeveloperCategories([]);
+      } finally {
+        setLoadingDeveloperCategories(false);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchProperties();
   }, []);
@@ -86,23 +106,17 @@ const Property = () => {
 
   const handleEdit = (property) => {
     setEditId(property.id);
+    console.log("Editing property:", property); // Debug log
     setFormData({
       category_id: property.category?.id || property.category_id || "",
       property_name: property.property_name || "",
       property_sub_heading: property.property_sub_heading || "",
       property_desc: property.property_desc || "",
       location: property.location || "",
-      location_search: property.location_search || "",
       property_type: property.property_type || "",
       completion_date: property.completion_date || "",
       payment_plan: property.payment_plan || "",
       starting_price: property.starting_price || "",
-      property_type_search: Array.isArray(property.property_type_search)
-        ? property.property_type_search
-        : (property.property_type_search ? String(property.property_type_search).split(',').map((v) => v.trim()).filter(Boolean) : []),
-      user_type: Array.isArray(property.user_type)
-        ? property.user_type
-        : (property.user_type ? String(property.user_type).split(',').map((v) => v.trim()).filter(Boolean) : []),
       bedroom: Array.isArray(property.bedroom)
         ? property.bedroom
         : (property.bedroom ? String(property.bedroom).split(',').map((v) => v.trim()).filter(Boolean) : []),
@@ -113,8 +127,15 @@ const Property = () => {
         ? { min: property.area.min || "", max: property.area.max || "" }
         : { min: "", max: "" },
       status: property.status || "",
+      developer: property.developer || "",
       property_gallery: null, // File input can't be pre-filled
     });
+    // Show current image preview for the main form when editing
+    if (property.property_gallery) {
+      setMainFormPreviewUrl(`https://res.cloudinary.com/dkjpnznbf/${property.property_gallery}`);
+    } else {
+      setMainFormPreviewUrl("");
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -152,20 +173,19 @@ const Property = () => {
         property_sub_heading: "",
         property_desc: "",
         location: "",
-        location_search: "",
         property_type: "",
         completion_date: "",
         payment_plan: "",
         starting_price: "",
-        property_type_search: [],
-        user_type: [],
         bedroom: [],
         bathroom: [],
         area: { min: "", max: "" },
         status: "",
+        developer: "",
         property_gallery: null,
       });
       setEditId(null);
+      setMainFormPreviewUrl("");
       fetchProperties();
     } catch (err) {
       if (err.response && err.response.data) {
@@ -400,12 +420,13 @@ const Property = () => {
                 ))}
             </select>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3" style={{ position: 'relative', zIndex: 1000 }}>
             <select
               name="property_type"
-              value={formData.property_type}
+              value={formData.property_type || ""}
               onChange={handleChange}
               className="form-control"
+              style={{ position: 'relative', zIndex: 1000 }}
               required
             >
               <option value="">Select Property Type</option>
@@ -413,7 +434,23 @@ const Property = () => {
               <option value="Villa">Villa</option>
               <option value="Town House">Town House</option>
               <option value="Studio">Studio</option>
+              <option value="Penthouse">Penthouse</option>
+              <option value="Duplex">Duplex</option>
+              <option value="Office">Office</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="Retail">Retail</option>
+              {/* Show current value if it doesn't match any option */}
+              {formData.property_type && 
+               !["Apartment", "Villa", "Town House", "Studio", "Penthouse", "Duplex", "Office", "Warehouse", "Retail"].includes(formData.property_type) && (
+                <option value={formData.property_type}>{formData.property_type}</option>
+              )}
             </select>
+            {/* Debug info - remove this after testing */}
+            {editId && formData.property_type && (
+              <small className="text-muted d-block mt-1">
+                Current: "{formData.property_type}"
+              </small>
+            )}
           </div>
           <div className="col-md-3">
             <input
@@ -473,15 +510,32 @@ const Property = () => {
             />
           </div>
           <div className="col-md-3">
-            <input
-              type="text"
-              name="location_search"
-              placeholder="Location Search"
-              value={formData.location_search}
+            <select
+              name="developer"
+              value={formData.developer}
               onChange={handleChange}
+              onClick={handleDeveloperDropdownClick}
               className="form-control"
-              required
-            />
+            >
+              <option value="">Select Developer (optional)</option>
+              {loadingDeveloperCategories && <option disabled>Loading...</option>}
+              {!loadingDeveloperCategories && developerCategories.length === 0 && (
+                <option disabled>No developers found</option>
+              )}
+              {!loadingDeveloperCategories &&
+                developerCategories.length > 0 &&
+                developerCategories.map((dev) => (
+                  <option key={dev.id} value={dev.title}>
+                    {dev.title}
+                  </option>
+                ))}
+            </select>
+            {/* Debug info - remove this after testing */}
+            {editId && formData.developer && (
+              <small className="text-muted d-block mt-1">
+                Current: "{formData.developer}"
+              </small>
+            )}
           </div>
         </div>
         {/* Row 3 */}
@@ -549,24 +603,6 @@ const Property = () => {
               required
             />
           </div>
-          <div className="col-md-3">
-            <input
-              type="text"
-              placeholder="Property Type Search (comma separated)"
-              value={formData.property_type_search.join(",")}
-              onChange={(e) => handleArrayChange(e, "property_type_search")}
-              className="form-control"
-            />
-          </div>
-          <div className="col-md-3">
-            <input
-              type="text"
-              placeholder="User Type (comma separated)"
-              value={formData.user_type.join(",")}
-              onChange={(e) => handleArrayChange(e, "user_type")}
-              className="form-control"
-            />
-          </div>
         </div>
         {/* Description */}
         <div className="row mb-3">
@@ -587,9 +623,38 @@ const Property = () => {
               type="file"
               name="property_gallery"
               accept="image/*"
-              onChange={e => setFormData({ ...formData, property_gallery: e.target.files[0] })}
+              onChange={e => {
+                const file = e.target.files && e.target.files[0];
+                setFormData({ ...formData, property_gallery: file || null });
+                if (file) {
+                  setMainFormPreviewUrl(URL.createObjectURL(file));
+                }
+              }}
               className="form-control"
             />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label">Image Preview</label>
+            {mainFormPreviewUrl ? (
+              <div className="text-center">
+                <img
+                  src={mainFormPreviewUrl}
+                  alt="Selected preview"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "150px",
+                    objectFit: "cover",
+                    borderRadius: "4px",
+                    border: "1px solid #ddd"
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.src = "/assets/building_bg.jpg";
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="text-muted" style={{ fontSize: '0.9rem' }}>No image selected</div>
+            )}
           </div>
         </div>
         <button type="submit" className="btn btn-dark px-4 py-2">
