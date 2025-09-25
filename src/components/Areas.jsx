@@ -16,8 +16,6 @@ export default function PopularAreas({ properties }) {
     return a.order - b.order;
   });
   
-  console.log('Sorted properties by order:', sortedProperties.map(p => ({ title: p.title, order: p.order })));
-  
   return (
     <>
     {/* ss */}
