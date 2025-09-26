@@ -7,8 +7,6 @@ const Property = () => {
   const [properties, setProperties] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
-  const [developerCategories, setDeveloperCategories] = useState([]);
-  const [loadingDeveloperCategories, setLoadingDeveloperCategories] = useState(false);
   const [formData, setFormData] = useState({
     category_id: "",
     property_name: "",
@@ -24,14 +22,15 @@ const Property = () => {
     area: { min: "", max: "" },
     status: "",
     developer: "",
-    property_gallery: null,
   });
   const [errors, setErrors] = useState({});
   const [editId, setEditId] = useState(null);
   const [imageEditId, setImageEditId] = useState(null);
+  const [developerEditId, setDeveloperEditId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [imagePath, setImagePath] = useState("");
-  const [mainFormPreviewUrl, setMainFormPreviewUrl] = useState("");
+  const [developerFormData, setDeveloperFormData] = useState({
+    developer: "",
+  });
 
   const fetchProperties = async () => {
     try {
@@ -64,24 +63,6 @@ const Property = () => {
     }
   };
 
-  // Fetch developer categories when dropdown is clicked
-  const handleDeveloperDropdownClick = async () => {
-    if (developerCategories.length === 0 && !loadingDeveloperCategories) {
-      setLoadingDeveloperCategories(true);
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/property-categories/?developer=true`
-        );
-        const data = res.data;
-        const list = Array.isArray(data) ? data : (data?.results || []);
-        setDeveloperCategories(list);
-      } catch (err) {
-        setDeveloperCategories([]);
-      } finally {
-        setLoadingDeveloperCategories(false);
-      }
-    }
-  };
 
   useEffect(() => {
     fetchProperties();
@@ -107,6 +88,7 @@ const Property = () => {
   const handleEdit = (property) => {
     setEditId(property.id);
     console.log("Editing property:", property); // Debug log
+    console.log("Property area data:", property.area); // Debug area data
     setFormData({
       category_id: property.category?.id || property.category_id || "",
       property_name: property.property_name || "",
@@ -128,14 +110,7 @@ const Property = () => {
         : { min: "", max: "" },
       status: property.status || "",
       developer: property.developer || "",
-      property_gallery: null, // File input can't be pre-filled
     });
-    // Show current image preview for the main form when editing
-    if (property.property_gallery) {
-      setMainFormPreviewUrl(`https://res.cloudinary.com/dkjpnznbf/${property.property_gallery}`);
-    } else {
-      setMainFormPreviewUrl("");
-    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -150,8 +125,6 @@ const Property = () => {
         } else if (Array.isArray(value)) {
           // Backend expects CharField CSV; join arrays
           data.append(key, value.join(','));
-        } else if (key === "property_gallery" && value) {
-          data.append(key, value);
         } else {
           data.append(key, value);
         }
@@ -182,10 +155,8 @@ const Property = () => {
         area: { min: "", max: "" },
         status: "",
         developer: "",
-        property_gallery: null,
       });
       setEditId(null);
-      setMainFormPreviewUrl("");
       fetchProperties();
     } catch (err) {
       if (err.response && err.response.data) {
@@ -208,7 +179,14 @@ const Property = () => {
   const openImageEditor = (id) => {
     setImageEditId(id);
     setImageFile(null);
-    setImagePath("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const openDeveloperEditor = (property) => {
+    setDeveloperEditId(property.id);
+    setDeveloperFormData({
+      developer: property.developer || "",
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -230,7 +208,6 @@ const Property = () => {
       // Reset form and refresh
       setImageEditId(null);
       setImageFile(null);
-      setImagePath("");
       fetchProperties();
     } catch (err) {
       console.error("Error updating image:", err);
@@ -238,6 +215,37 @@ const Property = () => {
         alert(`Error updating image: ${JSON.stringify(err.response.data)}`);
       } else {
         alert("Error updating image. Please try again.");
+      }
+    }
+  };
+
+  const submitDeveloperUpdate = async (e) => {
+    e.preventDefault();
+    if (!developerEditId) return;
+    
+    try {
+      const data = new FormData();
+      data.append("developer", developerFormData.developer);
+      
+      await axios.patch(`${API_URL}${developerEditId}/`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      
+      // Show success message
+      alert("Property developer updated successfully!");
+      
+      // Reset form and refresh
+      setDeveloperEditId(null);
+      setDeveloperFormData({
+        developer: "",
+      });
+      fetchProperties();
+    } catch (err) {
+      console.error("Error updating developer:", err);
+      if (err.response?.data) {
+        alert(`Error updating developer: ${JSON.stringify(err.response.data)}`);
+      } else {
+        alert("Error updating developer. Please try again.");
       }
     }
   };
@@ -279,7 +287,7 @@ const Property = () => {
           {/* Current Image Display */}
           {(() => {
             const currentProperty = properties.find(p => p.id === imageEditId);
-            return currentProperty?.property_gallery ? (
+            return currentProperty?.property_gallery && currentProperty.property_gallery !== 'null' && currentProperty.property_gallery.trim() !== '' ? (
               <div className="mb-3">
                 <label className="form-label">Current Image:</label>
                 <div className="text-center">
@@ -366,7 +374,45 @@ const Property = () => {
                 onClick={() => { 
                   setImageEditId(null); 
                   setImageFile(null); 
-                  setImagePath(""); 
+                }}
+              >
+                <i className="fas fa-times me-2"></i>Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      {developerEditId && (
+        <div className="bg-white p-4 rounded shadow mb-5">
+          <h5 className="mb-3">Edit Developer (ID: {developerEditId})</h5>
+          
+          <form onSubmit={submitDeveloperUpdate}>
+            <div className="row g-3 mb-3">
+              <div className="col-md-6">
+                <label className="form-label">Developer Name</label>
+                <input
+                  type="text"
+                  name="developer"
+                  placeholder="Enter developer name"
+                  value={developerFormData.developer}
+                  onChange={(e) => setDeveloperFormData({...developerFormData, developer: e.target.value})}
+                  className="form-control"
+                  required
+                />
+              </div>
+            </div>
+            <div className="d-flex gap-2">
+              <button type="submit" className="btn btn-dark">
+                <i className="fas fa-save me-2"></i>Update Developer
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-outline-secondary" 
+                onClick={() => { 
+                  setDeveloperEditId(null); 
+                  setDeveloperFormData({
+                    developer: "",
+                  });
                 }}
               >
                 <i className="fas fa-times me-2"></i>Cancel
@@ -510,32 +556,14 @@ const Property = () => {
             />
           </div>
           <div className="col-md-3">
-            <select
+            <input
+              type="text"
               name="developer"
+              placeholder="Developer (optional)"
               value={formData.developer}
               onChange={handleChange}
-              onClick={handleDeveloperDropdownClick}
               className="form-control"
-            >
-              <option value="">Select Developer (optional)</option>
-              {loadingDeveloperCategories && <option disabled>Loading...</option>}
-              {!loadingDeveloperCategories && developerCategories.length === 0 && (
-                <option disabled>No developers found</option>
-              )}
-              {!loadingDeveloperCategories &&
-                developerCategories.length > 0 &&
-                developerCategories.map((dev) => (
-                  <option key={dev.id} value={dev.title}>
-                    {dev.title}
-                  </option>
-                ))}
-            </select>
-            {/* Debug info - remove this after testing */}
-            {editId && formData.developer && (
-              <small className="text-muted d-block mt-1">
-                Current: "{formData.developer}"
-              </small>
-            )}
+            />
           </div>
         </div>
         {/* Row 3 */}
@@ -567,6 +595,12 @@ const Property = () => {
               onChange={handleChange}
               className="form-control"
             />
+            {/* Debug info - remove this after testing */}
+            {editId && (
+              <small className="text-muted d-block mt-1">
+                Min: "{formData.area.min}"
+              </small>
+            )}
           </div>
           <div className="col-md-3">
             <input
@@ -577,6 +611,12 @@ const Property = () => {
               onChange={handleChange}
               className="form-control"
             />
+            {/* Debug info - remove this after testing */}
+            {editId && (
+              <small className="text-muted d-block mt-1">
+                Max: "{formData.area.max}"
+              </small>
+            )}
           </div>
         </div>
         {/* Row 4 */}
@@ -617,46 +657,6 @@ const Property = () => {
             />
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col-md-3">
-            <input
-              type="file"
-              name="property_gallery"
-              accept="image/*"
-              onChange={e => {
-                const file = e.target.files && e.target.files[0];
-                setFormData({ ...formData, property_gallery: file || null });
-                if (file) {
-                  setMainFormPreviewUrl(URL.createObjectURL(file));
-                }
-              }}
-              className="form-control"
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Image Preview</label>
-            {mainFormPreviewUrl ? (
-              <div className="text-center">
-                <img
-                  src={mainFormPreviewUrl}
-                  alt="Selected preview"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "150px",
-                    objectFit: "cover",
-                    borderRadius: "4px",
-                    border: "1px solid #ddd"
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.src = "/assets/building_bg.jpg";
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="text-muted" style={{ fontSize: '0.9rem' }}>No image selected</div>
-            )}
-          </div>
-        </div>
         <button type="submit" className="btn btn-dark px-4 py-2">
           {editId ? "Update Property" : "Add Property"}
         </button>
@@ -681,7 +681,7 @@ const Property = () => {
               properties.map((property) => (
                 <tr key={property.id}>
                   <td>
-                    {property.property_gallery ? (
+                    {property.property_gallery && property.property_gallery !== 'null' && property.property_gallery.trim() !== '' ? (
                       <img 
                         src={`https://res.cloudinary.com/dkjpnznbf/${property.property_gallery}`}
                         alt={property.property_name}
@@ -733,7 +733,7 @@ const Property = () => {
                   <td>
                     {property.starting_price && (
                       <span className="text-primary fw-bold">
-                        AED {parseInt(property.starting_price).toLocaleString()}
+                        AED {parseInt(property.starting_price)}
                       </span>
                     )}
                   </td>
@@ -752,6 +752,13 @@ const Property = () => {
                         title="Edit Image"
                       >
                         <i className="fas fa-image"></i> Image
+                      </button>
+                      <button
+                        onClick={() => openDeveloperEditor(property)}
+                        className="btn btn-success btn-sm"
+                        title="Edit Developer"
+                      >
+                        <i className="fas fa-building"></i> Dev
                       </button>
                       <button
                         onClick={() => handleDelete(property.id)}

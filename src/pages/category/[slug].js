@@ -117,7 +117,7 @@ const PropertyDetails = ({ property }) => {
                   <li className="list-group-item">
                     <div className="row">
                       <div className="col-6">
-                        <strong>Starting Price:</strong> AED {prop.starting_price} M
+                        <strong>Starting Price:</strong> AED {parseInt(prop.starting_price)} M
                       </div>
                       <div className="col-6">
                         <strong>Status:</strong> {prop.status}
