@@ -67,8 +67,6 @@ export async function getServerSideProps({ query }) {
   }
 }
 
-// class FindProperty extends React.Component {
-
 const FindProperty = ({ categories, properties, searchError, searchParams }) => {
 	
 	
@@ -106,7 +104,7 @@ const FindProperty = ({ categories, properties, searchError, searchParams }) => 
 						{categories.length === 0 ? (
 							<div className="col-12">
 								<p className="text-muted">No categories available.</p>
-							{/* </div> sds */}
+							</div>
 						) : (
 							categories.filter(category => category.developer === true).slice(0,8).map((category) => (
 								<div key={category.id} className="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 padd_null p-0">
