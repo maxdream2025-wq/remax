@@ -152,7 +152,7 @@ const BuildCareer = () => {
                                         </p>
                                     </ul>
                                     <div className="d-flex">
-                                        <button style={{"textAlign" : "left"}} className="mt-4 btn btn-light font_18_med text-uppercase" data-bs-toggle="modal" data-bs-target="#joinFormModal">
+                                        <button style={{"textAlign" : "left", zIndex: 999}} className="mt-4 btn btn-light font_18_med text-uppercase" data-bs-toggle="modal" data-bs-target="#joinFormModal">
                                             JOIN NOW
                                         </button>
                                     </div>

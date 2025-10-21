@@ -119,7 +119,7 @@ h1 {
   width: 180px;
   max-width: 100%;
   height: 53px;
-  margin-top: 9px;
+  margin-top: -43px;
 }
 
 #navbarNav .doted_link {
@@ -218,6 +218,8 @@ h1 {
 
   .navbar-brand img {
     max-width: 180px !important;
+    height: 40px !important;
+    margin-top: 3px !important;
   }
 
   .custom-heading {

@@ -28,38 +28,76 @@ const News = ({ newsList }) => {
           </p>
         </div>
 
-        <div className="row row-cols-1 row-cols-md-3 g-4" id="newsContainer">
+        <div
+          id="newsContainer"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "16px",
+          }}
+        >
           {featuredNews.length > 0 ? (
-            featuredNews.slice(0, 3).map((news, index) => (
-              <div className="col d-flex" key={index}>
-                <div className="card shadow-sm position-relative w-100">
+            featuredNews.slice(0, 4).map((news, index) => (
+              <div key={index} style={{ marginBottom: "12px" }}>
+                <div
+                  style={{
+                    height: "100%",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                    background: "#fff",
+                    display: "flex",
+                    flexDirection: "column",
+                    position: "relative",
+                  }}
+                >
+                  {/* Feature badge */}
                   <span
-                    className="badge bg-warning text-dark position-absolute"
-                    style={{ top: "10px", right: "10px", zIndex: 2 }}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      zIndex: 2,
+                      background: "#ffc107",
+                      color: "#212529",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      fontWeight: 600,
+                      fontSize: "13px",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                    }}
                   >
                     Featured
                   </span>
-                  <img
-                    src={news.image ? `https://res.cloudinary.com/dkjpnznbf/${news.image}` : "#"}
-                    alt={news.title}
-                    className="card-img-top"
-                    style={{ height: "250px", objectFit: "cover", objectPosition: "top" }}
+                  <img 
+                    src={news.image ? `https://res.cloudinary.com/dkjpnznbf/${news.image}` : "/assets/building_bg.jpg"}
+                    alt={news.title} 
+                    className="w-100 h-100 object-fit-cover"
                     onError={(e) => {
                       console.error("Failed to load image:", news.image);
                       e.target.src = "/assets/building_bg.jpg";
                     }}
                   />
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title" style={{ fontSize: "20px" }}>
-                      {news.title}
-                    </h5>
-                    <p className="card-text flex-grow-1">{(news.desc || '').slice(0, 100)}</p>
-                    <p className="card-text text-muted small">
+                  <div style={{ padding: "12px", display: "flex", flexDirection: "column", flexGrow: 1 }}>
+                    <h5 style={{ fontSize: "20px", margin: 0 }}>{news.title}</h5>
+                    <p style={{ marginTop: "8px", marginBottom: "8px", color: "#374151", flexGrow: 1 }}>
+                      {(news.desc || '').slice(0, 140)}
+                    </p>
+                    <p style={{ color: "#6b7280", fontSize: "12px", marginBottom: "8px" }}>
                       Date: {news.date}
                     </p>
                     <Link
                       href={`/news/${news.slug}`}
-                      className="btn btn-sm btn-secondary mt-auto"
+                      style={{
+                        background: "#6c757d",
+                        color: "#fff",
+                        padding: "6px 10px",
+                        borderRadius: "4px",
+                        textDecoration: "none",
+                        width: "fit-content",
+                        marginTop: "auto",
+                      }}
                     >
                       Read More
                     </Link>

@@ -157,7 +157,7 @@ const Footer = () => {
                         alt="Email Icon"
                       />
                     </span>
-                    <a href="mailto:ahmad.nasr@remax.ae">ahmad.nasr@remax.ae</a>
+                    <a href="mailto:info@remaxdreamuae.com">info@remaxdreamuae.com</a>
                   </li>
                 </ul>
               </div>

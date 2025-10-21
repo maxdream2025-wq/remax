@@ -5,13 +5,6 @@ import React, { useState } from "react";
 
 const PropertyDetails = ({ property }) => {
   const [selectedPropertyId, setSelectedPropertyId] = useState("");
-  
-  // Debug: Log property data to see image paths
-  console.log("Property data received:", property);
-  if (property && property.length > 0) {
-    console.log("First property image path:", property[0]?.property_gallery);
-    console.log("Constructed Cloudinary URL:", property[0]?.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${property[0]?.property_gallery}` : "No image");
-  }
 
   const handleRegisterClick = (propertyId) => {
     setSelectedPropertyId(propertyId);
@@ -30,6 +23,7 @@ const PropertyDetails = ({ property }) => {
     );
   }
 
+ 
   return (
     <>
       <MetaData
@@ -39,105 +33,109 @@ const PropertyDetails = ({ property }) => {
         url={`https://remax.ae/category/${property[0]?.slug || ""}`}
       />
       <DynamicBanner />
-     <div className="bg-white">
-     <div className="container py-5">
-        {property.map((prop) => (
-          <div className="card mb-4 shadow-sm" key={prop.id}>
-            <div className="row g-0">
-              <div className="col-md-4">
-                <img
-                  src={prop.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${prop.property_gallery}` : "/assets/building_bg.jpg"}
-                  className="img-fluid w-100 object-fit-cover"
-                  style={{ height: "100%" }}
-                  alt={prop.property_name}
-                  onError={(e) => {
-                    console.error("Failed to load image:", prop.property_gallery);
-                    e.target.src = "/assets/building_bg.jpg";
-                  }}
-                />
-              </div>
-              <div className="col-md-8 p-4">
-                <h3>{prop.property_name}</h3>
-                <h5 className="text-muted mb-2">{prop.property_sub_heading}</h5>
-                <p>{prop.property_desc}</p>
+      <div className="bg-white">
+        <div className="container py-5">
+          {property.map((prop) => (
+            <div className="card mb-4 shadow-sm" key={prop.id}>
+              <div className="row g-0">
+                <div className="col-md-4">
+                  <img
+                    src={
+                      prop.property_gallery
+                        ? `https://res.cloudinary.com/dkjpnznbf/${prop.property_gallery}`
+                        : "/assets/building_bg.jpg"
+                    }
+                    className="img-fluid w-100 object-fit-cover"
+                    style={{ height: "100%" }}
+                    alt={prop.property_name}
+                    onError={(e) => {
+                      console.error("Failed to load image:", prop.property_gallery);
+                      e.target.src = "/assets/building_bg.jpg";
+                    }}
+                  />
+                </div>
+                <div className="col-md-8 p-4">
+                  <h3>{prop.property_name}</h3>
+                  <h5 className="text-muted mb-2">{prop.property_sub_heading}</h5>
+                  <p>{prop.property_desc}</p>
 
-                <ul className="list-group list-group-flush mb-3">
-                  <li className="list-group-item">
-                    <div className="row">
-                      <div className="col-12">
-                        <strong>Location:</strong> {prop.location}
-                      </div>
-                    </div>
-                  </li>
-                  {prop.developer && String(prop.developer).trim() !== "" && (
+                  <ul className="list-group list-group-flush mb-3">
                     <li className="list-group-item">
                       <div className="row">
                         <div className="col-12">
-                          <strong>Developer:</strong> {prop.developer}
+                          <strong>Location:</strong> {prop.location}
                         </div>
                       </div>
                     </li>
-                  )}
-                  <li className="list-group-item">
-                    <div className="row">
-                      <div className="col-6">
-                        <strong>Property Type:</strong> {prop.property_type}
+                    {prop.developer && String(prop.developer).trim() !== "" && (
+                      <li className="list-group-item">
+                        <div className="row">
+                          <div className="col-12">
+                            <strong>Developer:</strong> {prop.developer}
+                          </div>
+                        </div>
+                      </li>
+                    )}
+                    <li className="list-group-item">
+                      <div className="row">
+                        <div className="col-6">
+                          <strong>Property Type:</strong> {prop.property_type}
+                        </div>
+                        <div className="col-6">
+                          <strong>Bedrooms:</strong>{" "}
+                          {Array.isArray(prop.bedroom)
+                            ? prop.bedroom.join(", ")
+                            : prop.bedroom}
+                        </div>
                       </div>
-                      <div className="col-6">
-                        <strong>Bedrooms:</strong>{" "}
-                        {Array.isArray(prop.bedroom)
-                          ? prop.bedroom.join(", ")
-                          : prop.bedroom}
+                    </li>
+                    <li className="list-group-item">
+                      <div className="row">
+                        <div className="col-6">
+                          <strong>Completion Date:</strong> {prop.completion_date}
+                        </div>
+                        <div className="col-6">
+                          <strong>Bathrooms:</strong>{" "}
+                          {Array.isArray(prop.bathroom)
+                            ? prop.bathroom.join(", ")
+                            : prop.bathroom}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                  <li className="list-group-item">
-                    <div className="row">
-                      <div className="col-6">
-                        <strong>Completion Date:</strong> {prop.completion_date}
+                    </li>
+                    <li className="list-group-item">
+                      <div className="row">
+                        <div className="col-6">
+                          <strong>Payment Plan:</strong> {prop.payment_plan}
+                        </div>
+                        <div className="col-6">
+                          <strong>Area:</strong> {prop.area.min} - {prop.area.max} sqft
+                        </div>
                       </div>
-                      <div className="col-6">
-                        <strong>Bathrooms:</strong>{" "}
-                        {Array.isArray(prop.bathroom)
-                          ? prop.bathroom.join(", ")
-                          : prop.bathroom}
+                    </li>
+                    <li className="list-group-item">
+                      <div className="row">
+                        <div className="col-6">
+                          <strong>Starting Price:</strong> AED {parseInt(prop.starting_price)} M
+                        </div>
+                        <div className="col-6">
+                          <strong>Status:</strong> {prop.status}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                  <li className="list-group-item">
-                    <div className="row">
-                      <div className="col-6">
-                        <strong>Payment Plan:</strong> {prop.payment_plan}
-                      </div>
-                      <div className="col-6">
-                        <strong>Area:</strong> {prop.area.min} - {prop.area.max} sqft
-                      </div>
-                    </div>
-                  </li>
-                  <li className="list-group-item">
-                    <div className="row">
-                      <div className="col-6">
-                        <strong>Starting Price:</strong> AED {parseInt(prop.starting_price)} M
-                      </div>
-                      <div className="col-6">
-                        <strong>Status:</strong> {prop.status}
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+                    </li>
+                  </ul>
 
-                <button
-                  className="btn btn-dark"
-                  onClick={() => handleRegisterClick(prop.id)}
-                >
-                  REGISTER INTEREST
-                </button>
+                  <button
+                    className="btn btn-dark"
+                    onClick={() => handleRegisterClick(prop.id)}
+                  >
+                    REGISTER INTEREST
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-     </div>
       {/* Render modal once, pass selected property id */}
       <InterestModal propertyId={selectedPropertyId} />
     </>
