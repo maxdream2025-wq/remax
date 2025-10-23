@@ -39,15 +39,19 @@ const SearchResult = ({
                         <div className="row g-0">
                           <div className="col-md-4">
                             <img
-                              src={prop.property_gallery}
+                              src={prop.property_gallery ? `https://res.cloudinary.com/dkjpnznbf/${prop.property_gallery}` : "/assets/building_bg.jpg"}
                               className="img-fluid h-100 w-100 object-fit-cover"
                               alt={prop.property_name}
+                              onError={(e) => {
+                                console.error("Failed to load property image:", prop.property_gallery);
+                                e.target.src = "/assets/building_bg.jpg";
+                              }}
                             />
                           </div>
                           <div className="col-md-8 p-4">
                             <h3>{prop.property_name}</h3>
                             <h5 className="text-muted mb-2">
-                              {prop.property_sub_heading}
+                              {prop.property_sub_heading} 
                             </h5>
                             <p>{prop.property_desc}</p>
 

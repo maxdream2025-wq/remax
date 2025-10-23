@@ -1,7 +1,7 @@
 import React from "react";
-import RemaxMap from "../assets/banner.jpg";
+import RemaxMap from "../assets/banner.png";
 import RemaxMap_2 from "../assets/slogan_img.jpg";
-import MobileBanner from "../assets/img.jpg"; // Mobile background image
+import MobileBanner from "../assets/img.png"; // Mobile background image
 
 const Banner = () => {
   return (

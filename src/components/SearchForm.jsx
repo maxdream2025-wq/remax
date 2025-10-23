@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 const SearchForm = ({ categories = [], properties = [], searchError = null, searchParams = {} }) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
     location: searchParams.location || '',
@@ -23,6 +24,22 @@ const SearchForm = ({ categories = [], properties = [], searchError = null, sear
       [field]: value
     }));
   };
+
+  // Handle router events to manage loading state
+  useEffect(() => {
+    const handleStart = () => setIsLoading(true);
+    const handleComplete = () => setIsLoading(false);
+
+    router.events.on('routeChangeStart', handleStart);
+    router.events.on('routeChangeComplete', handleComplete);
+    router.events.on('routeChangeError', handleComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart);
+      router.events.off('routeChangeComplete', handleComplete);
+      router.events.off('routeChangeError', handleComplete);
+    };
+  }, [router]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,32 +92,48 @@ const SearchForm = ({ categories = [], properties = [], searchError = null, sear
                 </select>
               </div>
 
-              {/* Price */}
+              {/* Price Range Dropdowns */}
               <div className="col-md-6 col-sm-12">
                 <label className="form-label text-white">Min Price (AED)</label>
-                <input 
-                  type="number" 
-                  className="form-control" 
-                  id="min-price"
-                  placeholder="Min Price (in millions)" 
-                  step="0.01" 
-                  min="0"
+                <select 
+                  id="min-price" 
+                  className="form-select"
                   value={formData.minPrice}
                   onChange={(e) => handleInputChange('minPrice', e.target.value)}
-                />
+                >
+                  <option value="">Any</option>
+                  <option value="1">1M</option>
+                  <option value="2">2M</option>
+                  <option value="3">3M</option>
+                  <option value="4">4M</option>
+                  <option value="5">5M</option>
+                  <option value="6">6M</option>
+                  <option value="7">7M</option>
+                  <option value="8">8M</option>
+                  <option value="9">9M</option>
+                  <option value="10">10M+</option>
+                </select>
               </div>
               <div className="col-md-6 col-sm-12">
                 <label className="form-label text-white">Max Price (AED)</label>
-                <input 
-                  type="number" 
-                  className="form-control" 
-                  id="max-price"
-                  placeholder="Max Price (in millions)" 
-                  step="0.01" 
-                  min="0"
+                <select 
+                  id="max-price" 
+                  className="form-select"
                   value={formData.maxPrice}
                   onChange={(e) => handleInputChange('maxPrice', e.target.value)}
-                />
+                >
+                  <option value="">Any</option>
+                  <option value="1">1M</option>
+                  <option value="2">2M</option>
+                  <option value="3">3M</option>
+                  <option value="4">4M</option>
+                  <option value="5">5M</option>
+                  <option value="6">6M</option>
+                  <option value="7">7M</option>
+                  <option value="8">8M</option>
+                  <option value="9">9M</option>
+                  <option value="10">10M+</option>
+                </select>
               </div>
 
               {/* Property Type */}
@@ -213,7 +246,30 @@ const SearchForm = ({ categories = [], properties = [], searchError = null, sear
 
               {/* Search Button */}
               <div className="col-12 d-flex justify-content-center mt-4">
-                <button type="submit" className="btnsearch">Search</button>
+                <button 
+                  type="submit" 
+                  className="btnsearch" 
+                  disabled={isLoading}
+                  style={{ 
+                    position: 'relative',
+                    opacity: isLoading ? 0.7 : 1,
+                    cursor: isLoading ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  {isLoading ? (
+                    <>
+                      <span 
+                        className="spinner-border spinner-border-sm me-2" 
+                        role="status" 
+                        aria-hidden="true"
+                        style={{ width: '1rem', height: '1rem' }}
+                      ></span>
+                      Searching...
+                    </>
+                  ) : (
+                    'Search'
+                  )}
+                </button>
               </div>
             </div>
           </form>
