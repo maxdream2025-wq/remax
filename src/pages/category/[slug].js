@@ -12,6 +12,17 @@ const PropertyDetails = ({ property }) => {
     modal.show();
   };
 
+  const formatPrice = (price) => {
+    console.log(price);
+    const num = parseFloat(price);
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toFixed(1).replace(/\.0$/, '');
+  };
+
   if (!property || property.length === 0) {
     return (
       <>
@@ -115,7 +126,7 @@ const PropertyDetails = ({ property }) => {
                     <li className="list-group-item">
                       <div className="row">
                         <div className="col-6">
-                          <strong>Starting Price:</strong> AED {parseInt(prop.starting_price)} M
+                          <strong>Starting Price:</strong> AED {formatPrice(prop.starting_price)}
                         </div>
                         <div className="col-6">
                           <strong>Status:</strong> {prop.status}

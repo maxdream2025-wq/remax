@@ -149,7 +149,7 @@ const Contactus = () => {
                                     <div className="col-md-12">
                                         <label htmlFor="country_code" style={{ fontWeight: "bold" }}>Country Code</label>
                                         <select
-                                            className="form-control select2-field"
+                                            className="form-control dropdown select2-field"
                                             id="country_code"
                                             name="country_code"
                                             required

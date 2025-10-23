@@ -1,5 +1,6 @@
 import MetaData from "@/components/MetaData";
 import React, { useEffect, useState } from "react";
+import logoNew from "@/assets/logo-new.png";
 
 const useCounter = (end, duration = 2000) => {
     const [count, setCount] = useState(0);
@@ -142,7 +143,7 @@ const RemaxUae = () => {
                             <div className="col-sm-12 col-md-12 col-lg-5 col-xl-4 align_center d-flex">
                                 <div className="location_content">
                                     <div>
-                                        <img src="/assets/logo-new.png" alt="RE/MAX UAE" />
+                                        <img src={logoNew.src} alt="RE/MAX UAE" />
                                     </div>
                                     <h1 className="mb_41 text-white">Happily Serving Our Clients Across UAE</h1>
                                 </div>

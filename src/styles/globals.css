@@ -30,6 +30,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#country_code
+ {
+    height: 56px !important;
+    border: 1px solid #ccc;
+    border-radius: 3px !important;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
