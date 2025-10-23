@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property/`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/property/`;
 
 const Property = () => {
   const [properties, setProperties] = useState([]);
@@ -50,7 +50,7 @@ const Property = () => {
       setLoadingCategories(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`
+          `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/property-categories/`
         );
         const data = res.data;
         const list = Array.isArray(data) ? data : (data?.results || []);

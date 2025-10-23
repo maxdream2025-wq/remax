@@ -25,7 +25,7 @@ const InterestModal = ({ propertyId }) => {
     setSubmitStatus(null);
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/inquiry/`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/inquiry/`, {
         property_id: propertyId || '',
         full_name: formData.fullName,
         email: formData.email,

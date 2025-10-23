@@ -12,8 +12,8 @@ const Testimonial = () => {
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [adminNotes, setAdminNotes] = useState("");
 
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/testimonial/`;
-  const ADMIN_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/testimonials/`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/testimonial/`;
+  const ADMIN_API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/admin/testimonials/`;
 
   const toArray = (data) => (Array.isArray(data) ? data : (data?.results || []));
 

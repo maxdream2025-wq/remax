@@ -5,8 +5,8 @@ import Link from "next/link";
 import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
 
-const CATEGORIES_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`;
-const FIND_PROPERTY_API_URL = `${process.env.NEXT_PUBLIC_API_URL}/find-property/`;
+const CATEGORIES_API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/property-categories/`;
+const FIND_PROPERTY_API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/find-property/`;
 
 export async function getServerSideProps({ query }) {
   try {

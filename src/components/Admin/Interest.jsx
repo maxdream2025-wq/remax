@@ -15,7 +15,7 @@ const Interest = () => {
   const fetchInquiries = async () => {
     try {
       setLoading(true)
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/inquiry/`)
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/inquiry/`)
       setInquiries(toArray(response.data))
       setError(null)
     } catch (err) {

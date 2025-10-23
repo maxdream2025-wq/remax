@@ -45,7 +45,7 @@ const BuildCareer = () => {
       }
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/career/`,
+        `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/career/`,
         data,
         {
           headers: {

@@ -21,7 +21,7 @@ const News = () => {
   const [feature, setFeature] = useState(false);
   const [order, setOrder] = useState(0);
 
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/news/`;
 
   const fetchNews = async () => {
     try {

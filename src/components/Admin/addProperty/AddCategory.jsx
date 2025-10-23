@@ -14,7 +14,7 @@ const Property = () => {
   const [currentImage, setCurrentImage] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/property-categories/`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/property-categories/`;
 
   const fetchCategories = async () => {
     try {
@@ -61,7 +61,7 @@ const Property = () => {
   const updateSelectedCategories = async () => {
     try {
       // Assuming you have an endpoint to update selected categories
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/update-selected-categories/`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/update-selected-categories/`, {
         selected_ids: selectedCategories
       });
     } catch (err) {

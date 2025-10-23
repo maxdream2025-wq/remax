@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import MetaData from "../../components/MetaData.jsx";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/news/`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/news/`;
 
 export async function getServerSideProps() {
   try {
