@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/newsletter/`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/newsletter/`;
 
 const Newsletter = () => {
   const [newsletters, setNewsletters] = useState([]);

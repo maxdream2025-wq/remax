@@ -158,7 +158,7 @@ export async function getServerSideProps(context) {
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/category/${slug}/properties`
+      `${process.env.NEXT_PUBLIC_API_URL}/category/${slug}/properties`
     );
     const data = await res.json();
 

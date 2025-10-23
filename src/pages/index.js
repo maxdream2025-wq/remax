@@ -36,9 +36,9 @@ export async function getServerSideProps() {
   
   try {
     const [propertiesRes, newsRes, testimonialsRes] = await Promise.all([
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/property-categories/`),
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/news/`),
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/testimonial/`),
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/property-categories/`),
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/news/`),
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/testimonial/`),
     ]);
 
     return {

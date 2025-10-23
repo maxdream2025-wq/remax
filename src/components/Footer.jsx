@@ -11,7 +11,7 @@ const Footer = () => {
     e.preventDefault();
     setStatus("");
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/newsletter/`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/newsletter/`, {
         email,
       });
       setStatus("success");

@@ -5,7 +5,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import axios from "axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/testimonial/`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/testimonial/`;
 
 const ReviewSlider = ({ testimonials }) => {
   const items = Array.isArray(testimonials) ? testimonials : [];

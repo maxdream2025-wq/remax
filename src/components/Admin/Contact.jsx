@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/contact/`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/contact/`;
 
 const Contact = () => {
   const [contacts, setContacts] = useState([]);

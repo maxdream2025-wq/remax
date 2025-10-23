@@ -10,7 +10,7 @@ const useBadgeCounts = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const fetchBadgeCounts = async () => {

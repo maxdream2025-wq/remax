@@ -25,7 +25,7 @@ const Contactus = () => {
         setSubmitStatus({ ok: null, message: "" });
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || "https://api.remaxdreamuae.com/api/v1"}/contact/`,
+                `${process.env.NEXT_PUBLIC_API_URL}/contact/`,
                 {
                     method: "POST",
                     headers: {
