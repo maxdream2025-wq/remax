@@ -58,7 +58,7 @@ const Banner = () => {
               marginTop: "80px",
               height: "90vh",
               backgroundImage: `url(${MobileBanner.src})`,
-              backgroundSize: "cover",
+              backgroundSize: "contain",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
               backgroundColor: "#ffffff",
@@ -68,12 +68,12 @@ const Banner = () => {
         {/* Banner image end */}
 
         {/* #1 sections */}
-        <div className="one_agent_content container py-5">
+        <div className="one_agent_content container py-5 px-3 px-md-0">
           {/* hero section */}
           <div className="row mt-4">
             {/* Left Column: Content */}
             <div className="col-md-6">
-              <div className="content-text">
+              <div className="content-text px-2 px-md-0">
                 <h3 className="fw-bold text-white text-start custom-heading">
                   We Bring Your Dreams to Reality
                   <br />
@@ -117,11 +117,11 @@ const Banner = () => {
             </div>
 
             {/* Right Column: Slogan */}
-            <div className="col-md-6 overflow-hidden rounded num-1 slogan-img">
+            <div className="col-md-6 overflow-hidden rounded num-1 slogan-img px-2 px-md-0">
               <img
                 src={RemaxMap_2.src}
                 alt="#1 Remax"
-                className="w-100 h-100 object-fit-cover zoomed-img rounded-4"
+                className="w-100 h-100 object-fit-cover rounded-4"
               />
             </div>
           </div>

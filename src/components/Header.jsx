@@ -43,6 +43,7 @@ const Header = () => {
 
     // Language selector event listener
     const selector = document.getElementById("language-selector");
+    
     if (selector) {
       selector.addEventListener("change", function () {
         const lang = this.value;
@@ -131,15 +132,285 @@ const Header = () => {
                       ></div>
                     </button>
 
-                    {/* Navbar Links */}
+                    {/* Mobile Menu Overlay */}
+                    {isMobileOpen && (
+                      <div
+                        className="mobile-menu-overlay"
+                        style={{
+                          position: "fixed",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "80vh",
+                          backgroundColor: "#003366",
+                          zIndex: 9999,
+                          padding: "20px",
+                          overflowY: "auto"
+                        }}
+                      >
+                        {/* Logo and Close Button */}
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+                          <Link
+                            href="/"
+                            onClick={closeMenus}
+                            style={{
+                              textDecoration: "none"
+                            }}
+                          >
+                            <div style={{ width: "120px" }}>
+                              <Logo />
+                            </div>
+                          </Link>
+                          <button
+                            onClick={closeMenus}
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              borderRadius: "50%",
+                              backgroundColor: "#dc3545",
+                              border: "none",
+                              color: "white",
+                              fontSize: "20px",
+                              fontWeight: "bold",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+
+                        {/* Menu Items */}
+                        <div className="mobile-menu-items">
+                          <div className="menu-item">
+                            <Link
+                              href="/"
+                              onClick={closeMenus}
+                              style={{
+                                color: "white",
+                                textDecoration: "none",
+                                fontSize: "18px",
+                                fontWeight: "500",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "15px 0",
+                                borderBottom: "1px solid rgba(255,255,255,0.1)"
+                              }}
+                            >
+                              Home
+                            </Link>
+                          </div>
+
+                          <div className="menu-item">
+                            <Link
+                              href="/findProperty"
+                              onClick={closeMenus}
+                              style={{
+                                color: "white",
+                                textDecoration: "none",
+                                fontSize: "18px",
+                                fontWeight: "500",
+                                display: "block",
+                                padding: "15px 0",
+                                borderBottom: "1px solid rgba(255,255,255,0.1)"
+                              }}
+                            >
+                              Find properties
+                            </Link>
+                          </div>
+
+                          <div className="menu-item">
+                            <Link
+                              href="/build_career"
+                              onClick={closeMenus}
+                              style={{
+                                color: "white",
+                                textDecoration: "none",
+                                fontSize: "18px",
+                                fontWeight: "500",
+                                display: "block",
+                                padding: "15px 0",
+                                borderBottom: "1px solid rgba(255,255,255,0.1)"
+                              }}
+                            >
+                              Build Career
+                            </Link>
+                          </div>
+
+
+                          <div className="menu-item">
+                            <button
+                              onClick={() => setIsAboutOpen((prev) => !prev)}
+                              style={{
+                                color: "white",
+                                textDecoration: "none",
+                                fontSize: "18px",
+                                fontWeight: "500",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "15px 0",
+                                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                                backgroundColor: "transparent",
+                                border: "none",
+                                width: "100%",
+                                textAlign: "left"
+                              }}
+                            >
+                              About Us
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                                style={{
+                                  transform: isAboutOpen ? "rotate(90deg)" : "rotate(0deg)",
+                                  transition: "transform 0.2s ease"
+                                }}
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                                />
+                              </svg>
+                            </button>
+                            {isAboutOpen && (
+                              <div style={{ 
+                                paddingLeft: "20px",
+                                backgroundColor: "rgba(255,255,255,0.05)",
+                                margin: "0 -20px",
+                                padding: "10px 20px"
+                              }}>
+                                <Link
+                                  href="/remax_global"
+                                  onClick={closeMenus}
+                                  style={{
+                                    color: "rgba(255,255,255,0.9)",
+                                    textDecoration: "none",
+                                    fontSize: "16px",
+                                    display: "block",
+                                    padding: "12px 0",
+                                    borderBottom: "1px solid rgba(255,255,255,0.1)"
+                                  }}
+                                >
+                                  RE/MAX Global
+                                </Link>
+                                <Link
+                                  href="/remax_uae"
+                                  onClick={closeMenus}
+                                  style={{
+                                    color: "rgba(255,255,255,0.9)",
+                                    textDecoration: "none",
+                                    fontSize: "16px",
+                                    display: "block",
+                                    padding: "12px 0",
+                                    borderBottom: "1px solid rgba(255,255,255,0.1)"
+                                  }}
+                                >
+                                  RE/MAX UAE
+                                </Link>
+                                <Link
+                                  href="/remax_dream"
+                                  onClick={closeMenus}
+                                  style={{
+                                    color: "rgba(255,255,255,0.9)",
+                                    textDecoration: "none",
+                                    fontSize: "16px",
+                                    display: "block",
+                                    padding: "12px 0"
+                                  }}
+                                >
+                                  RE/MAX Dream
+                                </Link>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Border under About Us */}
+                          <div style={{
+                            borderBottom: "1px solid rgba(255,255,255,0.1)",
+                            margin: "10px 0"
+                          }}></div>
+
+                          <div className="menu-item">
+                            <Link
+                              href="/contactus"
+                              onClick={closeMenus}
+                              style={{
+                                color: "white",
+                                textDecoration: "none",
+                                fontSize: "18px",
+                                fontWeight: "500",
+                                display: "block",
+                                padding: "15px 0",
+                                borderBottom: "1px solid rgba(255,255,255,0.1)"
+                              }}
+                            >
+                              Contact Us
+                            </Link>
+                          </div>
+
+                          {/* Language Selector */}
+                          <div className="menu-item" style={{ marginTop: "20px" }}>
+                            <div style={{
+                              color: "white",
+                              fontSize: "16px",
+                              fontWeight: "500",
+                              marginBottom: "10px"
+                            }}>
+                              Select Language
+                            </div>
+                            <div
+                              id="google_translate_element_mobile"
+                              style={{ display: "block", marginBottom: "10px" }}
+                            ></div>
+                            <select 
+                              id="language-selector-mobile"
+                              onChange={(e) => {
+                                const lang = e.target.value;
+                                const selectField = document.querySelector(".goog-te-combo");
+                                if (lang && selectField) {
+                                  selectField.value = lang;
+                                  selectField.dispatchEvent(new Event("change"));
+                                }
+                                closeMenus(); // Close mobile menu after language selection
+                              }}
+                              style={{
+                                width: "100%",
+                                padding: "10px",
+                                borderRadius: "5px",
+                                border: "1px solid rgba(255,255,255,0.3)",
+                                backgroundColor: "rgba(255,255,255,0.1)",
+                                color: "white",
+                                fontSize: "14px"
+                              }}
+                            >
+                              <option value="" style={{ color: "#333" }}>Select Language</option>
+                              <option value="en" style={{ color: "#333" }}>English</option>
+                              <option value="fr" style={{ color: "#333" }}>Français</option>
+                              <option value="it" style={{ color: "#333" }}>Italiano</option>
+                              <option value="es" style={{ color: "#333" }}>Español</option>
+                              <option value="de" style={{ color: "#333" }}>Deutsch</option>
+                              <option value="ru" style={{ color: "#333" }}>Русский</option>
+                              <option value="hi" style={{ color: "#333" }}>हिन्दी</option>
+                              <option value="tr" style={{ color: "#333" }}>Türkçe</option>
+                              <option value="fa" style={{ color: "#333" }}>فارسی</option>
+                              <option value="zh-CN" style={{ color: "#333" }}>中文</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Desktop Navbar Links */}
                     <div
-                      className={`collapse navbar-collapse ${
+                      className={`collapse navbar-collapse d-none d-lg-block ${
                         isMobileOpen ? "show" : ""
                       }`}
                       id="navbarNav"
-                      style={{
-                        display: isMobileOpen ? "block" : "none"
-                      }}
                     >
                       <ul className="navbar-nav ml-auto">
                         <li className="nav-item doted_link">
