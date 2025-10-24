@@ -8,7 +8,7 @@ const useBadgeCounts = () => {
     contact: 0,
     interest: 0
   });
-  // hello
+
   const [loading, setLoading] = useState(true);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
