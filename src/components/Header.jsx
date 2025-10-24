@@ -19,7 +19,7 @@ const Header = () => {
   useEffect(() => {
     // Set client-side flag
     setIsClient(true);
-    
+
     // Only run on client side
     if (typeof window === 'undefined') return;
 
@@ -50,7 +50,7 @@ const Header = () => {
 
     // Language selector event listener
     const selector = document.getElementById("language-selector");
-    
+
     if (selector) {
       selector.addEventListener("change", function () {
         const lang = this.value;
@@ -95,9 +95,8 @@ const Header = () => {
       >
         <div className="subheader" style={{ marginTop: "14px" }}>
           <nav
-            className={`navbar navbar-expand-lg ${
-              isBuildCareer ? "navbar-dark" : "navbar-light"
-            }`}
+            className={`navbar navbar-expand-lg ${isBuildCareer ? "navbar-dark" : "navbar-light"
+              }`}
           >
             <div className="container-fluid">
               <div className="row custom_styles justify-content-between align-items-center w-100">
@@ -177,7 +176,7 @@ const Header = () => {
                           top: 0,
                           left: 0,
                           width: "100%",
-                          height: "80vh",
+                          height: "100vh",
                           backgroundColor: "#003366",
                           zIndex: 9999,
                           padding: "20px",
@@ -314,7 +313,7 @@ const Header = () => {
                               </svg>
                             </button>
                             {isAboutOpen && (
-                              <div style={{ 
+                              <div style={{
                                 paddingLeft: "20px",
                                 backgroundColor: "rgba(255,255,255,0.05)",
                                 margin: "0 -20px",
@@ -361,6 +360,7 @@ const Header = () => {
                                 >
                                   RE/MAX Dream
                                 </Link>
+
                               </div>
                             )}
                           </div>
@@ -403,7 +403,7 @@ const Header = () => {
                               id="google_translate_element_mobile"
                               style={{ display: "block", marginBottom: "10px" }}
                             ></div>
-                            <select 
+                            <select
                               id="language-selector-mobile"
                               onChange={(e) => {
                                 const lang = e.target.value;
@@ -437,24 +437,28 @@ const Header = () => {
                               <option value="zh-CN" style={{ color: "#333" }}>中文</option>
                             </select>
                           </div>
+                          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Link href="/">
+                              <img width={250} src="/assets/fav.png" alt="Call Icon" />
+                            </Link>
+                          </div>
+
                         </div>
                       </div>
                     )}
 
                     {/* Desktop Navbar Links */}
                     <div
-                      className={`collapse navbar-collapse d-none d-lg-block ${
-                        isMobileOpen ? "show" : ""
-                      }`}
+                      className={`collapse navbar-collapse d-none d-lg-block ${isMobileOpen ? "show" : ""
+                        }`}
                       id="navbarNav"
                     >
                       <ul className="navbar-nav ml-auto">
                         <li className="nav-item doted_link">
                           <Link
                             id="nav-home"
-                            className={`nav-link font-bold ${
-                              isActivePath("/") ? "active" : ""
-                            }`}
+                            className={`nav-link font-bold ${isActivePath("/") ? "active" : ""
+                              }`}
                             href="/"
                             onClick={closeMenus}
                           >
@@ -467,9 +471,8 @@ const Header = () => {
                         >
                           <Link
                             id="nav-find-properties"
-                            className={`nav-link font-bold ${
-                              isActivePath("/findProperty") ? "active" : ""
-                            }`}
+                            className={`nav-link font-bold ${isActivePath("/findProperty") ? "active" : ""
+                              }`}
                             href="/findProperty"
                             onClick={closeMenus}
                           >
@@ -478,9 +481,8 @@ const Header = () => {
                         </li>
                         <li className="nav-item doted_link">
                           <Link
-                            className={`nav-link font-bold ${
-                              isActivePath("/build_career") ? "active" : ""
-                            }`}
+                            className={`nav-link font-bold ${isActivePath("/build_career") ? "active" : ""
+                              }`}
                             href="/build_career"
                             onClick={closeMenus}
                           >
@@ -506,9 +508,8 @@ const Header = () => {
                                 width="16"
                                 height="16"
                                 fill="currentColor"
-                                className={`bi bi-chevron-down transition ${
-                                  isAboutOpen ? "rotate-180" : ""
-                                }`}
+                                className={`bi bi-chevron-down transition ${isAboutOpen ? "rotate-180" : ""
+                                  }`}
                                 viewBox="0 0 16 16"
                                 style={{ transition: "transform 0.2s" }}
                               >
@@ -520,48 +521,43 @@ const Header = () => {
                             </span>
                           </button>
                           <div
-                            className={`dropdown-menu dropdown-arrow ${
-                              isAboutOpen ? "show" : ""
-                            }`}
+                            className={`dropdown-menu dropdown-arrow ${isAboutOpen ? "show" : ""
+                              }`}
                             aria-labelledby="nav-about-us-dropdown"
                             style={{ left: "-45px", top: "36px" }}
                           >
                             <Link
-                              className={`dropdown-item ${
-                                isActivePath("/remax_global") ? "active" : ""
-                              }`}
+                              className={`dropdown-item ${isActivePath("/remax_global") ? "active" : ""
+                                }`}
                               href="/remax_global"
                               onClick={closeMenus}
                             >
                               RE/MAX Global
                             </Link>
                             <Link
-                              className={`dropdown-item ${
-                                isActivePath("/remax_uae") ? "active" : ""
-                              }`}
+                              className={`dropdown-item ${isActivePath("/remax_uae") ? "active" : ""
+                                }`}
                               href="/remax_uae"
                               onClick={closeMenus}
                             >
                               RE/MAX UAE
                             </Link>
                             <Link
-                              className={`dropdown-item ${
-                                isActivePath("/remax_dream") ? "active" : ""
-                              }`}
+                              className={`dropdown-item ${isActivePath("/remax_dream") ? "active" : ""
+                                }`}
                               href="/remax_dream"
                               onClick={closeMenus}
                             >
                               RE/MAX Dream
                             </Link>
-                            
+
                           </div>
                         </li>
                         <li className="nav-item doted_link">
                           <Link
                             id="nav-contact-us"
-                            className={`nav-link ${
-                              isActivePath("/contactus") ? "active" : ""
-                            }`}
+                            className={`nav-link ${isActivePath("/contactus") ? "active" : ""
+                              }`}
                             href="/contactus"
                             onClick={closeMenus}
                           >

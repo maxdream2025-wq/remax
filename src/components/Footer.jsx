@@ -41,7 +41,9 @@ const Footer = () => {
           <div className="footer-content">
             <div className="footer-box">
               <div className="property_content_footer">
-                <Logo />
+              <Link href="/">
+        <Logo />
+      </Link>
               </div>
             </div>
 
