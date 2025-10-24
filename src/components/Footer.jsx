@@ -41,9 +41,9 @@ const Footer = () => {
           <div className="footer-content">
             <div className="footer-box">
               <div className="property_content_footer">
-              <Link href="/">
-        <Logo />
-      </Link>
+                <Link href="/" style={{ display: 'inline-block' }}>
+                  <Logo />
+                </Link>
               </div>
             </div>
 

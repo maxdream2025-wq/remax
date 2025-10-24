@@ -102,7 +102,7 @@ const Header = () => {
               <div className="row custom_styles justify-content-between align-items-center w-100">
                 {/* Logo */}
                 <div className="col-auto">
-                  <Link href="/" className="navbar-brand" onClick={closeMenus}>
+                  <Link href="/" className="navbar-brand" onClick={closeMenus} style={{ display: 'inline-block' }}>
                     {/* <img
                       src="https://remax.ae/assets/img/brandlogo/remaxbrands.png"
                       className="logo_uae"
@@ -189,7 +189,8 @@ const Header = () => {
                             href="/"
                             onClick={closeMenus}
                             style={{
-                              textDecoration: "none"
+                              textDecoration: "none",
+                              display: "inline-block"
                             }}
                           >
                             <div style={{ width: "120px" }}>
