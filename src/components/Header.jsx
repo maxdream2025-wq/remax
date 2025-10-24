@@ -9,6 +9,7 @@ const Header = () => {
   const isBuildCareer = router.pathname === "/build_career";
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const closeMenus = () => {
     setIsMobileOpen(false);
@@ -16,6 +17,12 @@ const Header = () => {
   };
 
   useEffect(() => {
+    // Set client-side flag
+    setIsClient(true);
+    
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
     // Load Google Translate script
     if (!window.googleTranslateElementInit) {
       window.googleTranslateElementInit = function () {
@@ -109,31 +116,60 @@ const Header = () => {
                 {/* Navigation */}
                 <div className="col">
                   <div className="responsivebar d-flex justify-content-end">
-                    {/* Toggler Button */}
+                    {/* Toggler Button - Mobile Only */}
                     <button
-                      className="navbar-toggler"
+                      className="navbar-toggler d-block d-lg-none"
                       type="button"
                       aria-controls="navbarNav"
                       aria-expanded={isMobileOpen ? "true" : "false"}
                       aria-label="Toggle navigation"
                       onClick={() => setIsMobileOpen((prev) => !prev)}
+                      style={{
+                        backgroundColor: "#dc3545",
+                        border: "none",
+                        borderRadius: "4px",
+                        padding: "8px 12px",
+                        width: "50px",
+                        height: "50px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
                     >
                       <div
-                        id="line-1"
-                        className="mobile_nav_toggleBtn_line"
+                        style={{
+                          width: "20px",
+                          height: "2px",
+                          backgroundColor: "white",
+                          borderRadius: "1px",
+                          transition: "all 0.3s ease",
+                          marginBottom: "4px"
+                        }}
                       ></div>
                       <div
-                        id="line-2"
-                        className="mobile_nav_toggleBtn_line"
+                        style={{
+                          width: "20px",
+                          height: "2px",
+                          backgroundColor: "white",
+                          borderRadius: "1px",
+                          transition: "all 0.3s ease",
+                          marginBottom: "4px"
+                        }}
                       ></div>
                       <div
-                        id="line-3"
-                        className="mobile_nav_toggleBtn_line"
+                        style={{
+                          width: "20px",
+                          height: "2px",
+                          backgroundColor: "white",
+                          borderRadius: "1px",
+                          transition: "all 0.3s ease"
+                        }}
                       ></div>
                     </button>
 
                     {/* Mobile Menu Overlay */}
-                    {isMobileOpen && (
+                    {isClient && isMobileOpen && (
                       <div
                         className="mobile-menu-overlay"
                         style={{
