@@ -35,7 +35,7 @@ const MetaData = ({
       <meta name="robots" content="index, follow" />
       
       {/* Favicon */}
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/assets/fav.png" />
     </Head>
   );
 };

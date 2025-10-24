@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="icon" href="https://remax.ae/assets/img/brandlogo/remax_logo.svg" type="image/svg+xml" />
+        <link rel="icon" href="/assets/fav.png" type="image/png" />
         <link rel="stylesheet" href="https://remax.ae/assets/css/style.css" />
         <link rel="stylesheet" href="https://remax.ae/assets/base/colors.css" />
         <link rel="stylesheet" href="https://remax.ae/assets/base/typography.css" />
