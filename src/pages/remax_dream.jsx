@@ -39,7 +39,7 @@ const RemaxDream = () => {
 								<strong>📍 Address:</strong> Armada hotel - Al Barsha, Office No - 101, Dubai, UAE
 							</li>
 							<li>
-								<strong>📞 Phone:</strong> +971 58 585 0067
+								<strong>📞 Phone:</strong> +971 547128882
 							</li>
 							<li>
 								<strong>📧 Email:</strong> info@remaxdreamuae.com

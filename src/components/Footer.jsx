@@ -150,7 +150,7 @@ const Footer = () => {
                         alt="Call Icon"
                       />
                     </span>
-                    <a href="tel:+971585850067">+971 58 585 0067</a>
+                    <a href="tel:+971547128882">+971 547128882</a>
                   </li>
                   <li>
                     <span>
